@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>تسجيل الدخول - pharaCoin</title>
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -10,13 +11,13 @@
 
 <style>
 
-/* ضبط الصفحة بالكامل */
 html,body{
 margin:0;
 padding:0;
 height:100%;
 font-family:tahoma;
-overflow:hidden;
+max-width:100%;
+overflow-x:hidden;
 }
 
 body{
@@ -35,13 +36,16 @@ height:100%;
 display:flex;
 justify-content:center;
 align-items:center;
+padding:15px;
+box-sizing:border-box;
 }
 
 .login-box{
 background:rgba(0,0,0,0.55);
-padding:30px;
+padding:25px;
 border-radius:20px;
-width:350px;
+width:100%;
+max-width:380px; /* بدل 350px ثابت */
 text-align:center;
 box-shadow:0 0 40px #000;
 border:1px solid gold;
@@ -49,7 +53,6 @@ position:relative;
 backdrop-filter:blur(6px);
 }
 
-/* 🔥 تعديل اللون فقط بدون تغيير تنسيق */
 .login-box h2{
 color:red;
 text-shadow:0 0 10px red,0 0 25px red,0 0 40px darkred;
@@ -65,6 +68,7 @@ border-radius:10px;
 background:#1a1a1a;
 color:#fff;
 font-size:14px;
+box-sizing:border-box;
 }
 
 .password-box{
@@ -73,7 +77,7 @@ position:relative;
 
 .password-box span{
 position:absolute;
-right:10px;
+left:10px;
 top:50%;
 transform:translateY(-50%);
 cursor:pointer;
@@ -89,19 +93,11 @@ font-size:13px;
 margin-top:5px;
 }
 
-.options label{
-display:flex;
-align-items:center;
-gap:5px;
-cursor:pointer;
-}
-
 .options a{
 color:gold;
 text-decoration:none;
 }
 
-/* 🔥 زر دخول نفس تسجيل الحساب */
 .login-box button{
 width:100%;
 padding:12px;
@@ -133,19 +129,27 @@ text-decoration:none;
 
 .statue{
 position:absolute;
-width:120px;
+width:90px;
+opacity:.8;
 }
 
 .statue.left{
-left:-130px;
+left:-80px;
 top:50%;
 transform:translateY(-50%);
 }
 
 .statue.right{
-right:-130px;
+right:-80px;
 top:50%;
 transform:translateY(-50%);
+}
+
+/* اخفاء التماثيل في الشاشات الصغيرة */
+@media(max-width:480px){
+.statue{
+display:none;
+}
 }
 
 </style>
@@ -191,7 +195,6 @@ transform:translateY(-50%);
 </div>
 
 <script>
-
 firebase.initializeApp({
 apiKey:"AIzaSyB78JT_cbPMizvzKWBrQoQUe3-zukHrr1U",
 authDomain:"pharacoin.firebaseapp.com",
@@ -206,13 +209,11 @@ var pass = document.getElementById("password");
 pass.type = pass.type === "password" ? "text" : "password";
 }
 
-/* ملء البيانات تلقائياً */
 window.onload = function(){
 document.getElementById("email").value = localStorage.getItem("loginEmail") || "";
 document.getElementById("password").value = localStorage.getItem("loginPass") || "";
 }
 
-/* تسجيل الدخول */
 document.getElementById("loginForm").addEventListener("submit",function(e){
 e.preventDefault();
 
@@ -239,7 +240,6 @@ alert(error.message);
 });
 
 });
-
 </script>
 
 </body>
