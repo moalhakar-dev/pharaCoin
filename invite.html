@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>دعوة الأصدقاء - pharaCoin</title>
 
 <style>
@@ -12,6 +13,8 @@ padding:0;
 height:100%;
 font-family:tahoma;
 color:#fff;
+max-width:100%;
+overflow-x:hidden;
 }
 
 /* الخلفية */
@@ -23,7 +26,7 @@ background-size:cover;
 /* طبقة التعتيم */
 .overlay{
 background:rgba(0,0,0,0.75);
-min-height:100%;
+min-height:100vh;
 padding-bottom:40px;
 }
 
@@ -49,7 +52,7 @@ cursor:pointer;
 
 /* المحتوى */
 .container{
-padding:25px;
+padding:20px;
 text-align:center;
 }
 
@@ -57,6 +60,7 @@ text-align:center;
 .container h2{
 color:gold;
 margin-bottom:10px;
+font-size:22px;
 }
 
 /* صندوق الرابط */
@@ -67,6 +71,7 @@ border-radius:15px;
 border:1px solid gold;
 margin:20px 0;
 word-break:break-all;
+font-size:14px;
 }
 
 /* زر النسخ */
@@ -77,6 +82,8 @@ padding:12px 20px;
 border-radius:10px;
 font-weight:bold;
 cursor:pointer;
+width:100%;
+max-width:250px;
 }
 
 .copy-btn:hover{
@@ -105,9 +112,16 @@ margin:5px 0;
 
 /* صورة تحفيزية */
 .statue-img{
-width:150px;
+width:120px;
 margin-top:25px;
 filter:drop-shadow(0 0 10px gold);
+}
+
+/* تحسين عرض الشاشات الصغيرة */
+@media(max-width:480px){
+.stats{
+grid-template-columns:1fr;
+}
 }
 
 </style>
@@ -119,13 +133,10 @@ filter:drop-shadow(0 0 10px gold);
 
 <!-- الهيدر -->
 <div class="header">
-
 <div class="logo">🔗 دعوة الأصدقاء</div>
-
 <div class="back" onclick="location.href='dashboard.html'">
 ⬅ رجوع
 </div>
-
 </div>
 
 <!-- المحتوى -->
@@ -134,7 +145,6 @@ filter:drop-shadow(0 0 10px gold);
 <h2>اربح كوينز بدعوة أصدقائك</h2>
 <p>كل صديق يسجل من رابطك يعطيك 50 كوين</p>
 
-<!-- رابط الدعوة -->
 <div class="link-box" id="inviteLink">
 https://pharacoin.com/register?ref=USER123
 </div>
@@ -143,7 +153,6 @@ https://pharacoin.com/register?ref=USER123
 نسخ الرابط
 </button>
 
-<!-- الإحصائيات -->
 <div class="stats">
 
 <div class="stat">
@@ -158,26 +167,17 @@ https://pharacoin.com/register?ref=USER123
 
 </div>
 
-<!-- صورة تحفيزية -->
 <img src="Object/qf.jpg" class="statue-img">
 
 </div>
-
 </div>
 
 <script>
-
 function copyLink(){
-
-var text =
-document.getElementById("inviteLink").innerText;
-
+var text = document.getElementById("inviteLink").innerText;
 navigator.clipboard.writeText(text);
-
 alert("تم نسخ رابط الدعوة");
-
 }
-
 </script>
 
 </body>
