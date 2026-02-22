@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>تسجيل الدخول - pharaCoin</title>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<style>
+
+/* ضبط الصفحة بالكامل */
+html,body{
+margin:0;
+padding:0;
+height:100%;
+font-family:tahoma;
+overflow:hidden;
+}
+
+body{
+background:url("Object/qa.jpg") no-repeat center center fixed;
+background-size:cover;
+display:flex;
+justify-content:center;
+align-items:center;
+color:#fff;
+}
+
+.overlay{
+background:rgba(0,0,0,0.1);
+width:100%;
+height:100%;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.login-box{
+background:rgba(0,0,0,0.55);
+padding:30px;
+border-radius:20px;
+width:350px;
+text-align:center;
+box-shadow:0 0 40px #000;
+border:1px solid gold;
+position:relative;
+backdrop-filter:blur(6px);
+}
+
+/* 🔥 تعديل اللون فقط بدون تغيير تنسيق */
+.login-box h2{
+color:red;
+text-shadow:0 0 10px red,0 0 25px red,0 0 40px darkred;
+margin-bottom:20px;
+}
+
+.login-box input{
+width:100%;
+padding:12px;
+margin:10px 0;
+border:none;
+border-radius:10px;
+background:#1a1a1a;
+color:#fff;
+font-size:14px;
+}
+
+.password-box{
+position:relative;
+}
+
+.password-box span{
+position:absolute;
+right:10px;
+top:50%;
+transform:translateY(-50%);
+cursor:pointer;
+color:gold;
+font-size:13px;
+}
+
+.options{
+display:flex;
+justify-content:space-between;
+align-items:center;
+font-size:13px;
+margin-top:5px;
+}
+
+.options label{
+display:flex;
+align-items:center;
+gap:5px;
+cursor:pointer;
+}
+
+.options a{
+color:gold;
+text-decoration:none;
+}
+
+/* 🔥 زر دخول نفس تسجيل الحساب */
+.login-box button{
+width:100%;
+padding:12px;
+margin-top:15px;
+border:none;
+border-radius:10px;
+background:red;
+color:white;
+font-weight:bold;
+font-size:15px;
+cursor:pointer;
+box-shadow:0 0 15px white,0 0 30px red,0 0 60px red;
+}
+
+.login-box button:hover{
+transform:scale(1.05);
+box-shadow:0 0 25px white,0 0 60px red,0 0 100px red;
+}
+
+.register-link{
+margin-top:15px;
+font-size:14px;
+}
+
+.register-link a{
+color:gold;
+text-decoration:none;
+}
+
+.statue{
+position:absolute;
+width:120px;
+}
+
+.statue.left{
+left:-130px;
+top:50%;
+transform:translateY(-50%);
+}
+
+.statue.right{
+right:-130px;
+top:50%;
+transform:translateY(-50%);
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="overlay">
+
+<div class="login-box">
+
+<img src="Object/qs.jpg" class="statue left">
+<img src="Object/qf.jpg" class="statue right">
+
+<h2>تسجيل الدخول</h2>
+
+<form id="loginForm">
+
+<input type="text" id="email" placeholder="رقم الموبايل أو الجيميل" required>
+
+<div class="password-box">
+<input type="password" id="password" placeholder="كلمة المرور" required>
+<span onclick="togglePassword()">إظهار</span>
+</div>
+
+<div class="options">
+<label>
+<input type="checkbox">
+تذكرني
+</label>
+<a href="#">نسيت كلمة المرور؟</a>
+</div>
+
+<button type="submit">دخول</button>
+
+</form>
+
+<div class="register-link">
+ليس لديك حساب؟ <a href="register.html">إنشاء حساب</a>
+</div>
+
+</div>
+</div>
+
+<script>
+
+firebase.initializeApp({
+apiKey:"AIzaSyB78JT_cbPMizvzKWBrQoQUe3-zukHrr1U",
+authDomain:"pharacoin.firebaseapp.com",
+projectId:"pharacoin"
+});
+
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+function togglePassword(){
+var pass = document.getElementById("password");
+pass.type = pass.type === "password" ? "text" : "password";
+}
+
+/* ملء البيانات تلقائياً */
+window.onload = function(){
+document.getElementById("email").value = localStorage.getItem("loginEmail") || "";
+document.getElementById("password").value = localStorage.getItem("loginPass") || "";
+}
+
+/* تسجيل الدخول */
+document.getElementById("loginForm").addEventListener("submit",function(e){
+e.preventDefault();
+
+const email = document.getElementById("email").value;
+const password = document.getElementById("password").value;
+
+auth.signInWithEmailAndPassword(email,password)
+.then((userCredential)=>{
+
+const user = userCredential.user;
+
+db.collection("users").doc(user.uid).get().then((doc)=>{
+
+localStorage.setItem("profileName",doc.data().username);
+localStorage.setItem("profileEmail",doc.data().emailOrPhone);
+
+window.location.href="profile.html";
+
+});
+
+})
+.catch(error=>{
+alert(error.message);
+});
+
+});
+
+</script>
+
+</body>
+</html>

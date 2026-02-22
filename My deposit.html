@@ -1,0 +1,64 @@
+<h2>📊 سجل الإيداعات</h2>
+
+<div id="list"></div>
+
+<script>
+
+firebase.auth().onAuthStateChanged((user)=>{
+
+db.collection("deposits")
+.where("userId","==",user.uid)
+.onSnapshot((data)=>{
+
+document
+.getElementById("list")
+.innerHTML = "";
+
+data.forEach((doc)=>{
+
+var d = doc.data();
+
+var color="gray";
+
+if(d.status=="approved")
+color="green";
+
+if(d.status=="rejected")
+color="red";
+
+document
+.getElementById("list")
+.innerHTML += `
+
+<div style="
+background:#1e293b;
+margin:10px;
+padding:10px;
+border-radius:10px;
+">
+
+💰 ${d.amountUSD}$ <br>
+📅 ${new Date(d.date.seconds*1000)
+.toLocaleDateString()} <br>
+
+📌 الحالة:
+<span style="color:${color}">
+${d.status}
+</span>
+
+<br>
+
+<a href="${d.proof}"
+target="_blank">
+عرض الإثبات
+</a>
+
+</div>
+`;
+
+});
+
+});
+
+});
+</script>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تواصل معنا</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+/* ===== الخلفية نفس باقي الصفحات ===== */
+body{
+    margin:0;
+    font-family:Cairo, sans-serif;
+    background:black;
+    overflow-x:hidden;
+}
+
+/* صورة الخلفية */
+.bg{
+    position:fixed;
+    inset:0;
+    background:url("Object/qa.jpg") center/cover no-repeat;
+    z-index:-3;
+}
+
+/* تعتيم خفيف */
+.bg::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,.25);
+}
+
+/* لمعة ذهبية */
+.gold-light{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:-2;
+    background:
+    radial-gradient(circle at 20% 30%, rgba(255,215,0,.15), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(255,215,0,.12), transparent 40%);
+    animation:shine 8s linear infinite alternate;
+}
+
+@keyframes shine{
+    0%{opacity:.4; transform:translateY(0)}
+    100%{opacity:.8; transform:translateY(-40px)}
+}
+
+/* المحتوى */
+.overlay{
+    min-height:100vh;
+    padding:25px;
+    background:transparent;
+    color:white;
+}
+
+/* العنوان */
+.header{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.header h1{
+    font-size:34px;
+    margin:0;
+}
+
+.header p{
+    opacity:.9;
+}
+
+/* صندوق التواصل */
+.contact-box{
+    max-width:500px;
+    margin:20px auto;
+    background:rgba(0,0,0,.28);
+    border-radius:18px;
+    padding:25px;
+    backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,.15);
+    box-shadow:0 0 25px rgba(255,215,0,.15);
+    text-align:center;
+}
+
+/* أيقونة */
+.contact-icon{
+    font-size:55px;
+    color:gold;
+    margin-bottom:15px;
+    text-shadow:0 0 15px rgba(255,215,0,.6);
+}
+
+/* اليوزر */
+.username{
+    background:#0e0e0e;
+    padding:15px;
+    border-radius:10px;
+    border:1px solid gold;
+    font-weight:bold;
+    font-size:18px;
+    margin-bottom:15px;
+    word-break:break-all;
+}
+
+/* زر */
+.contact-btn{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    background:gold;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.2s;
+    font-size:16px;
+}
+
+.contact-btn:hover{
+    background:orange;
+    transform:scale(1.05);
+}
+
+.note{
+    margin-top:20px;
+    opacity:.85;
+    font-size:14px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="bg"></div>
+<div class="gold-light"></div>
+
+<div class="overlay">
+
+<div class="header">
+    <h1>تواصل معنا</h1>
+    <p>فريق الدعم جاهز للرد على استفساراتك</p>
+</div>
+
+<div class="contact-box">
+
+    <div class="contact-icon">
+        <i class="fa-brands fa-telegram"></i>
+    </div>
+
+    <div class="username" id="telegram">
+        @PharacoinSupport
+    </div>
+
+    <button class="contact-btn" onclick="openTelegram()">
+        فتح التليجرام
+    </button>
+
+    <button class="contact-btn" onclick="copyUser()" style="margin-top:10px;">
+        نسخ اليوزر
+    </button>
+
+    <div class="note">
+        اضغط على فتح التليجرام للتواصل مباشرة مع الدعم
+    </div>
+
+</div>
+
+</div>
+
+<script>
+
+/* فتح تليجرام */
+function openTelegram(){
+    window.open("https://t.me/PharacoinSupport", "_blank");
+}
+
+/* نسخ اليوزر */
+function copyUser(){
+    navigator.clipboard.writeText("@PharacoinSupport");
+    alert("تم نسخ اليوزر ✔");
+}
+
+/* حركة الخلفية */
+window.addEventListener("scroll",()=>{
+    document.querySelector(".bg").style.transform=
+    `translateY(${window.scrollY*0.25}px) scale(1.1)`;
+});
+
+</script>
+
+</body>
+</html>

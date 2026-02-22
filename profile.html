@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>PharaCoin - الملف الشخصي</title>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+
+<style>
+body{
+    margin:0;
+    font-family:Cairo;
+    background:url("Object/qa.jpg") no-repeat center center fixed;
+    background-size:cover;
+    color:white;
+}
+.overlay{
+    background:rgba(0,0,0,0.08);
+    min-height:100vh;
+    padding:20px;
+}
+.header{
+    text-align:center;
+    color:#ff0000;
+    font-size:38px;
+    font-weight:bold;
+    margin-bottom:20px;
+    text-shadow:0 0 10px #ff0000,0 0 20px #ff0000,0 0 30px #ff0000;
+}
+.back-icon{
+position:absolute;
+top:15px;
+right:20px;
+font-size:36px;
+color:#ff0000;
+cursor:pointer;
+text-shadow:0 0 10px #ff0000,0 0 20px #ff0000,0 0 35px #ff0000;
+transition:0.3s;
+animation:royalSpin 12s linear infinite;
+}
+@keyframes royalSpin{
+from{ transform:rotate(0deg); }
+to{ transform:rotate(360deg); }
+}
+.profile-box{
+    background:rgba(11,11,11,0.3);
+    padding:20px;
+    border-radius:20px;
+    box-shadow:0 0 25px red;
+    max-width:430px;
+    margin:auto;
+}
+
+/* حاوية الصورة */
+.avatar-container{
+    position:relative;
+    width:120px;
+    height:120px;
+    margin:auto;
+    cursor:pointer;
+}
+
+.avatar{
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    border:3px solid #ff0000;
+    box-shadow:0 0 15px #ff0000,0 0 30px #ff0000;
+    object-fit:cover;
+}
+
+/* النص داخل الدائرة */
+.avatar-text{
+    position:absolute;
+    top:0;
+    left:0;
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    font-size:12px;
+    padding:10px;
+    background:rgba(0,0,0,0.6);
+    color:white;
+}
+
+.info{
+    text-align:center;
+    margin-top:10px;
+    font-size:18px;
+}
+.label{
+    color:#ff0000;
+    font-weight:bold;
+    margin-top:10px;
+}
+.data-box{
+    background:rgba(26,26,26,0.3);
+    padding:10px;
+    border-radius:10px;
+    text-align:center;
+    border:1px solid #ff0000;
+    margin-bottom:15px;
+}
+input{
+    width:100%;
+    padding:12px;
+    border-radius:10px;
+    border:1px solid #ff0000;
+    background:rgba(26,26,26,0.3);
+    color:white;
+    margin-bottom:15px;
+}
+button{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    background:#ff0000;
+    border:none;
+    border-radius:10px;
+    font-weight:bold;
+    cursor:pointer;
+    color:white;
+}
+.policy-links{
+    margin-top:20px;
+    text-align:center;
+}
+.policy-links a{
+    color:#00ff9d;
+    font-weight:bold;
+    margin:0 10px;
+    text-decoration:none;
+}
+</style>
+</head>
+
+<body>
+<div class="overlay">
+
+<div class="back-icon" onclick="window.location.href='dashboard.html'">𓂀</div>
+<div class="header">ملفي الشخصي</div>
+
+<div class="profile-box">
+
+<div class="avatar-container" onclick="document.getElementById('imageUpload').click()">
+<img src="" class="avatar" id="profileImage">
+<div class="avatar-text" id="avatarText">اضغط هنا لتحميل صورة ملفك الشخصي</div>
+</div>
+
+<input type="file" id="imageUpload" accept="image/*" style="display:none">
+
+<div class="info"><b>اسم المستخدم:</b> <span id="username">...</span></div>
+
+<div class="label">💰 رصيدك:</div>
+<div class="data-box" id="coins">...</div>
+
+<div class="label">📧 البريد الإلكتروني:</div>
+<div class="data-box" id="userContact">...</div>
+
+<div class="label">🔐 تغيير كلمة المرور:</div>
+<input type="password" placeholder="كلمة المرور الجديدة" id="newpass">
+
+<button onclick="savePass()">حفظ التغيير</button>
+<button onclick="logout()">🚪 تسجيل خروج</button>
+
+<div class="policy-links">
+<a href="terms.html">📜 شروط الاستخدام</a> |
+<a href="privacy.html">🔒 سياسة الخصوصية</a>
+</div>
+
+</div>
+</div>
+
+<script>
+
+firebase.initializeApp({
+apiKey:"AIzaSyB78JT_cbPMizvzKWBrQoQUe3-zukHrr1U",
+authDomain:"pharacoin.firebaseapp.com",
+projectId:"pharacoin",
+storageBucket:"pharacoin.appspot.com"
+});
+
+const auth = firebase.auth();
+const db = firebase.firestore();
+const storage = firebase.storage();
+
+auth.onAuthStateChanged(function(user){
+
+if(user){
+
+db.collection("users").doc(user.uid).get().then((doc)=>{
+
+if(doc.exists){
+
+const data = doc.data();
+
+document.getElementById("username").innerText = data.username || "غير متوفر";
+document.getElementById("coins").innerText = (data.balance || 0) + " جنيه";
+document.getElementById("userContact").innerText = data.email || user.email || "غير متوفر";
+
+if(data.photoURL){
+document.getElementById("profileImage").src = data.photoURL;
+document.getElementById("avatarText").style.display="none";
+}
+
+}
+
+});
+
+}else{
+window.location.href="login.html";
+}
+
+});
+
+/* رفع الصورة */
+document.getElementById("imageUpload").addEventListener("change",function(e){
+
+const file = e.target.files[0];
+if(!file) return;
+
+const user = auth.currentUser;
+const storageRef = storage.ref("profileImages/"+user.uid+".jpg");
+
+storageRef.put(file).then(()=>{
+storageRef.getDownloadURL().then((url)=>{
+
+db.collection("users").doc(user.uid).update({
+photoURL:url
+});
+
+document.getElementById("profileImage").src = url;
+document.getElementById("avatarText").style.display="none";
+
+});
+
+});
+
+});
+
+function savePass(){
+const newPass = document.getElementById("newpass").value;
+if(newPass.length < 6){
+alert("كلمة المرور لازم تكون 6 أحرف على الأقل");
+return;
+}
+auth.currentUser.updatePassword(newPass)
+.then(()=> alert("تم تغيير كلمة المرور بنجاح 🔥"))
+.catch(error=> alert(error.message));
+}
+
+function logout(){
+auth.signOut().then(()=> window.location.href="login.html");
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>متجر العملات</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Cairo,sans-serif;
+    background:black;
+}
+.bg{
+    position:fixed;
+    inset:0;
+    background:url("Object/qa.jpg") center/cover no-repeat;
+    z-index:-3;
+}
+.bg::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,.25);
+}
+.gold-light{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:-2;
+    background:
+    radial-gradient(circle at 20% 30%, rgba(255,215,0,.15), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(255,215,0,.12), transparent 40%);
+}
+.overlay{
+    min-height:100vh;
+    padding:25px;
+    color:white;
+}
+
+.header{
+    text-align:center;
+    margin-bottom:25px;
+}
+.header h1{
+    font-size:34px;
+    margin:0;
+    color:gold;
+}
+.header p{
+    opacity:.9;
+}
+
+.store{
+    max-width:900px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+.pack{
+    background:rgba(0,0,0,.35);
+    border-radius:18px;
+    padding:20px;
+    border:1px solid rgba(255,215,0,.4);
+    box-shadow:0 0 25px rgba(255,215,0,.15);
+    text-align:center;
+}
+
+.pack h3{
+    color:gold;
+    margin-bottom:10px;
+}
+
+.pack .coins{
+    font-size:22px;
+    font-weight:bold;
+    color:#00ffcc;
+}
+
+.pack .price{
+    margin:10px 0;
+    opacity:.9;
+}
+
+.pack button{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:gold;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.2s;
+}
+.pack button:hover{
+    background:orange;
+    transform:scale(1.05);
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg"></div>
+<div class="gold-light"></div>
+
+<div class="overlay">
+
+<div class="header">
+    <h1>🏪 متجر PharaCoin</h1>
+    <p>اختر باقة العملات ثم أكمل الإيداع</p>
+</div>
+
+<div class="store">
+
+<div class="pack">
+    <h3>🟢 مبتدئ</h3>
+    <div class="coins">100 Coins</div>
+    <div class="price">السعر: 1$</div>
+    <button onclick="goDeposit(100)">اختيار الباقة</button>
+</div>
+
+<div class="pack">
+    <h3>🔵 متقدم</h3>
+    <div class="coins">300 Coins</div>
+    <div class="price">السعر: 3$</div>
+    <button onclick="goDeposit(300)">اختيار الباقة</button>
+</div>
+
+<div class="pack">
+    <h3>🟣 محترف</h3>
+    <div class="coins">700 Coins</div>
+    <div class="price">السعر: 6$</div>
+    <button onclick="goDeposit(700)">اختيار الباقة</button>
+</div>
+
+<div class="pack">
+    <h3>🟡 أسطوري</h3>
+    <div class="coins">1500 Coins</div>
+    <div class="price">السعر: 10$</div>
+    <button onclick="goDeposit(1500)">اختيار الباقة</button>
+</div>
+
+<div class="pack">
+    <h3>🔴 إلهي</h3>
+    <div class="coins">3000 Coins</div>
+    <div class="price">السعر: 18$</div>
+    <button onclick="goDeposit(3000)">اختيار الباقة</button>
+</div>
+
+</div>
+
+</div>
+
+<script>
+function goDeposit(amount){
+    localStorage.setItem("pendingCoins",amount);
+    window.location.href="deposit.html";
+}
+</script>
+<script>
+let pending = localStorage.getItem("pendingCoins");
+if(pending){
+    let note = document.querySelector(".note");
+    note.innerHTML =
+    "📦 الباقة المختارة: <b>"+pending+" Coins</b><br>" +
+    "بعد التحويل سيتم شحن نفس الباقة";
+}
+</script>
+</body>
+</html>

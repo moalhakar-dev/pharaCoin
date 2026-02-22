@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>PharaCoin - المرحلة الرابعة (التمثال الإلهي)</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Cairo;
+    background:url("Object/qa.jpg") no-repeat center center fixed;
+    background-size:cover;
+}
+.overlay{
+    background:rgba(0,0,0,0.25);
+    min-height:100vh;
+    padding:20px;
+}
+
+.header{
+    text-align:center;
+    color:#ff0033;
+    font-size:38px;
+    font-weight:bold;
+    text-shadow:0 0 20px black;
+}
+
+.box{
+    background:#050505;
+    padding:20px;
+    border-radius:20px;
+    box-shadow:0 0 40px red;
+    text-align:center;
+}
+
+.coins{
+    color:#00ffcc;
+    font-size:22px;
+}
+
+.progress-bar{
+    width:100%;
+    background:#333;
+    border-radius:15px;
+    overflow:hidden;
+    margin:15px 0;
+}
+.progress{
+    height:24px;
+    width:0%;
+    background:linear-gradient(to right,red,gold,white);
+    transition:0.5s;
+}
+
+.parts{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+    margin-top:20px;
+}
+.part{
+    background:#000;
+    border:2px solid red;
+    border-radius:18px;
+    padding:10px;
+    box-shadow:0 0 20px red;
+}
+.part img{
+    width:100%;
+    border-radius:15px;
+    filter:grayscale(100%);
+    transition:0.4s;
+}
+.part img.active{
+    filter:none;
+}
+.part button{
+    margin-top:8px;
+    padding:10px;
+    border:none;
+    border-radius:12px;
+    background:red;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+}
+.part button:disabled{
+    background:gray;
+    cursor:not-allowed;
+}
+
+.message{
+    color:#00ffcc;
+    margin-top:15px;
+    font-size:18px;
+}
+
+.fullStatue{
+    display:none;
+    margin-top:30px;
+    background:#000;
+    padding:20px;
+    border-radius:20px;
+    box-shadow:0 0 50px gold;
+}
+.fullStatue img{
+    width:100%;
+    border-radius:20px;
+}
+</style>
+</head>
+
+<body>
+<div class="overlay">
+
+<div class="header">🗿 المرحلة الرابعة: التمثال الإلهي الأعظم</div>
+
+<div class="box">
+<div class="coins">💰 رصيدك: <span id="coins">0</span> Coins</div>
+
+<div class="progress-bar">
+    <div class="progress" id="progress"></div>
+</div>
+
+<p style="color:white;">هذه نهاية الطريق… لا ينجح إلا المختار</p>
+
+<div class="parts">
+    <div class="part">
+        <img src="Object/statue4_part1.jpg" id="img0">
+        <button onclick="buyPart(0,500)">رأس رع (500)</button>
+    </div>
+
+    <div class="part">
+        <img src="Object/statue4_part2.jpg" id="img1">
+        <button onclick="buyPart(1,800)">صدر الحكم (800)</button>
+    </div>
+
+    <div class="part">
+        <img src="Object/statue4_part3.jpg" id="img2">
+        <button onclick="buyPart(2,1200)">ذراع القوة (1200)</button>
+    </div>
+
+    <div class="part">
+        <img src="Object/statue4_part4.jpg" id="img3">
+        <button onclick="buyPart(3,1200)">ذراع القوة (1200)</button>
+    </div>
+
+    <div class="part">
+        <img src="Object/statue4_part5.jpg" id="img4">
+        <button onclick="buyPart(4,1800)">قلب الخلود (1800)</button>
+    </div>
+
+    <div class="part">
+        <img src="Object/statue4_part6.jpg" id="img5">
+        <button onclick="buyPart(5,2500)">جناح الأفعى (2500)</button>
+    </div>
+
+    <div class="part">
+        <img src="Object/statue4_part7.jpg" id="img6">
+        <button onclick="buyPart(6,4000)">تاج الخلق (4000)</button>
+    </div>
+</div>
+
+<div class="message" id="msg"></div>
+</div>
+
+<div class="fullStatue" id="fullStatue">
+<h2 style="color:gold;">👑 اكتملت الأسطورة</h2>
+<p style="color:white;">ربحت 5000 Coins — أنهيت اللعبة</p>
+<img src="Object/statue4_full.jpg">
+</div>
+
+</div>
+
+<script>
+let coins = localStorage.getItem("coins") ? parseInt(localStorage.getItem("coins")) : 0;
+let parts = JSON.parse(localStorage.getItem("statue4_parts")) || [false,false,false,false,false,false,false];
+
+const coinsSpan = document.getElementById("coins");
+const progress = document.getElementById("progress");
+const msg = document.getElementById("msg");
+const buttons = document.querySelectorAll(".part button");
+
+coinsSpan.innerText = coins;
+
+function updateUI(){
+    let completed = parts.filter(p=>p).length;
+    progress.style.width = (completed / parts.length * 100) + "%";
+
+    parts.forEach((p,i)=>{
+        if(p){
+            document.getElementById("img"+i).classList.add("active");
+            buttons[i].disabled = true;
+            buttons[i].innerText = "✔ تم";
+        }
+    });
+
+    if(completed === parts.length){
+        document.getElementById("fullStatue").style.display = "block";
+    }
+}
+
+function buyPart(index,price){
+    if(coins < price){
+        window.location.href = "deposit.html";
+        return;
+    }
+
+    coins -= price;
+    parts[index] = true;
+
+    localStorage.setItem("coins",coins);
+    localStorage.setItem("statue4_parts",JSON.stringify(parts));
+
+    coinsSpan.innerText = coins;
+    msg.innerHTML = "🔥 قطعة إلهية تم الحصول عليها";
+
+    updateUI();
+    checkComplete();
+}
+
+function checkComplete(){
+    if(parts.every(p=>p)){
+        coins += 5000;
+        localStorage.setItem("coins",coins);
+        coinsSpan.innerText = coins;
+        msg.innerHTML = "🏆 أنهيت اللعبة! +5000 Coins";
+    }
+}
+
+updateUI();
+</script>
+
+</body>
+</html>

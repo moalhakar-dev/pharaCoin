@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>PharaCoin - الرئيسية</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Cairo;
+    background:url("Object/qa.jpg") no-repeat center center fixed;
+    background-size:cover;
+}
+.overlay{
+    background:rgba(0,0,0,0.15);
+    min-height:100vh;
+    padding:20px;
+}
+
+/* عنوان الصفحة */
+.header{
+    text-align:center;
+    color:gold;
+    font-size:38px;
+    font-weight:bold;
+    margin-bottom:10px;
+    text-shadow:0 0 10px black;
+}
+
+/* محفظة النقاط */
+.wallet-box{
+    background:#111;
+    padding:15px;
+    border-radius:15px;
+    box-shadow:0 0 20px gold;
+    text-align:center;
+    margin-bottom:20px;
+    animation:fadeIn 1s ease;
+}
+.wallet-title{
+    color:gold;
+    font-size:20px;
+    margin-bottom:5px;
+}
+.wallet-coins{
+    color:#00ff9d;
+    font-size:28px;
+    font-weight:bold;
+}
+.wallet-level{
+    color:orange;
+    font-size:16px;
+}
+.refresh-btn{
+    margin-top:10px;
+    background:gold;
+    padding:10px 20px;
+    border:none;
+    border-radius:10px;
+    font-weight:bold;
+    cursor:pointer;
+}
+.refresh-btn:hover{
+    background:orange;
+}
+
+/* القائمة */
+.menu{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    margin-bottom:20px;
+}
+.menu a{
+    text-decoration:none;
+    padding:12px 20px;
+    background:gold;
+    color:black;
+    border-radius:10px;
+    font-weight:bold;
+    box-shadow:0 0 15px gold;
+    transition:0.3s;
+}
+.menu a:hover{
+    background:orange;
+    box-shadow:0 0 25px orange;
+}
+
+/* شبكة التماثيل */
+.statues{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin:20px 0;
+    align-items:center;
+}
+
+/* الصور العادية */
+.statues img{
+    width:100%;
+    border-radius:15px;
+    border:2px solid gold;
+    box-shadow:0 0 20px gold;
+    transition:0.4s;
+    animation:fadeZoom 1.2s ease;
+}
+.statues img:hover{
+    transform:scale(1.07);
+    box-shadow:0 0 35px gold;
+}
+
+/* القطعة النادرة */
+.rare-item{
+    grid-column:2;
+    grid-row:1 / span 2;
+    position:relative;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+.rare-item img{
+    width:100%;
+    border-radius:15px;
+    border:3px solid red;
+    box-shadow:0 0 35px red;
+    cursor:pointer;
+    transition: transform 0.3s ease;
+    animation:rarePulse 0.25s infinite alternate ease-in-out;
+}
+@keyframes rarePulse{
+    from{ transform: scale(1); box-shadow:0 0 35px red;}
+    to{ transform: scale(1.04); box-shadow:0 0 50px red;}
+}
+.rare-overlay{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.97);
+    backdrop-filter:blur(5px);
+    border-radius:15px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    color:gold;
+    font-size:20px;
+    font-weight:bold;
+    letter-spacing:1px;
+    text-shadow:0 0 20px gold;
+    animation:glow 1s infinite alternate;
+}
+@keyframes glow{
+    from{ text-shadow:0 0 20px gold;}
+    to{ text-shadow:0 0 35px gold;}
+}
+
+/* الشرارات الذهبية */
+.spark{
+    position:absolute;
+    width:6px;
+    height:6px;
+    background:gold;
+    border-radius:50%;
+    pointer-events:none;
+    box-shadow:0 0 10px gold,0 0 20px orange;
+    animation:sparkFade 0.8s ease-out forwards;
+}
+@keyframes sparkFade{
+    0%{transform:scale(0.5);opacity:0;}
+    50%{opacity:1;}
+    100%{transform:scale(1.5);opacity:0;}
+}
+
+/* صندوق العرض الترحيبي */
+.offer-box{
+    background:#0b0b0b;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 0 25px gold;
+    text-align:center;
+    margin-top:10px;
+    animation:pulse 1.5s infinite;
+}
+.offer-box h2{ color:gold; margin:0 0 10px;}
+.offer-box p{ color:white; font-size:18px;}
+
+/* Animation Keyframes */
+@keyframes fadeZoom{0%{ opacity:0; transform:scale(0.7); }100%{ opacity:1; transform:scale(1); }}
+@keyframes fadeIn{0%{ opacity:0; transform:translateY(20px);}100%{ opacity:1; transform:translateY(0);}}
+@keyframes pulse{0%{transform:scale(1);}50%{transform:scale(1.03);}100%{transform:scale(1);}}
+</style>
+</head>
+
+<body>
+<div class="overlay">
+
+<div class="header">🏛 PharaCoin</div>
+
+<!-- محفظة النقاط -->
+<div class="wallet-box">
+    <div class="wallet-title">💰 رصيدك الحالي</div>
+    <div class="wallet-coins" id="coins">250 Coins</div>
+    <div class="wallet-level" id="level">المستوى: Bronze</div>
+    <button class="refresh-btn" onclick="updateCoins()">🔄 تحديث الرصيد</button>
+</div>
+
+<!-- القائمة -->
+<div class="menu">
+    <a href="register.html">تسجيل حساب</a>
+    <a href="login.html">تسجيل الدخول</a>
+</div>
+
+<!-- التماثيل -->
+<div class="statues">
+    <img src="Object/qa.jpg">
+    
+    <!-- القطعة النادرة -->
+    <div class="rare-item" id="rareBox">
+        <img src="Object/qg.png">
+        <div class="rare-overlay">
+            ✨ القطعة النادرة ✨
+        </div>
+    </div>
+
+    <img src="Object/qs.jpg">
+    <img src="Object/qd.jpg">
+    <img src="Object/qf.jpg">
+</div>
+
+<!-- العرض الترحيبي -->
+<div class="offer-box">
+    <h2>🎁 عرض الإطلاق</h2>
+    <p>سجل الآن واحصل على 100 جنيه + 3 لفات مجانية</p>
+</div>
+
+</div>
+
+<script>
+/* نظام النقاط */
+let coins = 250;
+function updateCoins(){
+    let bonus = Math.floor(Math.random()*50)+10;
+    coins += bonus;
+    document.getElementById("coins").innerHTML = coins+" Coins";
+    alert("🎉 تم إضافة "+bonus+" نقطة إلى رصيدك!");
+}
+
+/* إنشاء الشرارات حول القطعة النادرة */
+const rareBox = document.getElementById("rareBox");
+setInterval(()=>{
+    const spark = document.createElement("div");
+    spark.className = "spark";
+    const size = rareBox.offsetWidth;
+    const angle = Math.random()*2*Math.PI;
+    const radius = size/2 + 10;
+    spark.style.left = (size/2 + Math.cos(angle)*radius) + "px";
+    spark.style.top  = (size/2 + Math.sin(angle)*radius) + "px";
+    rareBox.appendChild(spark);
+    setTimeout(()=>{ spark.remove(); },800);
+},150); // 4 نبضات بالثانية
+</script>
+
+</body>
+</html>

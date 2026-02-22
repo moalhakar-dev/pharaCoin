@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>دعوة الأصدقاء - pharaCoin</title>
+
+<style>
+
+html,body{
+margin:0;
+padding:0;
+height:100%;
+font-family:tahoma;
+color:#fff;
+}
+
+/* الخلفية */
+body{
+background:url("Object/qa.jpg") no-repeat center center fixed;
+background-size:cover;
+}
+
+/* طبقة التعتيم */
+.overlay{
+background:rgba(0,0,0,0.75);
+min-height:100%;
+padding-bottom:40px;
+}
+
+/* الهيدر */
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 20px;
+border-bottom:1px solid gold;
+}
+
+.logo{
+color:gold;
+font-weight:bold;
+font-size:18px;
+}
+
+.back{
+color:gold;
+cursor:pointer;
+}
+
+/* المحتوى */
+.container{
+padding:25px;
+text-align:center;
+}
+
+/* العنوان */
+.container h2{
+color:gold;
+margin-bottom:10px;
+}
+
+/* صندوق الرابط */
+.link-box{
+background:#111;
+padding:15px;
+border-radius:15px;
+border:1px solid gold;
+margin:20px 0;
+word-break:break-all;
+}
+
+/* زر النسخ */
+.copy-btn{
+background:gold;
+border:none;
+padding:12px 20px;
+border-radius:10px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.copy-btn:hover{
+background:orange;
+}
+
+/* الإحصائيات */
+.stats{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:15px;
+margin-top:25px;
+}
+
+.stat{
+background:#111;
+padding:20px;
+border-radius:15px;
+border:1px solid gold;
+}
+
+.stat h3{
+color:gold;
+margin:5px 0;
+}
+
+/* صورة تحفيزية */
+.statue-img{
+width:150px;
+margin-top:25px;
+filter:drop-shadow(0 0 10px gold);
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="overlay">
+
+<!-- الهيدر -->
+<div class="header">
+
+<div class="logo">🔗 دعوة الأصدقاء</div>
+
+<div class="back" onclick="location.href='dashboard.html'">
+⬅ رجوع
+</div>
+
+</div>
+
+<!-- المحتوى -->
+<div class="container">
+
+<h2>اربح كوينز بدعوة أصدقائك</h2>
+<p>كل صديق يسجل من رابطك يعطيك 50 كوين</p>
+
+<!-- رابط الدعوة -->
+<div class="link-box" id="inviteLink">
+https://pharacoin.com/register?ref=USER123
+</div>
+
+<button class="copy-btn" onclick="copyLink()">
+نسخ الرابط
+</button>
+
+<!-- الإحصائيات -->
+<div class="stats">
+
+<div class="stat">
+<p>عدد الدعوات</p>
+<h3>12</h3>
+</div>
+
+<div class="stat">
+<p>أرباحك</p>
+<h3>600 🪙</h3>
+</div>
+
+</div>
+
+<!-- صورة تحفيزية -->
+<img src="Object/qf.jpg" class="statue-img">
+
+</div>
+
+</div>
+
+<script>
+
+function copyLink(){
+
+var text =
+document.getElementById("inviteLink").innerText;
+
+navigator.clipboard.writeText(text);
+
+alert("تم نسخ رابط الدعوة");
+
+}
+
+</script>
+
+</body>
+</html>

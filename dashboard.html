@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>لوحة التحكم - pharaCoin</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+*{ box-sizing:border-box; margin:0; padding:0; }
+
+html,body{
+  overflow-x:hidden;
+  width:100%;
+  font-family:'Cairo',sans-serif;
+  color:#fff;
+  background:url("Object/qa.jpg") no-repeat center center fixed;
+  background-size:cover;
+}
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.75);
+  z-index:-2;
+}
+
+/* فلاش الشاشة */
+.flash{
+  position:fixed;
+  inset:0;
+  background:radial-gradient(circle, rgba(255,215,0,0.9) 0%, rgba(255,215,0,0.4) 40%, transparent 70%);
+  opacity:0;
+  pointer-events:none;
+  z-index:999;
+}
+
+.flash.active{
+  animation:flashEffect 0.2s ease-out;
+}
+
+@keyframes flashEffect{
+  0%{opacity:1;}
+  100%{opacity:0;}
+}
+
+/* اهتزاز خفيف */
+.shake{
+  animation:shakeScreen 0.2s ease;
+}
+
+@keyframes shakeScreen{
+  0%{transform:translate(0);}
+  25%{transform:translate(3px,-3px);}
+  50%{transform:translate(-3px,3px);}
+  75%{transform:translate(2px,-2px);}
+  100%{transform:translate(0);}
+}
+
+/* الهيدر */
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px;
+  max-width:420px;
+  margin:auto;
+}
+
+.logo{
+  color:gold;
+  font-weight:bold;
+  font-size:18px;
+  text-shadow:0 0 10px gold;
+}
+
+.balance{
+  background:#111;
+  padding:6px 12px;
+  border-radius:20px;
+  border:1px solid gold;
+  box-shadow:0 0 15px gold;
+  font-size:13px;
+}
+
+/* شبكة */
+.statues{
+  max-width:420px;
+  margin:20px auto;
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  grid-template-rows:auto auto;
+  gap:25px;
+  align-items:center;
+  justify-items:center;
+}
+
+.card{
+  text-align:center;
+  cursor:pointer;
+  width:100%;
+}
+
+.card img{
+  width:100px;
+  height:100px;
+  object-fit:cover;
+  border-radius:20px;
+  border:3px solid gold;
+  box-shadow:0 0 20px gold;
+  transition:0.3s;
+}
+
+.card img:hover{
+  transform:scale(1.08);
+}
+
+.statue-name{
+  margin-top:8px;
+  font-size:14px;
+  color:gold;
+}
+
+.parts{
+  display:none;
+  margin-top:5px;
+  font-size:13px;
+  color:gold;
+  font-weight:bold;
+}
+
+/* توزيع */
+.card1{ grid-column:1; grid-row:1; }
+.card2{ grid-column:3; grid-row:1; }
+.card3{ grid-column:1; grid-row:2; }
+.card4{ grid-column:3; grid-row:2; }
+
+/* ===================== */
+/* القطعة النادرة */
+/* ===================== */
+
+.rare{
+  grid-column:2;
+  grid-row:1 / span 2;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  position:relative;
+}
+
+.rare-box{
+  width:120px;
+  height:120px;
+  background:#000;
+  border-radius:25px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  color:gold;
+  font-weight:bold;
+  font-size:16px;
+  border:3px solid gold;
+  position:relative;
+  cursor:pointer;
+  animation:rarePulse 0.25s infinite alternate ease-in-out;
+}
+
+@keyframes rarePulse{
+  from{
+    box-shadow:0 0 15px rgba(255,215,0,0.5);
+    transform:scale(1);
+  }
+  to{
+    box-shadow:0 0 50px rgba(255,215,0,1),
+                0 0 90px rgba(255,200,0,0.9);
+    transform:scale(1.04);
+  }
+}
+
+/* الحلقة */
+.rare-box::before{
+  content:"";
+  position:absolute;
+  width:150px;
+  height:150px;
+  border-radius:50%;
+  border:3px solid transparent;
+  border-top:3px solid gold;
+  border-right:3px solid orange;
+  animation:rotateEnergy 1s linear infinite;
+}
+
+@keyframes rotateEnergy{
+  from{ transform:rotate(0deg); }
+  to{ transform:rotate(360deg); }
+}
+
+/* الشرارات */
+.spark{
+  position:absolute;
+  width:6px;
+  height:6px;
+  background:gold;
+  border-radius:50%;
+  pointer-events:none;
+  box-shadow:0 0 10px gold, 0 0 20px orange;
+  animation:sparkFade 0.8s ease-out forwards;
+}
+
+@keyframes sparkFade{
+  0%{transform:scale(0.5);opacity:0;}
+  50%{opacity:1;}
+  100%{transform:scale(1.5);opacity:0;}
+}
+
+/* القائمة */
+.menu{
+  max-width:420px;
+  margin:30px auto;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
+  padding:0 15px 30px;
+}
+
+.menu button{
+  padding:14px;
+  border:none;
+  border-radius:15px;
+  background:gold;
+  color:#000;
+  font-weight:bold;
+  cursor:pointer;
+  box-shadow:0 0 15px gold;
+  transition:0.3s;
+}
+
+.menu button:hover{
+  background:orange;
+  transform:scale(1.05);
+}
+</style>
+</head>
+
+<body>
+
+<audio id="dropSound" src="Object/drop.mp3" preload="auto"></audio>
+<div class="flash" id="flash"></div>
+
+<div class="header">
+<div class="logo">🏺 pharaCoin</div>
+<div class="balance">رصيدك: 500 🪙</div>
+</div>
+
+<div class="statues">
+
+<div class="card card1" onclick="toggleParts(this)">
+<img src="Object/qa.jpg">
+<div class="statue-name">توت عنخ آمون</div>
+<div class="parts">0 / 5 أجزاء</div>
+</div>
+
+<div class="rare">
+<div class="rare-box" id="rareBox" onclick="legendaryDrop()">
+✨ القطعة<br>النادرة ✨
+</div>
+</div>
+
+<div class="card card2" onclick="toggleParts(this)">
+<img src="Object/qs.jpg">
+<div class="statue-name">نفرتيتي</div>
+<div class="parts">0 / 4 أجزاء</div>
+</div>
+
+<div class="card card3" onclick="toggleParts(this)">
+<img src="Object/qd.jpg">
+<div class="statue-name">أنوبيس</div>
+<div class="parts">0 / 4 أجزاء</div>
+</div>
+
+<div class="card card4" onclick="toggleParts(this)">
+<img src="Object/qf.jpg">
+<div class="statue-name">أبو الهول</div>
+<div class="parts">0 / 5 أجزاء</div>
+</div>
+
+</div>
+
+<div class="menu">
+<button onclick="location.href='invite.html'">دعوة الأصدقاء</button>
+<button onclick="location.href='store.html'">المتجر</button>
+<button onclick="location.href='tasks.html'">المهام</button>
+<button onclick="location.href='profile.html'">حسابي</button>
+</div>
+
+<script>
+function toggleParts(card){
+  let parts = card.querySelector(".parts");
+  document.querySelectorAll(".parts").forEach(p=>{
+    if(p !== parts) p.style.display="none";
+  });
+  parts.style.display = parts.style.display==="block" ? "none" : "block";
+}
+
+/* شرارات عشوائية */
+const rareBox = document.getElementById("rareBox");
+setInterval(()=>{
+  const spark = document.createElement("div");
+  spark.className = "spark";
+  const size = 120;
+  const angle = Math.random() * 2 * Math.PI;
+  const radius = 70;
+  spark.style.left = (size/2 + Math.cos(angle)*radius) + "px";
+  spark.style.top  = (size/2 + Math.sin(angle)*radius) + "px";
+  rareBox.appendChild(spark);
+  setTimeout(()=>{ spark.remove(); },800);
+},150);
+
+/* تأثير Legendary Drop + صوت */
+function legendaryDrop(){
+  const flash = document.getElementById("flash");
+  flash.classList.add("active");
+  document.body.classList.add("shake");
+
+  const sound = document.getElementById("dropSound");
+  sound.currentTime = 0;
+  sound.play();
+
+  setTimeout(()=>{
+    flash.classList.remove("active");
+    document.body.classList.remove("shake");
+  },200);
+}
+</script>
+
+</body>
+</html>

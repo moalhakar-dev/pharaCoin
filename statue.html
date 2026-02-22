@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>PharaCoin - تجميع التمثال</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Cairo, sans-serif;
+    background:url("Object/qa.jpg") no-repeat center center fixed;
+    background-size:cover;
+}
+.overlay{
+    background:rgba(0,0,0,0.25);
+    min-height:100vh;
+    padding:20px;
+}
+
+/* 🔥 NAVBAR المصغر */
+.navbar{
+    position:sticky;
+    top:10px;
+    width:85%;
+    margin:0 auto 25px auto;
+    padding:12px;
+    backdrop-filter:blur(10px);
+    background:rgba(0,0,0,.45);
+    border:1px solid rgba(255,0,0,.5);
+    border-radius:15px;
+    box-shadow:0 0 15px rgba(255,0,0,.3);
+    text-align:center;
+    z-index:999;
+}
+.nav-logo{
+    font-size:20px;
+    font-weight:bold;
+    color:gold;
+    text-shadow:0 0 10px gold;
+    margin-bottom:8px;
+}
+.nav-links{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    flex-wrap:wrap;
+}
+.nav-links a{
+    position:relative;
+    text-decoration:none;
+    color:#fff;
+    font-weight:bold;
+    font-size:14px;
+    transition:.3s;
+}
+.nav-links a:hover{
+    color:#ff2b2b;
+    text-shadow:0 0 8px red,0 0 15px red;
+}
+.nav-links a::after{
+    content:"";
+    position:absolute;
+    width:0%;
+    height:2px;
+    bottom:-4px;
+    right:0;
+    background:#ff2b2b;
+    transition:.3s;
+}
+.nav-links a:hover::after{
+    width:100%;
+}
+.nav-coins{
+    margin-top:6px;
+    color:#00ffcc;
+    font-weight:bold;
+    font-size:14px;
+}
+
+/* العنوان */
+.header{
+    text-align:center;
+    color:gold;
+    font-size:34px;
+    font-weight:bold;
+    margin-bottom:15px;
+}
+
+/* الصندوق */
+.box{
+    background:#111;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 0 20px gold;
+    text-align:center;
+    margin-bottom:20px;
+}
+
+/* شريط التقدم */
+.progress-bar{
+    width:100%;
+    background:#333;
+    border-radius:10px;
+    overflow:hidden;
+    margin-top:10px;
+}
+.progress{
+    height:18px;
+    width:0%;
+    background:linear-gradient(to right,gold,orange);
+    transition:0.5s;
+}
+
+/* الأجزاء */
+.parts{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+    margin-top:15px;
+}
+.part{
+    background:#0b0b0b;
+    border:2px solid gold;
+    border-radius:15px;
+    padding:10px;
+    box-shadow:0 0 15px gold;
+}
+.part img{
+    width:100%;
+    border-radius:10px;
+}
+.part button{
+    margin-top:8px;
+    padding:8px;
+    border:none;
+    border-radius:10px;
+    background:gold;
+    font-weight:bold;
+    cursor:pointer;
+}
+.part button:disabled{
+    background:gray;
+}
+
+/* التمثال الكامل */
+.statue-box{
+    background:#0b0b0b;
+    padding:15px;
+    border-radius:15px;
+    box-shadow:0 0 25px gold;
+    margin-top:20px;
+    display:none;
+}
+.statue-box img{
+    width:100%;
+    border-radius:15px;
+}
+.next-btn{
+    margin-top:15px;
+    padding:8px 18px;
+    background:red;
+    color:white;
+    border:none;
+    border-radius:10px;
+    font-weight:bold;
+    cursor:pointer;
+    box-shadow:0 0 10px red;
+}
+.next-btn:hover{
+    background:#ff2b2b;
+}
+
+/* رسالة */
+.message{
+    color:#00ff9d;
+    margin-top:10px;
+    font-size:17px;
+}
+.coins{
+    color:#00ff9d;
+    font-size:18px;
+}
+
+/* Footer */
+.footer{
+    text-align:center;
+    margin-top:40px;
+    padding:15px;
+    opacity:.7;
+    font-size:13px;
+    color:white;
+}
+</style>
+</head>
+
+<body>
+<div class="overlay">
+
+<div class="navbar">
+    <div class="nav-logo">👑 PharaCoin</div>
+
+    <div class="nav-links">
+        <a href="faq.html">FAQ</a>
+        <a href="about.html">About</a>
+        <a href="how.html">How It Works</a>
+        <a href="store.html">المتجر</a>
+    </div>
+
+    <div class="nav-coins">
+        💰 <span id="navCoins">0</span>
+    </div>
+</div>
+
+<div class="header">🏛 مهمة تجميع التمثال</div>
+
+<div class="box">
+<div class="coins">💰 رصيدك: <span id="coins">500</span> Coins</div>
+
+<div class="progress-bar">
+    <div class="progress" id="progress"></div>
+</div>
+
+<p style="color:white;">اجمع جميع أجزاء التمثال لإكمال المهمة</p>
+
+<div class="parts">
+    <div class="part">
+        <img src="Object/statue1_part1.jpg">
+        <button onclick="buyPart(0)">شراء الجزء العلوي (100)</button>
+    </div>
+    <div class="part">
+        <img src="Object/statue1_part2.jpg">
+        <button onclick="buyPart(1)">شراء الجزء الأوسط (100)</button>
+    </div>
+    <div class="part">
+        <img src="Object/statue1_part3.jpg">
+        <button onclick="buyPart(2)">شراء الجزء السفلي (100)</button>
+    </div>
+    <div class="part">
+        <img src="Object/statue1_part4.jpg">
+        <button onclick="buyPart(3)">شراء القاعدة (100)</button>
+    </div>
+</div>
+
+<div class="message" id="msg"></div>
+</div>
+
+<div class="statue-box" id="fullStatue">
+<h3 style="color:gold;">🎉 تم تجميع التمثال بالكامل</h3>
+<p style="color:white;">تم إضافة مكافأة 300 Coins</p>
+<img src="Object/statue1_full.jpg">
+<button class="next-btn" onclick="nextStatue()">➡️ انتقل إلى التمثال التالي</button>
+</div>
+
+<div class="footer">
+© 2026 PharaCoin — جميع الحقوق محفوظة
+</div>
+
+</div>
+
+<script>
+let coins = localStorage.getItem("coins") ? parseInt(localStorage.getItem("coins")) : 500;
+let parts = JSON.parse(localStorage.getItem("statueParts")) || [false,false,false,false];
+
+const coinsSpan = document.getElementById("coins");
+const navCoins = document.getElementById("navCoins");
+const msg = document.getElementById("msg");
+const progress = document.getElementById("progress");
+const buttons = document.querySelectorAll(".part button");
+
+coinsSpan.innerText = coins;
+navCoins.innerText = coins;
+
+function updateUI(){
+    let completed = parts.filter(p=>p).length;
+    progress.style.width = (completed/parts.length)*100 + "%";
+
+    parts.forEach((p,i)=>{
+        if(p){
+            buttons[i].disabled = true;
+            buttons[i].innerText = "✔ تم الشراء";
+        }
+    });
+
+    if(completed === parts.length){
+        document.getElementById("fullStatue").style.display = "block";
+    }
+}
+
+function buyPart(index){
+    if(parts[index]) return alert("هذا الجزء تم شراؤه بالفعل");
+    if(coins < 100) return window.location.href="deposit.html";
+
+    coins -= 100;
+    parts[index] = true;
+
+    localStorage.setItem("coins", coins);
+    localStorage.setItem("statueParts", JSON.stringify(parts));
+
+    coinsSpan.innerText = coins;
+    navCoins.innerText = coins;
+    msg.innerHTML = "✅ تم شراء جزء من التمثال";
+
+    updateUI();
+    checkComplete();
+}
+
+function checkComplete(){
+    if(parts.every(p=>p)){
+        coins += 300;
+        localStorage.setItem("coins", coins);
+        coinsSpan.innerText = coins;
+        navCoins.innerText = coins;
+        msg.innerHTML = "🏆 اكتمل التمثال وتم إضافة المكافأة";
+    }
+}
+
+function nextStatue(){
+    localStorage.removeItem("statueParts");
+    window.location.href = "statue2.html";
+}
+
+updateUI();
+</script>
+
+</body>
+</html>

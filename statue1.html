@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>PharaCoin - المرحلة الأولى (تجميع التمثال)</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Cairo;
+    background:url("Object/qa.jpg") no-repeat center center fixed;
+    background-size:cover;
+}
+.overlay{
+    background:rgba(0,0,0,0.18);
+    min-height:100vh;
+    padding:20px;
+}
+
+.header{
+    text-align:center;
+    color:gold;
+    font-size:34px;
+    font-weight:bold;
+    margin-bottom:10px;
+    text-shadow:0 0 10px black;
+}
+
+.box{
+    background:#111;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 0 20px gold;
+    text-align:center;
+}
+
+.coins{
+    color:#00ff9d;
+    font-size:20px;
+}
+
+.progress-bar{
+    width:100%;
+    background:#333;
+    border-radius:10px;
+    overflow:hidden;
+    margin:10px 0;
+}
+.progress{
+    height:20px;
+    width:0%;
+    background:linear-gradient(to right,gold,orange);
+    transition:0.5s;
+}
+
+.parts{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+    margin-top:15px;
+}
+.part{
+    background:#0b0b0b;
+    border:2px solid gold;
+    border-radius:15px;
+    padding:10px;
+    box-shadow:0 0 15px gold;
+}
+.part img{
+    width:100%;
+    border-radius:10px;
+    filter:grayscale(100%);
+    transition:0.4s;
+}
+.part img.active{
+    filter:none;
+}
+.part button{
+    margin-top:8px;
+    padding:8px;
+    border:none;
+    border-radius:10px;
+    background:gold;
+    font-weight:bold;
+    cursor:pointer;
+}
+.part button:disabled{
+    background:gray;
+    cursor:not-allowed;
+}
+
+.message{
+    color:#00ff9d;
+    margin-top:10px;
+    font-size:18px;
+}
+
+.fullStatue{
+    display:none;
+    margin-top:20px;
+    background:#0b0b0b;
+    padding:15px;
+    border-radius:15px;
+    box-shadow:0 0 25px gold;
+}
+.fullStatue img{
+    width:100%;
+    border-radius:15px;
+}
+</style>
+</head>
+
+<body>
+<div class="overlay">
+
+<div class="header">🏛 المرحلة الأولى: استعادة التمثال</div>
+
+<div class="box">
+<div class="coins">💰 رصيدك: <span id="coins">0</span> Coins</div>
+
+<div class="progress-bar">
+    <div class="progress" id="progress"></div>
+</div>
+
+<p style="color:white;">قم بجمع الأجزاء الأربعة لإعادة بناء التمثال والحصول على المكافأة</p>
+
+<div class="parts">
+    <div class="part">
+        <img src="Object/statue1_part1.jpg" id="img0">
+        <button onclick="buyPart(0,20)">🔓 فتح القطعة الأولى (20)</button>
+    </div>
+
+    <div class="part">
+        <img src="Object/statue1_part2.jpg" id="img1">
+        <button onclick="buyPart(1,50)">🔓 فتح القطعة الثانية (50)</button>
+    </div>
+
+    <div class="part">
+        <img src="Object/statue1_part3.jpg" id="img2">
+        <button onclick="buyPart(2,100)">🔓 فتح القطعة الثالثة (100)</button>
+    </div>
+
+    <div class="part">
+        <img src="Object/statue1_part4.jpg" id="img3">
+        <button onclick="buyPart(3,200)">💎 القطعة الأسطورية (200)</button>
+    </div>
+</div>
+
+<div class="message" id="msg"></div>
+</div>
+
+<div class="fullStatue" id="fullStatue">
+<h3 style="color:gold;">🎉 تم إحياء التمثال بنجاح</h3>
+<p style="color:white;">ربحت 300 Coins وتم فتح المرحلة الثانية</p>
+<img src="Object/statue1_full.jpg">
+<br><br>
+<a href="statue2.html">
+<button style="background:gold;padding:10px 20px;border:none;border-radius:10px;font-weight:bold;">➡️ الانتقال للمرحلة الثانية</button>
+</a>
+</div>
+
+</div>
+
+<script>
+let coins = localStorage.getItem("coins") ? parseInt(localStorage.getItem("coins")) : 100;
+let parts = JSON.parse(localStorage.getItem("statue1_parts")) || [false,false,false,false];
+
+const coinsSpan = document.getElementById("coins");
+const progress = document.getElementById("progress");
+const msg = document.getElementById("msg");
+const buttons = document.querySelectorAll(".part button");
+
+coinsSpan.innerText = coins;
+
+function updateUI(){
+    let completed = parts.filter(p=>p).length;
+    let percent = (completed / parts.length) * 100;
+    progress.style.width = percent + "%";
+
+    parts.forEach((p,i)=>{
+        if(p){
+            document.getElementById("img"+i).classList.add("active");
+            buttons[i].disabled = true;
+            buttons[i].innerText = "✔ تم الاسترداد";
+        }
+    });
+
+    if(completed === 4){
+        document.getElementById("fullStatue").style.display = "block";
+    }
+}
+
+function buyPart(index,price){
+    if(parts[index]) return;
+
+    if(coins < price){
+        window.location.href = "deposit.html";
+        return;
+    }
+
+    coins -= price;
+    parts[index] = true;
+
+    localStorage.setItem("coins",coins);
+    localStorage.setItem("statue1_parts",JSON.stringify(parts));
+
+    coinsSpan.innerText = coins;
+    msg.innerHTML = "✨ تم استرداد قطعة أثرية نادرة";
+
+    updateUI();
+    checkComplete();
+}
+
+function checkComplete(){
+    if(parts.every(p=>p)){
+        coins += 300;
+        localStorage.setItem("coins",coins);
+        coinsSpan.innerText = coins;
+        msg.innerHTML = "🏆 اكتمل التمثال! تم منحك 300 Coins";
+    }
+}
+
+updateUI();
+</script>
+
+</body>
+</html>

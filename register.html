@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>تسجيل حساب - PharaCoin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<style>
+
+/* تحسين عام للأداء */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+html{
+scroll-behavior:smooth;
+}
+
+body{
+font-family:Cairo;
+background:url("Object/qa.jpg") no-repeat center center;
+background-size:cover;
+-webkit-overflow-scrolling:touch;
+overflow-x:hidden;
+}
+
+/* تقليل إعادة الرسم */
+.title-box,
+.rare-box{
+will-change:transform;
+transform:translateZ(0);
+backface-visibility:hidden;
+}
+
+/* طبقة شفافة */
+.overlay{
+background:rgba(0,0,0,0.2);
+min-height:100vh;
+padding:20px;
+}
+
+/* نبض القطعة النادرة */
+@keyframes rarePulse{
+from{
+transform:scale(1);
+box-shadow:
+0 0 15px white,
+0 0 30px white,
+0 0 60px red,
+0 0 80px red;
+}
+to{
+transform:scale(1.08);
+box-shadow:
+0 0 20px white,
+0 0 40px white,
+0 0 80px red,
+0 0 120px red;
+}
+}
+
+/* نبض العنوان */
+@keyframes titlePulse{
+from{
+transform:scale(1);
+box-shadow:
+0 0 8px white,
+0 0 20px red,
+0 0 40px red;
+}
+to{
+transform:scale(1.03);
+box-shadow:
+0 0 12px white,
+0 0 30px red,
+0 0 60px red;
+}
+}
+
+/* لمعان الرقم */
+@keyframes goldFlash{
+0%{ text-shadow:0 0 12px gold,0 0 25px orange; }
+50%{ text-shadow:0 0 25px white,0 0 40px gold,0 0 60px orange; }
+100%{ text-shadow:0 0 12px gold,0 0 25px orange; }
+}
+
+/* العنوان */
+.title{
+display:flex;
+justify-content:center;
+margin-bottom:25px;
+}
+
+.title-box{
+background:#200000;
+padding:20px 30px;
+border-radius:20px;
+text-align:center;
+border:3px solid red;
+animation:titlePulse 1.2s infinite alternate;
+max-width:520px;
+width:95%;
+}
+
+.title-icons{
+color:gold;
+font-size:22px;
+letter-spacing:6px;
+margin-bottom:10px;
+}
+
+.title-box h1{
+font-size:20px;
+color:#fff;
+font-weight:600;
+}
+
+.bonus{
+margin-top:12px;
+direction:rtl;
+}
+
+.amount{
+font-size:34px;
+font-weight:bold;
+color:#FFD700;
+margin-left:8px;
+animation:goldFlash 2s infinite;
+}
+
+.currency{
+font-size:22px;
+color:#FFD700;
+}
+
+/* الصور */
+.statues{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:15px;
+margin:20px 0;
+}
+
+.statues img{
+width:100%;
+border-radius:15px;
+border:2px solid gold;
+box-shadow:0 0 20px gold;
+}
+
+/* القطعة النادرة */
+.rare-item{
+grid-column:2;
+grid-row:1 / span 2;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.rare-box{
+width:100%;
+height:100%;
+background:#200000;
+border-radius:20px;
+border:3px solid red;
+color:#FFD700;
+font-weight:bold;
+font-size:22px;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+animation:rarePulse .8s infinite alternate;
+}
+
+/* الفورم */
+.register-box{
+max-width:400px;
+margin:auto;
+background:rgba(0,0,0,0.9);
+padding:25px;
+border-radius:15px;
+box-shadow:
+0 0 15px white,
+0 0 25px gold;
+}
+
+.input-group{
+margin-bottom:14px;
+position:relative;
+}
+
+input{
+width:100%;
+padding:12px;
+border-radius:8px;
+border:1px solid gold;
+background:#111;
+color:#fff;
+}
+
+.eye{
+position:absolute;
+right:10px;
+top:12px;
+cursor:pointer;
+color:gold;
+}
+
+.strength{
+height:6px;
+background:#333;
+border-radius:10px;
+margin-top:6px;
+overflow:hidden;
+}
+
+.strength span{
+display:block;
+height:100%;
+width:0%;
+background:red;
+transition:.3s;
+}
+
+.terms-box{
+display:flex;
+align-items:center;
+gap:8px;
+margin-top:10px;
+color:#00ff9d;
+font-size:14px;
+}
+
+.terms-box a{
+color:gold;
+text-decoration:none;
+font-weight:bold;
+}
+
+button{
+width:100%;
+padding:14px;
+background:red;
+color:white;
+border:none;
+font-weight:bold;
+border-radius:12px;
+cursor:pointer;
+transition:.3s;
+box-shadow:
+0 0 15px white,
+0 0 30px red,
+0 0 60px red;
+}
+
+button:hover{
+transform:scale(1.05);
+box-shadow:
+0 0 25px white,
+0 0 60px red,
+0 0 100px red;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="overlay">
+
+<div class="title">
+  <div class="title-box">
+    <div class="title-icons">☥ 𓂀 𓆣</div>
+    <h1>سجل الآن واحصل على مكافأة فورية</h1>
+    <div class="bonus">
+      <span class="amount">100</span>
+      <span class="currency">جنيهًا</span>
+    </div>
+  </div>
+</div>
+
+<div class="statues">
+<img src="Object/qa.jpg" loading="lazy" decoding="async">
+
+<div class="rare-item">
+<div class="rare-box">
+✨<br>القطعة<br>النادرة<br>✨
+</div>
+</div>
+
+<img src="Object/qs.jpg" loading="lazy" decoding="async">
+<img src="Object/qd.jpg" loading="lazy" decoding="async">
+<img src="Object/qf.jpg" loading="lazy" decoding="async">
+</div>
+
+<div class="register-box">
+
+<form id="registerForm">
+
+<div class="input-group">
+<input type="text" id="username" placeholder="اسم المستخدم" required>
+</div>
+
+<div class="input-group">
+<input type="text" id="emailOrPhone" placeholder="رقم الهاتف أو البريد الإلكتروني" required>
+</div>
+
+<div class="input-group">
+<input type="password" id="password" placeholder="كلمة المرور" required>
+<span class="eye">👁️</span>
+<div class="strength"><span></span></div>
+</div>
+
+<div class="input-group">
+<input type="password" id="confirmPassword" placeholder="تأكيد كلمة المرور" required>
+<span class="eye">👁️</span>
+</div>
+
+<div class="terms-box">
+<input type="checkbox" required>
+<label>
+أوافق على 
+<a href="#">الشروط والأحكام</a>
+و
+<a href="#">سياسة الخصوصية</a>
+</label>
+</div>
+
+<button type="submit">تسجيل الحساب</button>
+
+</form>
+</div>
+
+</div>
+
+<script>
+  // 👁️ اظهار واخفاء كلمة المرور
+document.querySelectorAll(".eye").forEach(function(eye){
+eye.addEventListener("click", function(){
+let input = this.parentElement.querySelector("input");
+if(input.type === "password"){
+input.type = "text";
+this.textContent = "🙈";
+}else{
+input.type = "password";
+this.textContent = "👁️";
+}
+});
+});
+
+
+// 🔴🟡🟢 قوة كلمة المرور
+const passwordInput = document.getElementById("password");
+const strengthBar = document.querySelector(".strength span");
+
+passwordInput.addEventListener("input", function(){
+
+let value = passwordInput.value;
+let strength = 0;
+
+if(value.length >= 6) strength++;
+if(/[A-Z]/.test(value)) strength++;
+if(/[0-9]/.test(value)) strength++;
+if(/[^A-Za-z0-9]/.test(value)) strength++;
+
+if(strength === 0){
+strengthBar.style.width = "0%";
+}
+if(strength === 1){
+strengthBar.style.width = "25%";
+strengthBar.style.background = "red";
+}
+if(strength === 2){
+strengthBar.style.width = "50%";
+strengthBar.style.background = "orange";
+}
+if(strength === 3){
+strengthBar.style.width = "75%";
+strengthBar.style.background = "gold";
+}
+if(strength === 4){
+strengthBar.style.width = "100%";
+strengthBar.style.background = "lime";
+}
+
+});
+  
+firebase.initializeApp({
+apiKey:"AIzaSyB78JT_cbPMizvzKWBrQoQUe3-zukHrr1U",
+authDomain:"pharacoin.firebaseapp.com",
+projectId:"pharacoin"
+});
+
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+document.getElementById("registerForm").addEventListener("submit", function(e){
+e.preventDefault();
+
+const username = document.getElementById("username").value;
+const emailOrPhone = document.getElementById("emailOrPhone").value;
+const password = document.getElementById("password").value;
+const confirmPassword = document.getElementById("confirmPassword").value;
+
+if(password !== confirmPassword){
+alert("كلمة المرور غير متطابقة");
+return;
+}
+
+auth.createUserWithEmailAndPassword(emailOrPhone, password)
+.then((userCredential)=>{
+
+const user = userCredential.user;
+
+// حفظ البيانات في فايربيز
+return db.collection("users").doc(user.uid).set({
+username: username,
+emailOrPhone: emailOrPhone,
+createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+balance: 100
+}).then(()=>{
+
+// ارسال اشعار تيليجرام
+const botToken = "YOUR_BOT_TOKEN";
+const chatId = "YOUR_CHAT_ID";
+
+fetch(`https://api.telegram.org/bot${botToken}/sendMessage`,{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({
+chat_id:chatId,
+text:`🚀 مستخدم جديد سجل!\n👤 ${username}\n📩 ${emailOrPhone}`
+})
+});
+
+// تخزين بيانات الدخول مؤقتا
+localStorage.setItem("loginEmail", emailOrPhone);
+localStorage.setItem("loginPass", password);
+
+// تحويل لصفحة تسجيل الدخول
+window.location.href="login.html";
+
+});
+
+})
+.catch((error)=>{
+alert(error.message);
+});
+
+});
+</script>
+
+</body>
+</html>
