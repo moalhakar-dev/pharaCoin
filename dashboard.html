@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>لوحة التحكم - pharaCoin</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
@@ -17,6 +19,14 @@ html,body{
   background-size:cover;
 }
 
+/* تثبيت عرض الموبايل */
+body{
+  max-width:420px;
+  margin:auto;
+  position:relative;
+}
+
+/* طبقة تعتيم */
 body::before{
   content:"";
   position:fixed;
@@ -25,7 +35,7 @@ body::before{
   z-index:-2;
 }
 
-/* فلاش الشاشة */
+/* فلاش */
 .flash{
   position:fixed;
   inset:0;
@@ -44,7 +54,7 @@ body::before{
   100%{opacity:0;}
 }
 
-/* اهتزاز خفيف */
+/* اهتزاز */
 .shake{
   animation:shakeScreen 0.2s ease;
 }
@@ -63,8 +73,6 @@ body::before{
   justify-content:space-between;
   align-items:center;
   padding:15px;
-  max-width:420px;
-  margin:auto;
 }
 
 .logo{
@@ -83,14 +91,13 @@ body::before{
   font-size:13px;
 }
 
-/* شبكة */
+/* الشبكة */
 .statues{
-  max-width:420px;
   margin:20px auto;
   display:grid;
   grid-template-columns:1fr 1fr 1fr;
   grid-template-rows:auto auto;
-  gap:25px;
+  gap:20px;
   align-items:center;
   justify-items:center;
 }
@@ -98,12 +105,11 @@ body::before{
 .card{
   text-align:center;
   cursor:pointer;
-  width:100%;
 }
 
 .card img{
-  width:100px;
-  height:100px;
+  width:95px;
+  height:95px;
   object-fit:cover;
   border-radius:20px;
   border:3px solid gold;
@@ -135,7 +141,201 @@ body::before{
 .card3{ grid-column:1; grid-row:2; }
 .card4{ grid-column:3; grid-row:2; }
 
-/* ===================== */
+/* القطعة النادرة */
+.rare{
+  grid-column:2;
+  grid-row:1 / span 2;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  position:relative;
+}
+
+.rare-box{
+  width:115px;
+  height:115px;
+  background:#000;
+  border-radius:25px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  color:gold;
+  font-weight:bold;
+  font-size:15px;
+  border:3px solid gold;
+  position:relative;
+  cursor:pointer;
+  animation:rarePulse 0.4s infinite alternate ease-in-out;
+}
+
+@keyframes rarePulse{
+  from{
+    box-shadow:0 0 15px rgba(255,215,0,0.5);
+    transform:scale(1);
+  }
+  to{
+    box-shadow:0 0 50px rgba(255,215,0,1),
+                0 0 90px rgba(255,200,0,0.9);
+    transform:scale(1.04);
+  }
+}
+
+.rare-box::before{
+  content:"";
+  position:absolute;
+  width:145px;
+  height:145px;
+  border-radius:50%;
+  border:3px solid transparent;
+  border-top:3px solid gold;
+  border-right:3px solid orange;
+  animation:rotateEnergy 1.5s linear infinite;
+}
+
+@keyframes rotateEnergy{
+  from{ transform:rotate(0deg); }
+  to{ transform:rotate(360deg); }
+}
+
+/* شرارات */
+.spark{
+  position:absolute;
+  width:6px;
+  height:6px;
+  background:gold;
+  border-radius:50%;
+  pointer-events:none;
+  box-shadow:0 0 10px gold, 0 0 20px orange;
+  animation:sparkFade 0.8s ease-out forwards;
+}
+
+@keyframes sparkFade{
+  0%{transform:scale(0.5);opacity:0;}
+  50%{opacity:1;}
+  100%{transform:scale(1.5);opacity:0;}
+}
+
+/* القائمة */
+.menu{
+  margin:30px auto;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
+  padding:0 10px 30px;
+}
+
+.menu button{
+  padding:14px;
+  border:none;
+  border-radius:15px;
+  background:gold;
+  color:#000;
+  font-weight:bold;
+  cursor:pointer;
+  box-shadow:0 0 15px gold;
+  transition:0.3s;
+}
+
+.menu button:hover{
+  background:orange;
+  transform:scale(1.05);
+}
+</style>
+</head>
+
+<body>
+
+<audio id="dropSound" src="Object/drop.mp3" preload="auto"></audio>
+<div class="flash" id="flash"></div>
+
+<div class="header">
+<div class="logo">🏺 pharaCoin</div>
+<div class="balance">رصيدك: 500 🪙</div>
+</div>
+
+<div class="statues">
+
+<div class="card card1" onclick="toggleParts(this)">
+<img src="Object/qa.jpg">
+<div class="statue-name">توت عنخ آمون</div>
+<div class="parts">0 / 5 أجزاء</div>
+</div>
+
+<div class="rare">
+<div class="rare-box" id="rareBox" onclick="legendaryDrop()">
+✨ القطعة<br>النادرة ✨
+</div>
+</div>
+
+<div class="card card2" onclick="toggleParts(this)">
+<img src="Object/qs.jpg">
+<div class="statue-name">نفرتيتي</div>
+<div class="parts">0 / 4 أجزاء</div>
+</div>
+
+<div class="card card3" onclick="toggleParts(this)">
+<img src="Object/qd.jpg">
+<div class="statue-name">أنوبيس</div>
+<div class="parts">0 / 4 أجزاء</div>
+</div>
+
+<div class="card card4" onclick="toggleParts(this)">
+<img src="Object/qf.jpg">
+<div class="statue-name">أبو الهول</div>
+<div class="parts">0 / 5 أجزاء</div>
+</div>
+
+</div>
+
+<div class="menu">
+<button onclick="location.href='invite.html'">دعوة الأصدقاء</button>
+<button onclick="location.href='store.html'">المتجر</button>
+<button onclick="location.href='tasks.html'">المهام</button>
+<button onclick="location.href='profile.html'">حسابي</button>
+</div>
+
+<script>
+function toggleParts(card){
+  let parts = card.querySelector(".parts");
+  document.querySelectorAll(".parts").forEach(p=>{
+    if(p !== parts) p.style.display="none";
+  });
+  parts.style.display = parts.style.display==="block" ? "none" : "block";
+}
+
+const rareBox = document.getElementById("rareBox");
+
+setInterval(()=>{
+  const spark = document.createElement("div");
+  spark.className = "spark";
+  const size = 115;
+  const angle = Math.random() * 2 * Math.PI;
+  const radius = 65;
+  spark.style.left = (size/2 + Math.cos(angle)*radius) + "px";
+  spark.style.top  = (size/2 + Math.sin(angle)*radius) + "px";
+  rareBox.appendChild(spark);
+  setTimeout(()=>{ spark.remove(); },800);
+},150);
+
+function legendaryDrop(){
+  const flash = document.getElementById("flash");
+  flash.classList.add("active");
+  document.body.classList.add("shake");
+
+  const sound = document.getElementById("dropSound");
+  sound.currentTime = 0;
+  sound.play();
+
+  setTimeout(()=>{
+    flash.classList.remove("active");
+    document.body.classList.remove("shake");
+  },200);
+}
+</script>
+
+</body>
+</html>/* ===================== */
 /* القطعة النادرة */
 /* ===================== */
 
