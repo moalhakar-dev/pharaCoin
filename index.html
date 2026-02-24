@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>☥ بوابة الكرنك الملكية ☥</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+font-family:'Cairo',sans-serif;
+background:black;
+color:white;
+overflow:hidden;
+text-align:center;
+}
+
+/* 🔥 Live Counter Addition Only 🔥 */
+.live-counter{
+display:flex;
+justify-content:center;
+gap:40px;
+margin-bottom:15px;
+font-weight:900;
+font-size:18px;
+}
+
+.live-item{
+display:flex;
+align-items:center;
+gap:8px;
+}
+
+.live-dot{
+width:10px;
+height:10px;
+border-radius:50%;
+}
+
+.online-dot{
+background:#00ff55;
+box-shadow:0 0 10px #00ff55;
+}
+
+.offline-dot{
+background:#ff0033;
+box-shadow:0 0 10px #ff0033;
+}
+
+#templeStatus{
+margin-bottom:15px;
+font-weight:900;
+color:#00ff55;
+display:none;
+animation:pulseStatus 1.5s infinite;
+}
+
+@keyframes pulseStatus{
+0%{opacity:0.6;}
+50%{opacity:1;}
+100%{opacity:0.6;}
+}
+
+/* ===============================
+        البوابة
+================================ */
+
+#loader{
+position:fixed;
+width:100%;
+height:100%;
+background:black;
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:9999;
+overflow:hidden;
+}
+
+.door{
+position:absolute;
+width:50%;
+height:100%;
+top:0;
+background:linear-gradient(to bottom,#111,#000);
+border:4px solid gold;
+box-shadow:
+inset 0 0 60px rgba(255,215,0,0.3),
+0 0 30px rgba(255,215,0,0.5);
+transition:transform 2s ease-in-out;
+}
+
+.left-door{ left:0; }
+.right-door{ right:0; }
+
+.open .left-door{ transform:translateX(-100%); }
+.open .right-door{ transform:translateX(100%); }
+
+.inner-light{
+position:absolute;
+width:700px;
+height:700px;
+background:radial-gradient(circle,gold 0%,rgba(255,215,0,0.7) 30%,transparent 70%);
+border-radius:50%;
+opacity:0;
+transition:opacity 2s ease-in-out;
+z-index:1;
+}
+.open .inner-light{ opacity:1; }
+
+.symbol-column{
+position:absolute;
+top:10%;
+display:flex;
+flex-direction:column;
+gap:25px;
+font-size:34px;
+color:gold;
+text-shadow:0 0 10px gold,0 0 20px orange;
+opacity:0.85;
+z-index:4;
+}
+
+.left-symbols{ left:30px; }
+.right-symbols{ right:30px; }
+
+.text-wrapper{
+position:absolute;
+z-index:5;
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:25px;
+}
+
+.symbol-line{
+font-size:44px;
+letter-spacing:18px;
+color:gold;
+text-shadow:0 0 20px gold,0 0 40px orange;
+}
+
+.loader-text{
+font-size:36px;
+font-weight:900;
+color:white;
+text-shadow:
+0 0 15px red,
+0 0 30px gold;
+}
+
+.hide{
+opacity:0;
+visibility:hidden;
+transition:1.5s ease;
+}
+
+.bg{
+position:fixed;
+width:100%;
+height:100%;
+background:url("Object/qa.jpg") center/cover no-repeat;
+filter:brightness(0.35);
+z-index:-2;
+}
+
+.overlay{
+min-height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+position:relative;
+}
+
+h1{
+font-size:52px;
+font-weight:900;
+background:linear-gradient(90deg,#FFD700,#FF0000,#FFD700);
+background-size:200%;
+-webkit-background-clip:text;
+color:transparent;
+animation:shine 4s linear infinite;
+}
+
+@keyframes shine{
+0%{background-position:0%;}
+100%{background-position:200%;}
+}
+
+.btn{
+margin-top:40px;
+padding:18px 55px;
+font-size:22px;
+font-weight:900;
+border:none;
+border-radius:60px;
+cursor:pointer;
+color:white;
+position:relative;
+overflow:hidden;
+background:linear-gradient(45deg,#ff0000,#ff7300,#ff0000);
+background-size:300% 300%;
+animation:fireMove 3s linear infinite;
+box-shadow:0 0 20px #ff0000,0 0 40px #ff7300;
+transition:0.3s;
+}
+
+@keyframes fireMove{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+.btn::before{
+content:"";
+position:absolute;
+inset:-4px;
+border-radius:60px;
+background:linear-gradient(45deg,#ff0000,#ffae00,#ff0000);
+z-index:-1;
+filter:blur(15px);
+opacity:0.7;
+animation:glowPulse 2s infinite;
+}
+
+@keyframes glowPulse{
+0%{opacity:0.6;}
+50%{opacity:1;}
+100%{opacity:0.6;}
+}
+
+.btn:hover{
+transform:scale(1.1);
+box-shadow:0 0 30px red,0 0 60px orange;
+}
+
+.page-icons{
+margin-top:50px;
+display:flex;
+gap:40px;
+}
+
+.icon-box{
+display:flex;
+flex-direction:column;
+align-items:center;
+cursor:pointer;
+}
+
+.circle{
+width:65px;
+height:65px;
+border-radius:50%;
+border:2px solid red;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:28px;
+font-weight:900;
+color:gold;
+background:rgba(0,0,0,0.6);
+box-shadow:0 0 10px red;
+transition:0.3s;
+animation:pulse 3s infinite;
+}
+
+@keyframes pulse{
+0%{box-shadow:0 0 8px red;}
+50%{box-shadow:0 0 18px red;}
+100%{box-shadow:0 0 8px red;}
+}
+
+.circle:hover{
+transform:scale(1.1);
+box-shadow:0 0 25px red;
+}
+
+.icon-label{
+margin-top:8px;
+font-size:14px;
+opacity:0;
+transition:0.3s;
+color:white;
+text-shadow:0 0 8px red;
+}
+
+.icon-label.show{ opacity:1; }
+
+footer{
+position:absolute;
+bottom:15px;
+font-size:12px;
+color:#aaa;
+}
+</style>
+</head>
+<body>
+
+<div id="loader">
+<div class="door left-door"></div>
+<div class="door right-door"></div>
+<div class="inner-light"></div>
+
+<div class="symbol-column left-symbols">
+<div>☥</div><div>𓂀</div><div>𓆣</div><div>𓁹</div><div>☥</div>
+</div>
+
+<div class="symbol-column right-symbols">
+<div>☥</div><div>𓂀</div><div>𓆣</div><div>𓁹</div><div>☥</div>
+</div>
+
+<div class="text-wrapper">
+<div class="symbol-line">☥ 𓂀 𓆣 ☥</div>
+<div class="loader-text">☥ بوابة الفراعنة ☥</div>
+<div class="symbol-line">☥ 𓁹 𓂀 ☥</div>
+</div>
+</div>
+
+<div class="bg"></div>
+
+<div class="overlay">
+
+<div class="live-counter">
+<div class="live-item">
+<span class="live-dot online-dot"></span>
+<span id="onlineCount"></span> Online
+</div>
+<div class="live-item">
+<span class="live-dot offline-dot"></span>
+<span id="offlineCount"></span> Offline
+</div>
+</div>
+
+<div id="templeStatus">المعبد ممتلئ الآن</div>
+
+<h1>كنوز الفراعنة</h1>
+<p>لقد دخلت عالم الفراعنة...</p>
+
+<button class="btn" onclick="goToRegister()">ابدأ الآن</button>
+
+<div class="page-icons">
+<div class="icon-box" onclick="toggleLabel(this)" ondblclick="openPage('faq.html')">
+<div class="circle">☥</div>
+<div class="icon-label">FAQ</div>
+</div>
+
+<div class="icon-box" onclick="toggleLabel(this)" ondblclick="openPage('how.html')">
+<div class="circle">𓂀</div>
+<div class="icon-label">How It Works</div>
+</div>
+
+<div class="icon-box" onclick="toggleLabel(this)" ondblclick="openPage('about.html')">
+<div class="circle">𓆣</div>
+<div class="icon-label">About</div>
+</div>
+</div>
+
+<footer>© 2026 جميع الحقوق محفوظة</footer>
+</div>
+
+<audio id="stoneSound" preload="auto">
+<source src="https://assets.mixkit.co/sfx/preview/mixkit-heavy-stone-door-1607.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+function openGate(){
+let sound=document.getElementById("stoneSound");
+sound.play().catch(()=>{});
+document.getElementById("loader").classList.add("open");
+setTimeout(()=>{document.getElementById("loader").classList.add("hide");},3000);
+}
+
+function goToRegister(){
+window.location.href="register.html";
+}
+
+function toggleLabel(el){
+let label=el.querySelector(".icon-label");
+label.classList.toggle("show");
+}
+
+function openPage(page){
+window.location.href=page;
+}
+
+window.addEventListener("load",()=>{
+setTimeout(openGate,1200);
+});
+
+/* 🔥 Live Dynamic Simulation 🔥 */
+let online = 120000 + Math.floor(Math.random()*5000);
+let offline = 15000 + Math.floor(Math.random()*4000);
+
+function updateDisplay(){
+document.getElementById("onlineCount").innerText = online.toLocaleString();
+document.getElementById("offlineCount").innerText = offline.toLocaleString();
+
+if(online > 123000){
+document.getElementById("templeStatus").style.display="block";
+}else{
+document.getElementById("templeStatus").style.display="none";
+}
+}
+
+function fluctuate(){
+let change = Math.floor(Math.random()*200);
+
+if(Math.random()>0.5){
+online += change;
+offline -= Math.floor(change/2);
+}else{
+online -= change;
+offline += Math.floor(change/2);
+}
+
+if(online < 100000) online = 100000;
+if(offline < 5000) offline = 5000;
+
+updateDisplay();
+}
+
+updateDisplay();
+setInterval(fluctuate,3000);
+</script>
+
+</body>
+</html>
