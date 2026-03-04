@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PharaCoin - سياسة الخصوصية</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  font-family:'Cairo',sans-serif;
+  background:#000;
+  color:#fff;
+  max-width:480px;
+  margin:auto;
+  padding-bottom:120px;
+  line-height:1.8;
+}
+
+/* الخلفية */
+.page-bg{
+  position:fixed;
+  inset:0;
+  background:url("Object/qa.jpg") center/cover no-repeat;
+  filter:brightness(0.25) saturate(1.2);
+  z-index:-1;
+}
+
+/* الهيدر */
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:14px 16px;
+  background:rgba(0,0,0,0.85);
+  border-bottom:1px solid rgba(255,215,0,0.25);
+  backdrop-filter:blur(10px);
+}
+.logo{
+  color:gold;
+  font-weight:900;
+  font-size:16px;
+  text-shadow:0 0 8px rgba(255,215,0,0.4);
+}
+.back{
+  color:#00ffcc;
+  cursor:pointer;
+  font-size:13px;
+}
+
+/* العنوان */
+.section-title{
+  text-align:center;
+  margin:18px 0 12px;
+  color:gold;
+  font-size:18px;
+  font-weight:800;
+  text-shadow:0 0 8px rgba(255,215,0,0.3);
+}
+
+/* صندوق النص */
+.box{
+  margin:0 16px;
+  padding:18px;
+  background:rgba(0,0,0,0.65);
+  border-radius:18px;
+  border:1px solid rgba(255,215,0,0.25);
+  box-shadow:0 0 25px rgba(0,0,0,0.6);
+}
+
+.box p{
+  margin-bottom:14px;
+  font-size:14px;
+  color:#f1f1f1;
+}
+
+/* Bottom Nav */
+.bottom-nav{
+  position:fixed;
+  bottom:0;left:0;right:0;
+  max-width:480px;
+  margin:auto;
+  background:linear-gradient(180deg,rgba(139,0,0,0.95),rgba(80,0,0,0.98));
+  display:flex;
+  justify-content:space-around;
+  padding:10px 0 18px;
+  border-top:1px solid rgba(255,215,0,0.3);
+  box-shadow:0 -5px 25px rgba(139,0,0,0.5);
+}
+
+.nav-item{
+  text-align:center;
+  color:#fff;
+  cursor:pointer;
+}
+
+.nav-circle{
+  width:50px;height:50px;
+  border-radius:50%;
+  background:#000;
+  border:2px solid gold;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:22px;
+  color:gold;
+}
+
+.nav-label{
+  font-size:10px;
+  color:gold;
+  margin-top:3px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="page-bg"></div>
+
+<div class="header">
+  <div class="logo">🔒 PharaCoin</div>
+  <div class="back" onclick="goBack()">⬅ رجوع</div>
+</div>
+
+<div class="section-title">سياسة الخصوصية</div>
+
+<div class="box">
+  <p>1. نحن نحترم خصوصيتك ونلتزم بحماية جميع بياناتك الشخصية.</p>
+  <p>2. يتم استخدام البيانات فقط لإدارة الحسابات وتحسين تجربة المستخدم داخل المنصة.</p>
+  <p>3. لا يتم مشاركة معلوماتك مع أي طرف ثالث إلا في الحالات القانونية اللازمة.</p>
+  <p>4. يحق للمستخدم طلب تعديل أو حذف بياناته في أي وقت من خلال حسابه الشخصي.</p>
+  <p>5. نقوم بتطبيق إجراءات أمنية مناسبة لحماية بياناتك من الوصول غير المصرح به.</p>
+  <p>6. باستخدامك للتطبيق، فإنك توافق على سياسة الخصوصية هذه بالكامل.</p>
+</div>
+
+<!-- Bottom Nav -->
+<div class="bottom-nav">
+  <div class="nav-item" onclick="location.href='dashboard.html'">
+    <div class="nav-circle">🏠</div>
+    <div class="nav-label">الرئيسية</div>
+  </div>
+  <div class="nav-item" onclick="location.href='statue-builder.html'">
+    <div class="nav-circle">⚒️</div>
+    <div class="nav-label">التجميع</div>
+  </div>
+  <div class="nav-item" onclick="location.href='museum.html'">
+    <div class="nav-circle">🏺</div>
+    <div class="nav-label">المتحف</div>
+  </div>
+  <div class="nav-item" onclick="location.href='profile.html'">
+    <div class="nav-circle">👤</div>
+    <div class="nav-label">حسابي</div>
+  </div>
+</div>
+
+<script>
+function goBack(){
+  if(document.referrer){
+    history.back();
+  }else{
+    location.href='profile.html';
+  }
+}
+</script>
+
+</body>
+</html>

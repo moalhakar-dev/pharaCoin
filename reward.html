@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PharaCoin - المكافآت الأسبوعية</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  font-family:'Cairo',sans-serif;
+  background:#000;
+  color:#fff;
+  max-width:480px;
+  margin:auto;
+  padding-bottom:120px;
+  line-height:1.8;
+}
+
+/* الخلفية */
+.page-bg{
+  position:fixed;
+  inset:0;
+  background:url("Object/qa.jpg") center/cover no-repeat;
+  filter:brightness(0.25) saturate(1.2);
+  z-index:-1;
+}
+
+/* الهيدر */
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:14px 16px;
+  background:rgba(0,0,0,0.85);
+  border-bottom:1px solid rgba(255,215,0,0.25);
+  backdrop-filter:blur(10px);
+}
+.logo{
+  color:gold;
+  font-weight:900;
+  font-size:16px;
+}
+.back{
+  color:#00ffcc;
+  cursor:pointer;
+  font-size:13px;
+}
+
+/* العنوان */
+.section-title{
+  text-align:center;
+  margin:18px 0 12px;
+  color:gold;
+  font-size:18px;
+  font-weight:800;
+  text-shadow:0 0 8px rgba(255,215,0,0.3);
+}
+
+/* الصندوق */
+.box{
+  margin:0 16px;
+  padding:18px;
+  background:rgba(0,0,0,0.65);
+  border-radius:18px;
+  border:1px solid rgba(255,215,0,0.25);
+  box-shadow:0 0 25px rgba(0,0,0,0.6);
+  text-align:center;
+}
+
+/* شبكة الأيام */
+.week-grid{
+  display:grid;
+  grid-template-columns: repeat(4,1fr);
+  gap:10px;
+  margin-top:10px;
+}
+
+.day-box{
+  padding:12px 5px;
+  border-radius:14px;
+  background:#1e1e2f;
+  border:1px solid #444;
+  cursor:pointer;
+  transition:0.3s;
+  font-size:13px;
+}
+
+.day-box.available{
+  background:gold;
+  color:black;
+  font-weight:bold;
+  box-shadow:0 0 15px gold;
+}
+
+.day-box.claimed{
+  background:#00c853;
+  color:white;
+}
+
+.day-box.locked{
+  background:#222;
+  color:#555;
+  cursor:not-allowed;
+}
+
+.message{
+  margin-top:15px;
+  font-size:15px;
+  color:#00ffcc;
+}
+
+.login-warning{
+  font-size:16px;
+  color:#ff5252;
+}
+
+/* ===== التصميم الجديد للـ Navbar بالرموز المصرية ===== */
+.bottom-nav{
+  position:fixed;
+  bottom:0;left:0;right:0;
+  max-width:480px;
+  margin:auto;
+  background:linear-gradient(180deg, #8b1a1a, #6a0d0d); /* أحمر داكن فرعوني */
+  display:flex;
+  justify-content:space-around;
+  padding:10px 0 18px;
+  border-top: 3px solid #e6b422; /* ذهبي */
+  box-shadow: 0 -5px 20px rgba(0,0,0,0.8), 0 0 15px #b8860b;
+  z-index:100;
+}
+
+.nav-item{
+  text-align:center;
+  cursor:pointer;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:4px;
+  transition:transform 0.2s;
+  width: 70px;
+  position: relative;
+}
+.nav-item:active{transform:scale(0.95);}
+
+.nav-circle{
+  width:55px;
+  height:55px;
+  border-radius:50%;
+  background: #1a0e0e; /* أسود محمر */
+  border: 2px solid #b22222; /* إطار أحمر */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  color: #b22222; /* أحمر فرعوني */
+  margin: 0 auto 4px;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(180, 40, 40, 0.6);
+}
+
+/* العنصر النشط (الصفحة الحالية) - لونه أصفر مع نبض */
+.nav-item.current-page .nav-circle{
+  color: #FFD700; /* ذهبي */
+  border-color: #FFD700; /* إطار ذهبي */
+  box-shadow: 0 0 15px #FFD700;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+  0%{box-shadow:0 0 5px #FFD700;}
+  50%{box-shadow:0 0 20px #FFD700;}
+  100%{box-shadow:0 0 5px #FFD700;}
+}
+
+/* النص أسفل الدائرة - يظهر فقط أثناء الـ 3 ثوان */
+.nav-label{
+  font-size: 11px;
+  font-weight: 700;
+  color: #ffdb8e;
+  text-shadow: 0 0 5px #b8860b;
+  display: none;
+  height: 16px;
+  margin-top: 2px;
+}
+
+.nav-item.showing .nav-label{
+  display: block;
+}
+</style>
+</head>
+
+<body>
+
+<div class="page-bg"></div>
+
+<div class="header">
+  <div class="logo">🎁 PharaCoin</div>
+  <div class="back" onclick="goBack()">⬅ رجوع</div>
+</div>
+
+<div class="section-title">المكافآت الأسبوعية</div>
+
+<div class="box" id="content">
+  <div class="login-warning">جارٍ التحقق من تسجيل الدخول...</div>
+</div>
+
+<!-- Bottom Nav بالرموز المصرية -->
+<div class="bottom-nav">
+  <!-- 𓂀 : الرئيسية -->
+  <div class="nav-item" data-url="dashboard.html" data-label="الرئيسية" data-egypt="𓂀" data-alt="🏠">
+    <div class="nav-circle">𓂀</div>
+    <div class="nav-label">الرئيسية</div>
+  </div>
+  <!-- 𓆣 : المتحف -->
+  <div class="nav-item" data-url="museum.html" data-label="المتحف" data-egypt="𓆣" data-alt="🏺">
+    <div class="nav-circle">𓆣</div>
+    <div class="nav-label">المتحف</div>
+  </div>
+  <!-- 𓁹 : التجميع -->
+  <div class="nav-item" data-url="statue-builder.html" data-label="التجميع" data-egypt="𓁹" data-alt="⚒️">
+    <div class="nav-circle">𓁹</div>
+    <div class="nav-label">التجميع</div>
+  </div>
+  <!-- ☥ : حسابي (الصفحة الحالية) -->
+  <div class="nav-item current-page" data-url="profile.html" data-label="حسابي" data-egypt="☥" data-alt="👤">
+    <div class="nav-circle">☥</div>
+    <div class="nav-label">حسابي</div>
+  </div>
+</div>
+
+<script>
+function goBack(){
+  if(document.referrer){
+    history.back();
+  }else{
+    location.href="dashboard.html";
+  }
+}
+
+// ===== آلية النقر الجديدة للـ Navbar =====
+// تعريف الصوت (اختياري)
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+const audioCtx = new AudioCtx();
+
+function playClick() {
+  try {
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.connect(g);
+    g.connect(audioCtx.destination);
+    o.type = 'sine';
+    o.frequency.setValueAtTime(700, audioCtx.currentTime);
+    o.frequency.exponentialRampToValueAtTime(1100, audioCtx.currentTime + 0.08);
+    g.gain.setValueAtTime(0.1, audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.12);
+    o.start();
+    o.stop(audioCtx.currentTime + 0.12);
+  } catch (e) {}
+}
+
+const navItems = document.querySelectorAll('.nav-item');
+
+// مصفوفة لتخزين حالة "تم عرض التأثير" لكل عنصر
+let effectShown = new Array(navItems.length).fill(false);
+let timerId = null;
+let currentItem = null;
+
+// دالة لعرض التأثير (تغيير الرمز وإظهار النص)
+function showEffect(item) {
+  // إذا كان العنصر هو الصفحة الحالية، لا نفعل شيئاً
+  if (item.classList.contains('current-page')) return;
+  
+  // إذا كان هناك تأثير سابق قيد العرض، نلغيه
+  if (timerId) {
+    clearTimeout(timerId);
+    timerId = null;
+    if (currentItem) {
+      const oldCircle = currentItem.querySelector('.nav-circle');
+      const oldEgypt = currentItem.dataset.egypt;
+      oldCircle.textContent = oldEgypt;
+      currentItem.classList.remove('showing');
+    }
+  }
+  
+  // تعيين العنصر الحالي وعرض التأثير
+  currentItem = item;
+  const circle = item.querySelector('.nav-circle');
+  const altSymbol = item.dataset.alt;
+  circle.textContent = altSymbol;
+  item.classList.add('showing');
+  
+  // مؤقت لإعادة الرمز المصري بعد 3 ثوان
+  timerId = setTimeout(() => {
+    const circle = currentItem.querySelector('.nav-circle');
+    const egyptSymbol = currentItem.dataset.egypt;
+    circle.textContent = egyptSymbol;
+    currentItem.classList.remove('showing');
+    
+    timerId = null;
+    currentItem = null;
+  }, 3000);
+}
+
+// معالج النقر لكل عنصر
+navItems.forEach((item, index) => {
+  item.addEventListener('click', function(e) {
+    e.stopPropagation();
+    playClick(); // استخدام دالة الصوت
+    
+    // إذا كان العنصر هو الصفحة الحالية، لا ننقل
+    if (this.classList.contains('current-page')) return;
+    
+    // إذا كان التأثير قد ظهر من قبل لهذا العنصر (أي هذه هي الضغطة الثانية) → ننتقل
+    if (effectShown[index]) {
+      window.location.href = this.dataset.url;
+      return;
+    }
+    
+    // وإلا (أول ضغطة) → نعرض التأثير ونسجل أنه تم عرضه
+    showEffect(this);
+    effectShown[index] = true;
+  });
+});
+
+// Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyB78JT_cbPMizvzKWBrQoQUe3-zukHrr1U",
+  authDomain: "pharacoin.firebaseapp.com",
+  projectId: "pharacoin"
+};
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+auth.onAuthStateChanged(async(user)=>{
+  if(!user){
+    document.getElementById("content").innerHTML =
+      `<div class="login-warning">⚠ يجب تسجيل الدخول أولاً</div>`;
+    return;
+  }
+  renderWeek(user);
+});
+
+async function renderWeek(user){
+  const userRef = db.collection("users").doc(user.uid);
+  const doc = await userRef.get();
+  let data = doc.exists ? doc.data() : {};
+
+  let lastClaimedDate = data.lastClaimedDate || "";
+  let weekDay = data.weekDay || 0;
+  const today = new Date().toDateString();
+
+  let html = `
+    <div class="week-grid" id="weekGrid"></div>
+    <div class="message" id="message"></div>
+  `;
+
+  document.getElementById("content").innerHTML = html;
+  let grid = document.getElementById("weekGrid");
+
+  for(let i=0;i<7;i++){
+    let box = document.createElement("div");
+    box.classList.add("day-box");
+    box.innerHTML = `اليوم ${i+1}<br>5 🪙`;
+
+    if(i < weekDay){
+      box.classList.add("claimed");
+    }
+    else if(i === weekDay && lastClaimedDate !== today){
+      box.classList.add("available");
+      box.onclick = ()=> claimReward(user);
+    }
+    else{
+      box.classList.add("locked");
+    }
+
+    grid.appendChild(box);
+  }
+}
+
+async function claimReward(user){
+  const today = new Date().toDateString();
+  const userRef = db.collection("users").doc(user.uid);
+  const doc = await userRef.get();
+  let data = doc.exists ? doc.data() : {};
+
+  if(data.lastClaimedDate === today){
+    document.getElementById("message").innerText="⏳ حصلت على مكافأة اليوم بالفعل";
+    return;
+  }
+
+  let coins = data.coins || 0;
+  coins += 5;
+
+  let nextDay = (data.weekDay || 0) + 1;
+  if(nextDay > 6) nextDay = 0;
+
+  await userRef.set({
+    coins: coins,
+    lastClaimedDate: today,
+    weekDay: nextDay
+  }, {merge:true});
+
+  document.getElementById("message").innerText="🎉 تم استلام مكافأة اليوم";
+  renderWeek(user);
+}
+</script>
+
+</body>
+</html>

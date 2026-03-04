@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تسجيل الدخول - PharaCoin</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  font-family:'Cairo',sans-serif;
+  background:#000;
+  color:#fff;
+  max-width:480px;
+  margin:auto;
+}
+
+/* الخلفية */
+.page-bg{
+  position:fixed;
+  inset:0;
+  background:url("Object/qa.jpg") center/cover no-repeat;
+  filter:brightness(0.25) saturate(1.2);
+  z-index:-1;
+}
+
+/* الهيدر */
+.header{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:16px;
+  background:rgba(0,0,0,0.85);
+  border-bottom:1px solid rgba(255,0,0,0.4);
+  backdrop-filter:blur(10px);
+}
+.logo{
+  color:red;
+  font-weight:900;
+  font-size:18px;
+  text-shadow:0 0 10px red,0 0 25px darkred;
+}
+
+/* صندوق الدخول */
+.login-box{
+  margin:40px 16px;
+  padding:22px;
+  background:rgba(0,0,0,0.65);
+  border-radius:20px;
+  border:1px solid rgba(255,0,0,0.4);
+  box-shadow:0 0 30px rgba(0,0,0,0.7);
+}
+
+.login-box h2{
+  text-align:center;
+  color:red;
+  margin-bottom:18px;
+  text-shadow:0 0 10px red,0 0 25px darkred;
+}
+
+.login-box input{
+  width:100%;
+  padding:12px;
+  margin:10px 0;
+  border:none;
+  border-radius:10px;
+  background:#111;
+  color:#fff;
+  font-size:14px;
+}
+
+/* كلمة المرور */
+.password-box{
+  position:relative;
+}
+.password-box span{
+  position:absolute;
+  left:10px;
+  top:50%;
+  transform:translateY(-50%);
+  cursor:pointer;
+  color:gold;
+  font-size:12px;
+}
+
+/* الخيارات */
+.options{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:12px;
+  margin-top:6px;
+}
+.options label{
+  display:flex;
+  align-items:center;
+  gap:5px;
+}
+.options a{
+  color:gold;
+  text-decoration:none;
+}
+
+/* زر الدخول */
+.login-box button{
+  width:100%;
+  padding:12px;
+  margin-top:15px;
+  border:none;
+  border-radius:12px;
+  background:red;
+  color:white;
+  font-weight:bold;
+  font-size:15px;
+  cursor:pointer;
+  box-shadow:0 0 15px white,0 0 30px red,0 0 60px darkred;
+}
+
+.login-box button:hover{
+  transform:scale(1.03);
+  box-shadow:0 0 25px white,0 0 60px red,0 0 100px darkred;
+}
+
+.register-link{
+  margin-top:15px;
+  text-align:center;
+  font-size:13px;
+}
+.register-link a{
+  color:gold;
+  text-decoration:none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="page-bg"></div>
+
+<div class="header">
+  <div class="logo">🔥 PharaCoin</div>
+</div>
+
+<div class="login-box">
+
+<h2>تسجيل الدخول</h2>
+
+<form id="loginForm">
+
+<input type="text" id="email" placeholder="رقم الموبايل أو الجيميل" required>
+
+<div class="password-box">
+  <input type="password" id="password" placeholder="كلمة المرور" required>
+  <span onclick="togglePassword()">إظهار</span>
+</div>
+
+<div class="options">
+  <label>
+    <input type="checkbox"> تذكرني
+  </label>
+  <a href="#">نسيت كلمة المرور؟</a>
+</div>
+
+<button type="submit">دخول</button>
+
+</form>
+
+<div class="register-link">
+ليس لديك حساب؟ <a href="register.html">إنشاء حساب</a>
+</div>
+
+</div>
+
+<script>
+firebase.initializeApp({
+apiKey:"AIzaSyB78JT_cbPMizvzKWBrQoQUe3-zukHrr1U",
+authDomain:"pharacoin.firebaseapp.com",
+projectId:"pharacoin"
+});
+
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+function togglePassword(){
+var pass = document.getElementById("password");
+pass.type = pass.type === "password" ? "text" : "password";
+}
+
+/* ملء البيانات تلقائياً */
+window.onload = function(){
+document.getElementById("email").value = localStorage.getItem("loginEmail") || "";
+document.getElementById("password").value = localStorage.getItem("loginPass") || "";
+}
+
+/* تسجيل الدخول */
+document.getElementById("loginForm").addEventListener("submit",function(e){
+e.preventDefault();
+
+const email = document.getElementById("email").value;
+const password = document.getElementById("password").value;
+
+auth.signInWithEmailAndPassword(email,password)
+.then((userCredential)=>{
+
+const user = userCredential.user;
+
+db.collection("users").doc(user.uid).get().then((doc)=>{
+
+localStorage.setItem("profileName",doc.data().username);
+localStorage.setItem("profileEmail",doc.data().emailOrPhone);
+
+window.location.href="profile.html";
+
+});
+
+})
+.catch(error=>{
+alert(error.message);
+});
+
+});
+</script>
+
+</body>
+</html>
