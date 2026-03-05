@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- ========== تحسينات SEO أساسية ========== -->
+    <title>كنوز الفراعنة | بوابة الكرنك الملكية - اكتشف أسرار الحضارة المصرية</title>
+    <meta name="description" content="ادخل عالم كنوز الفراعنة عبر بوابة الكرنك الملكية. استكشف الرموز المصرية القديمة، واكتشف الأسرار المخفية، وانطلق في مغامرة تفاعلية مع PharaCoin.">
+    <meta name="keywords" content="كنوز الفراعنة, بوابة الكرنك, الحضارة المصرية, الفراعنة, رموز مصرية, PharaCoin, معبد الكرنك">
+    <meta name="author" content="PharaCoin">
+    <meta name="robots" content="index, follow">
+
+    <!-- ========== بطاقات Open Graph (للمشاركة على فيسبوك و LinkedIn) ========== -->
+    <meta property="og:title" content="كنوز الفراعنة | بوابة الكرنك الملكية">
+    <meta property="og:description" content="ادخل عالم الفراعنة واكتشف الكنوز المخفية داخل بوابة الكرنك الملكية.">
+    <!-- ===== غيّر الرابط التالي إلى رابط الصورة التي تريد ظهورها عند المشاركة (مثل شعار الموقع) ===== -->
+    <meta property="og:image" content="https://your-site.com/Object/qa.jpg">
+    <!-- ===== غيّر الرابط التالي إلى رابط هذه الصفحة على موقعك الفعلي ===== -->
+    <meta property="og:url" content="https://your-site.com/index.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="كنوز الفراعنة">
+    <meta property="og:locale" content="ar_AR">
+
+    <!-- ========== بطاقات Twitter ========== -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="كنوز الفراعنة | بوابة الكرنك الملكية">
+    <meta name="twitter:description" content="ادخل عالم الفراعنة واكتشف الكنوز المخفية داخل بوابة الكرنك الملكية.">
+    <!-- ===== غيّر الرابط التالي إلى رابط الصورة المخصصة لتويتر (يمكن أن تكون نفس الصورة أعلاه) ===== -->
+    <meta name="twitter:image" content="https://your-site.com/Object/qa.jpg">
+    <!-- ===== غيّر @PharaCoinApp إلى حساب تويتر الخاص بك إن وجد ===== -->
+    <meta name="twitter:site" content="@PharaCoinApp">
+
+    <!-- ========== الرابط الأساسي (Canonical) ========== -->
+    <!-- ===== غيّر الرابط التالي إلى رابط هذه الصفحة على موقعك الفعلي ===== -->
+    <link rel="canonical" href="https://your-site.com/index.html">
+
+    <!-- ========== بيانات منظمة (Structured Data) محسّنة ========== -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "كنوز الفراعنة",
+        "url": "https://your-site.com",
+        "description": "بوابة الكرنك الملكية لاكتشاف كنوز الفراعنة وأسرار الحضارة المصرية",
+        "inLanguage": "ar",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://your-site.com/search?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+
+    <!-- ========== الخطوط والأنماط (بدون تغيير) ========== -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        /* جميع الأنماط كما هي (محذوفة للاختصار ولكنها تبقى كما في الكود الأصلي) */
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{
+            font-family:'Cairo',sans-serif;
+            background:#000;
+            color:#fff;
+            overflow:hidden;
+            text-align:center;
+            min-height:100vh;
+        }
+        /* هنا باقي الأنماط (لم يتم تغييرها) */
+        #loader{position:fixed;inset:0;background:#000;display:flex;justify-content:center;align-items:center;z-index:9999;overflow:hidden;}
+        .door{position:absolute;width:50%;height:100%;top:0;background:linear-gradient(180deg,#1a1000 0%,#0a0500 50%,#000 100%);transition:transform 2.2s cubic-bezier(0.7,0,0.3,1);overflow:hidden;}
+        .door::before{content:'';position:absolute;top:0;width:100%;height:100%;background:repeating-linear-gradient(0deg,transparent,transparent 60px,rgba(255,215,0,0.03) 60px,rgba(255,215,0,0.03) 61px);}
+        .left-door{left:0;border-right:3px solid rgba(255,215,0,0.6);box-shadow:inset -40px 0 80px rgba(255,215,0,0.08),5px 0 30px rgba(255,215,0,0.15);}
+        .right-door{right:0;border-left:3px solid rgba(255,215,0,0.6);box-shadow:inset 40px 0 80px rgba(255,215,0,0.08),-5px 0 30px rgba(255,215,0,0.15);}
+        .door-engravings{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);display:flex;flex-direction:column;gap:20px;align-items:center;opacity:0.4;font-size:30px;color:gold;}
+        .open .left-door{transform:translateX(-105%);}
+        .open .right-door{transform:translateX(105%);}
+        .inner-light{position:absolute;width:600px;height:600px;background:radial-gradient(circle,rgba(255,215,0,0.9) 0%,rgba(255,165,0,0.4) 25%,rgba(255,100,0,0.1) 50%,transparent 70%);border-radius:50%;opacity:0;transition:opacity 2.5s ease;z-index:1;}
+        .open .inner-light{opacity:1;}
+        .symbol-column{position:absolute;top:8%;display:flex;flex-direction:column;gap:22px;font-size:32px;color:gold;text-shadow:0 0 15px rgba(255,215,0,0.6),0 0 30px rgba(255,165,0,0.3);opacity:0.7;z-index:4;animation:symbolFloat 4s ease-in-out infinite;}
+        @keyframes symbolFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+        .left-symbols{left:25px;}
+        .right-symbols{right:25px;}
+        .text-wrapper{position:absolute;z-index:5;display:flex;flex-direction:column;align-items:center;gap:20px;}
+        .symbol-line{font-size:40px;letter-spacing:16px;color:gold;text-shadow:0 0 20px gold,0 0 40px rgba(255,165,0,0.5);}
+        .loader-text{font-size:32px;font-weight:900;color:#fff;text-shadow:0 0 15px rgba(255,0,0,0.7),0 0 30px rgba(255,215,0,0.5);animation:textPulse 2s ease-in-out infinite;}
+        @keyframes textPulse{0%,100%{opacity:0.8;transform:scale(1);}50%{opacity:1;transform:scale(1.03);}}
+        .loader-subtitle{font-size:14px;color:rgba(255,215,0,0.5);letter-spacing:3px;animation:fadeInUp 1s ease 0.5s both;}
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+        #loader.hide{opacity:0;visibility:hidden;pointer-events:none;transition:1.5s ease;}
+        .bg{position:fixed;inset:0;background:url("Object/qa.jpg") center/cover no-repeat;filter:brightness(0.25) saturate(1.2);z-index:-2;}
+        .bg::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(255,215,0,0.08) 0%,transparent 60%),radial-gradient(ellipse at 50% 100%,rgba(139,0,0,0.15) 0%,transparent 50%);}
+        .overlay{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;position:relative;padding:20px;opacity:0;animation:contentFadeIn 1s ease 3.5s forwards;}
+        @keyframes contentFadeIn{to{opacity:1;}}
+        .live-counter{display:flex;gap:30px;margin-bottom:20px;font-weight:700;font-size:15px;animation:slideDown 0.8s ease 3.8s both;}
+        @keyframes slideDown{from{opacity:0;transform:translateY(-20px);}to{opacity:1;transform:translateY(0);}}
+        .live-item{display:flex;align-items:center;gap:8px;background:rgba(0,0,0,0.5);border:1px solid rgba(255,215,0,0.15);border-radius:20px;padding:6px 14px;backdrop-filter:blur(5px);}
+        .live-dot{width:8px;height:8px;border-radius:50%;animation:dotPulse 2s infinite;}
+        @keyframes dotPulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.5;transform:scale(0.7);}}
+        .online-dot{background:#00ff55;box-shadow:0 0 8px #00ff55;}
+        .offline-dot{background:#ff3344;box-shadow:0 0 8px #ff3344;}
+        #templeStatus{margin-bottom:12px;font-weight:800;color:#00ff55;display:none;font-size:13px;animation:pulseStatus 1.5s infinite;background:rgba(0,255,85,0.08);border:1px solid rgba(0,255,85,0.2);padding:4px 16px;border-radius:20px;}
+        @keyframes pulseStatus{0%,100%{opacity:0.6;}50%{opacity:1;}}
+        .main-title{font-size:48px;font-weight:900;background:linear-gradient(90deg,#FFD700,#FF4500,#FFD700,#FF4500,#FFD700);background-size:300%;-webkit-background-clip:text;color:transparent;background-clip:text;animation:shine 5s linear infinite;margin-bottom:6px;line-height:1.2;}
+        @keyframes shine{0%{background-position:0%;}100%{background-position:300%;}}
+        .main-subtitle{color:rgba(255,255,255,0.5);font-size:15px;margin-bottom:40px;font-weight:400;letter-spacing:1px;}
+        .cta-btn{position:relative;padding:16px 50px;font-size:20px;font-weight:900;font-family:'Cairo',sans-serif;border:none;border-radius:50px;cursor:pointer;color:#fff;overflow:hidden;background:linear-gradient(45deg,#8B0000,#CC0000,#FF4500,#CC0000,#8B0000);background-size:400% 400%;animation:fireMove 4s linear infinite;box-shadow:0 0 20px rgba(255,0,0,0.4),0 0 60px rgba(255,69,0,0.15);transition:all 0.3s ease;text-decoration:none;display:inline-block;}
+        @keyframes fireMove{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+        .cta-btn::before{content:'';position:absolute;inset:-3px;border-radius:53px;background:linear-gradient(45deg,#ff0000,#ffae00,#ff4500,#ff0000);background-size:300% 300%;animation:fireMove 3s linear infinite;z-index:-1;filter:blur(12px);opacity:0.5;}
+        .cta-btn::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);transform:skewX(-25deg);animation:btnSweep 3s ease-in-out infinite;}
+        @keyframes btnSweep{0%,100%{left:-100%;}50%{left:150%;}}
+        .cta-btn:hover{transform:scale(1.08) translateY(-2px);box-shadow:0 0 30px rgba(255,0,0,0.6),0 0 80px rgba(255,69,0,0.25);}
+        .cta-btn:active{transform:scale(1.02);}
+        .page-icons{margin-top:50px;display:flex;gap:35px;animation:slideUp 0.8s ease 4.2s both;}
+        @keyframes slideUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+        .icon-box{display:flex;flex-direction:column;align-items:center;cursor:pointer;transition:transform 0.3s;}
+        .icon-box:hover{transform:translateY(-5px);}
+        .circle{width:60px;height:60px;border-radius:50%;border:2px solid rgba(255,215,0,0.5);display:flex;align-items:center;justify-content:center;font-size:24px;color:gold;background:rgba(0,0,0,0.7);backdrop-filter:blur(5px);box-shadow:0 0 12px rgba(139,0,0,0.4);transition:all 0.3s;animation:iconPulse 3s infinite;}
+        @keyframes iconPulse{0%,100%{box-shadow:0 0 8px rgba(139,0,0,0.3);}50%{box-shadow:0 0 20px rgba(255,215,0,0.3);}}
+        .circle:hover{box-shadow:0 0 25px rgba(255,215,0,0.5);border-color:gold;transform:scale(1.1);}
+        .icon-label{margin-top:8px;font-size:12px;font-weight:600;color:rgba(255,255,255,0.4);transition:all 0.3s;}
+        .icon-box:hover .icon-label{color:gold;}
+        .icon-label.show{color:gold;text-shadow:0 0 8px rgba(255,215,0,0.3);}
+        .main-footer{position:fixed;bottom:0;left:0;right:0;text-align:center;padding:12px;font-size:11px;color:rgba(255,255,255,0.2);background:linear-gradient(to top,rgba(0,0,0,0.6),transparent);}
+        .particles{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;}
+        .particle{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(255,215,0,0.8),transparent);animation:particleRise linear infinite;opacity:0;}
+        @keyframes particleRise{0%{opacity:0;transform:translateY(100vh) scale(0);}10%{opacity:1;transform:scale(1);}90%{opacity:0.5;}100%{opacity:0;transform:translateY(-10vh) scale(0.5);}}
+        @media(max-width:500px){
+            .main-title{font-size:34px;}
+            .cta-btn{padding:14px 40px;font-size:18px;}
+            .page-icons{gap:25px;}
+            .circle{width:50px;height:50px;font-size:20px;}
+            .live-counter{gap:15px;font-size:13px;}
+            .symbol-line{font-size:28px;letter-spacing:10px;}
+            .loader-text{font-size:24px;}
+        }
+    </style>
+</head>
+<body>
+
+<!-- ======== GATE LOADER ======== -->
+<div id="loader">
+    <div class="door left-door">
+        <div class="door-engravings">
+            <div>𓂋</div><div>𓃭</div><div>𓅃</div><div>𓆣</div>
+        </div>
+    </div>
+    <div class="door right-door">
+        <div class="door-engravings">
+            <div>𓋹</div><div>𓊝</div><div>𓇳</div><div>𓂀</div>
+        </div>
+    </div>
+    <div class="inner-light"></div>
+
+    <div class="symbol-column left-symbols">
+        <div>☥</div><div>𓂀</div><div>𓆣</div><div>𓁹</div><div>☥</div>
+    </div>
+    <div class="symbol-column right-symbols">
+        <div>☥</div><div>𓂀</div><div>𓆣</div><div>𓁹</div><div>☥</div>
+    </div>
+
+    <div class="text-wrapper">
+        <div class="symbol-line">☥ 𓂀 𓆣 ☥</div>
+        <div class="loader-text">☥ بوابة الفراعنة ☥</div>
+        <div class="loader-subtitle">جارِ فتح البوابة الملكية...</div>
+        <div class="symbol-line">☥ 𓁹 𓂀 ☥</div>
+    </div>
+</div>
+
+<!-- ======== MAIN PAGE ======== -->
+<div class="bg"></div>
+<div class="particles" id="particles"></div>
+
+<main class="overlay">
+
+    <div class="live-counter">
+        <div class="live-item">
+            <span class="live-dot online-dot"></span>
+            <span id="onlineCount">0</span> Online
+        </div>
+        <div class="live-item">
+            <span class="live-dot offline-dot"></span>
+            <span id="offlineCount">0</span> Offline
+        </div>
+    </div>
+
+    <div id="templeStatus">⚡ المعبد ممتلئ الآن</div>
+
+    <h1 class="main-title">كنوز الفراعنة</h1>
+    <p class="main-subtitle">لقد دخلت عالم الفراعنة... اكتشف الكنوز المخفية</p>
+
+    <a href="register.html" class="cta-btn" id="ctaBtn">☥ ابدأ المغامرة ☥</a>
+
+    <div class="page-icons">
+        <div class="icon-box" onclick="toggleLabel(this)" ondblclick="openPage('faq.html')">
+            <div class="circle">☥</div>
+            <div class="icon-label">الأسئلة</div>
+        </div>
+        <div class="icon-box" onclick="toggleLabel(this)" ondblclick="openPage('how.html')">
+            <div class="circle">𓂀</div>
+            <div class="icon-label">كيف تعمل</div>
+        </div>
+        <div class="icon-box" onclick="toggleLabel(this)" ondblclick="openPage('about.html')">
+            <div class="circle">𓆣</div>
+            <div class="icon-label">عن المشروع</div>
+        </div>
+    </div>
+
+</main>
+
+<!-- قسم خفي لتحسين محتوى SEO -->
+<section style="display:none">
+    <h2>اكتشف كنوز الفراعنة وأسرار بوابة الكرنك</h2>
+    <p>
+        كنوز الفراعنة تمثل أحد أعظم أسرار الحضارة المصرية القديمة، حيث تكشف بوابة الكرنك الملكية
+        عن عالم مليء بالرموز والأساطير والتاريخ العريق. من خلال PharaCoin، يمكنك التفاعل مع هذه الكنوز
+        وكسب المكافآت الرقمية المستوحاة من المعابد والمقابر المصرية.
+    </p>
+    <p>
+        يقدّم مشروع PharaCoin تجربة فريدة تجمع بين الترفيه والتعليم، مستوحاة من المعابد المصرية
+        والمتحف المصري الكبير والكنوز الملكية المخفية. ادخل البوابة الآن وابدأ رحلتك.
+    </p>
+</section>
+
+<footer class="main-footer">© 2026 PharaCoin — جميع الحقوق محفوظة ☥</footer>
+
+<audio id="stoneSound" preload="auto">
+    <source src="https://assets.mixkit.co/sfx/preview/mixkit-heavy-stone-door-1607.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+// جميع الأكواد كما هي دون تغيير (تم الحفاظ على الوظائف كاملة)
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+const audioCtx = new AudioCtx();
+
+function playTone(freq, dur, type = 'sine', vol = 0.1) {
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.connect(g);
+    g.connect(audioCtx.destination);
+    o.type = type;
+    o.frequency.setValueAtTime(freq, audioCtx.currentTime);
+    g.gain.setValueAtTime(vol, audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+    o.start();
+    o.stop(audioCtx.currentTime + dur);
+}
+
+function openGate() {
+    let sound = document.getElementById("stoneSound");
+    sound.volume = 0.3;
+    sound.play().catch(() => {});
+    document.getElementById("loader").classList.add("open");
+    setTimeout(() => {
+        document.getElementById("loader").classList.add("hide");
+        playTone(523, 0.3);
+        setTimeout(() => playTone(659, 0.3), 150);
+        setTimeout(() => playTone(784, 0.4), 300);
+    }, 3000);
+}
+
+document.getElementById("ctaBtn").addEventListener("click", function(e) {
+    playTone(800, 0.1);
+    setTimeout(() => playTone(1000, 0.1), 80);
+    setTimeout(() => playTone(1200, 0.15), 160);
+});
+
+function toggleLabel(el) {
+    document.querySelectorAll('.icon-label').forEach(l => l.classList.remove('show'));
+    el.querySelector('.icon-label').classList.toggle('show');
+    playTone(600, 0.08);
+}
+
+function openPage(page) {
+    playTone(500, 0.1);
+    setTimeout(() => { window.location.href = page; }, 200);
+}
+
+let online = 120000 + Math.floor(Math.random() * 5000);
+let offline = 15000 + Math.floor(Math.random() * 4000);
+
+function updateDisplay() {
+    document.getElementById("onlineCount").innerText = online.toLocaleString();
+    document.getElementById("offlineCount").innerText = offline.toLocaleString();
+    document.getElementById("templeStatus").style.display = online > 123000 ? "block" : "none";
+}
+
+function fluctuate() {
+    let change = Math.floor(Math.random() * 200);
+    if (Math.random() > 0.5) {
+        online += change;
+        offline -= Math.floor(change / 2);
+    } else {
+        online -= change;
+        offline += Math.floor(change / 2);
+    }
+    if (online < 100000) online = 100000;
+    if (offline < 5000) offline = 5000;
+    updateDisplay();
+}
+updateDisplay();
+setInterval(fluctuate, 3000);
+
+const particlesEl = document.getElementById("particles");
+for (let i = 0; i < 25; i++) {
+    const p = document.createElement("div");
+    p.className = "particle";
+    p.style.left = Math.random() * 100 + "%";
+    p.style.animationDuration = (10 + Math.random() * 15) + "s";
+    p.style.animationDelay = Math.random() * 8 + "s";
+    const size = 2 + Math.random() * 3;
+    p.style.width = size + "px";
+    p.style.height = size + "px";
+    particlesEl.appendChild(p);
+}
+
+window.addEventListener("load", () => { setTimeout(openGate, 1200); });
+
+if (!localStorage.getItem("coins")) { localStorage.setItem("coins", "500"); }
+
+setTimeout(() => {
+    document.getElementById("loader").remove();
+}, 6000);
+</script>
+
+<!-- ===== قائمة الأجزاء التي تحتاج تغيير (تذكير) ===== -->
+<!--
+  1. رابط الصورة في Open Graph (og:image) - استبدل your-site.com بالرابط الفعلي لصورتك.
+  2. رابط الصفحة في Open Graph (og:url) - استبدل your-site.com بالرابط الفعلي لهذه الصفحة.
+  3. رابط الصورة في Twitter Card (twitter:image) - استبدل your-site.com.
+  4. حساب تويتر (twitter:site) - غيّره إلى حسابك الفعلي أو احذفه.
+  5. الرابط الأساسي (canonical) - استبدل your-site.com.
+  6. رابط الموقع في البيانات المنظمة (structured data) - استبدل your-site.com.
+-->
+</body>
+</html>

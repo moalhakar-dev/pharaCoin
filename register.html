@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>تسجيل حساب جديد - PharaCoin | احصل على مكافأة 100 جنيه</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- === تحسينات SEO محسنة === -->
+    <meta name="description" content="أنشئ حسابك في PharaCoin واحصل على مكافأة فورية بقيمة 100 جنيه. سجل الآن باستخدام بريدك الإلكتروني أو رقم هاتفك وابدأ رحلتك.">
+    <meta name="keywords" content="PharaCoin, تسجيل حساب, إنشاء حساب, مكافأة ترحيبية, عملات رقمية">
+    <meta name="author" content="PharaCoin Team">
+    <meta name="robots" content="index, follow">
+
+    <!-- === بطاقات المشاركة الاجتماعية (Open Graph / Twitter) === -->
+    <!-- ====================== غير هذه الروابط ====================== -->
+    <meta property="og:title" content="تسجيل حساب جديد - PharaCoin">
+    <meta property="og:description" content="أنشئ حسابك الآن واحصل على مكافأة فورية 100 جنيه.">
+    <!-- غير الرابط التالي إلى رابط الصورة التي تريد ظهورها عند المشاركة (مثل شعار الموقع) -->
+    <meta property="og:image" content="https://yourdomain.com/og-image.jpg">   <!-- قم بتغيير yourdomain.com إلى نطاقك الفعلي وحدد مسار الصورة -->
+    <!-- غير الرابط التالي إلى رابط هذه الصفحة على موقعك الفعلي -->
+    <meta property="og:url" content="https://yourdomain.com/register.html">    <!-- غيّر yourdomain.com إلى اسم موقعك -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="PharaCoin">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="تسجيل حساب جديد - PharaCoin">
+    <meta name="twitter:description" content="أنشئ حسابك الآن واحصل على مكافأة فورية 100 جنيه.">
+    <!-- غير الرابط التالي إلى رابط الصورة المخصصة لتويتر (يمكن أن تكون نفس الصورة أعلاه) -->
+    <meta name="twitter:image" content="https://yourdomain.com/twitter-image.jpg"> <!-- غيّر yourdomain.com ومسار الصورة -->
+    <meta name="twitter:site" content="@PharaCoinApp">                         <!-- غيّر @PharaCoinApp إلى حساب تويتر الخاص بك إن وجد -->
+    <!-- ================================================================= -->
+
+    <!-- === الرابط الأساسي (Canonical) === -->
+    <!-- غيّر الرابط التالي إلى رابط هذه الصفحة على موقعك الفعلي -->
+    <link rel="canonical" href="https://yourdomain.com/register.html">   <!-- غيّر yourdomain.com إلى نطاقك -->
+
+    <!-- === البيانات المنظمة (Structured Data) لصفحة التسجيل === -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "تسجيل حساب جديد - PharaCoin",
+        "description": "صفحة إنشاء حساب جديد في منصة PharaCoin، مع مكافأة ترحيبية فورية.",
+        "url": "https://yourdomain.com/register.html",          <!-- غيّر yourdomain.com -->
+        "isPartOf": {
+            "@type": "WebSite",
+            "name": "PharaCoin",
+            "url": "https://yourdomain.com"                   <!-- غيّر yourdomain.com -->
+        }
+    }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+    <!-- Firebase SDK (ثابت) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
+
+        body{
+          font-family:'Cairo',sans-serif;
+          background:url("Object/qa.jpg") no-repeat center center fixed;
+          background-size:cover;
+          color:white;
+          max-width:420px;
+          margin:auto;
+        }
+
+        body::before{
+          content:"";
+          position:fixed;
+          inset:0;
+          background:rgba(0,0,0,0.85);
+          z-index:-1;
+        }
+
+        /* ===== Header ===== */
+        .header{
+          position:sticky;
+          top:0;
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
+          padding:15px;
+          background:rgba(0,0,0,0.9);
+          border-bottom:1px solid rgba(255,215,0,0.3);
+          backdrop-filter:blur(10px);
+          z-index:10;
+        }
+
+        .header h1{
+          font-size:18px;
+          font-weight:900;
+          color:gold;
+          text-shadow:0 0 15px gold;
+          margin:0;
+        }
+
+        .back{
+          font-size:13px;
+          color:#00ffcc;
+          cursor:pointer;
+        }
+
+        .overlay{
+          padding:15px;
+        }
+
+        /* ===== Title ===== */
+        .title{
+          display:flex;
+          justify-content:center;
+          margin-bottom:20px;
+        }
+        .title-box{
+          background:#200000;
+          padding:18px 25px;
+          border-radius:20px;
+          text-align:center;
+          border:3px solid red;
+          width:100%;
+        }
+        .title-icons{
+          color:gold;
+          font-size:20px;
+          letter-spacing:6px;
+          margin-bottom:8px;
+        }
+        .title-box h2{
+          font-size:18px;
+          color:gold;
+          margin-bottom:8px;
+        }
+        .amount{
+          font-size:30px;
+          font-weight:bold;
+          color:gold;
+        }
+        .currency{
+          font-size:18px;
+          color:gold;
+        }
+
+        /* ===== Form ===== */
+        .register-box{
+          background:rgba(0,0,0,0.7);
+          padding:20px;
+          border-radius:18px;
+          border:2px solid gold;
+          box-shadow:0 0 15px rgba(255,215,0,0.4);
+        }
+        .input-group{
+          margin-bottom:12px;
+          position:relative;
+        }
+        input{
+          width:100%;
+          padding:12px;
+          border-radius:10px;
+          border:1px solid gold;
+          background:#111;
+          color:white;
+          font-family:'Cairo',sans-serif;
+        }
+        .eye{
+          position:absolute;
+          left:10px;
+          top:12px;
+          cursor:pointer;
+          color:gold;
+        }
+        .strength{
+          height:6px;
+          background:#333;
+          border-radius:10px;
+          margin-top:6px;
+          overflow:hidden;
+        }
+        .strength span{
+          display:block;
+          height:100%;
+          width:0%;
+          background:red;
+          transition:.3s;
+        }
+
+        /* ===== Checkbox ===== */
+        .terms-box{
+          display:flex;
+          gap:8px;
+          margin-top:12px;
+          font-size:13px;
+          color:#00ff9d;
+          align-items:flex-start;
+        }
+        .terms-box input{
+          width:18px;
+          height:18px;
+          accent-color:gold;
+          margin-top:2px;
+        }
+        .terms-box a{
+          color:gold;
+          text-decoration:none;
+          font-weight:bold;
+        }
+
+        button{
+          width:100%;
+          padding:14px;
+          background:red;
+          color:white;
+          border:none;
+          font-weight:bold;
+          border-radius:15px;
+          cursor:pointer;
+          box-shadow:0 0 20px red;
+        }
+        button:hover{
+          background:#ff3333;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="header">
+  <h1>📝 تسجيل حساب</h1>   <!-- تم تغيير div إلى h1 -->
+  <div class="back" onclick="goBack()" aria-label="العودة للصفحة السابقة">⬅ رجوع</div>
+</div>
+
+<div class="overlay">
+
+<div class="title">
+  <div class="title-box">
+    <div class="title-icons">☥ 𓂀 𓆣</div>
+    <h2>سجل الآن واحصل على مكافأة فورية</h2>  <!-- تم تغيير h1 إلى h2 لتحسين التسلسل الهرمي -->
+    <div>
+      <span class="amount">100</span>
+      <span class="currency">جنيهًا</span>
+    </div>
+  </div>
+</div>
+
+<div class="register-box">
+<form id="registerForm">
+
+<div class="input-group">
+  <label for="username" class="visually-hidden" style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;">اسم المستخدم</label>
+  <input type="text" id="username" placeholder="اسم المستخدم" required aria-label="اسم المستخدم">
+</div>
+
+<div class="input-group">
+  <label for="emailOrPhone" class="visually-hidden" style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;">رقم الهاتف أو البريد الإلكتروني</label>
+  <input type="text" id="emailOrPhone" placeholder="رقم الهاتف أو البريد الإلكتروني" required aria-label="رقم الهاتف أو البريد الإلكتروني">
+</div>
+
+<div class="input-group">
+  <label for="password" class="visually-hidden" style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;">كلمة المرور</label>
+  <input type="password" id="password" placeholder="كلمة المرور" required aria-label="كلمة المرور">
+  <span class="eye" role="button" tabindex="0" aria-label="إظهار/إخفاء كلمة المرور">👁️</span>
+  <div class="strength"><span></span></div>
+</div>
+
+<div class="input-group">
+  <label for="confirmPassword" class="visually-hidden" style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;">تأكيد كلمة المرور</label>
+  <input type="password" id="confirmPassword" placeholder="تأكيد كلمة المرور" required aria-label="تأكيد كلمة المرور">
+  <span class="eye" role="button" tabindex="0" aria-label="إظهار/إخفاء كلمة المرور">👁️</span>
+</div>
+
+<div class="terms-box">
+  <input type="checkbox" required id="terms" aria-label="الموافقة على الشروط والأحكام">
+  <label for="terms">
+    أوافق على 
+    <a href="terms.html">الشروط والأحكام</a>
+    و
+    <a href="privacy.html">سياسة الخصوصية</a>
+  </label>
+</div>
+
+<button type="submit" aria-label="تسجيل الحساب">تسجيل الحساب</button>
+
+</form>
+</div>
+
+</div>
+
+<script>
+document.querySelectorAll(".eye").forEach(function(eye){
+  eye.addEventListener("click", function(){
+    let input = this.parentElement.querySelector("input");
+    if(input.type === "password"){
+      input.type = "text";
+      this.textContent = "🙈";
+    }else{
+      input.type = "password";
+      this.textContent = "👁️";
+    }
+  });
+  // إضافة دعم لوحة المفاتيح (Enter/Space)
+  eye.addEventListener("keydown", function(e){
+    if(e.key === "Enter" || e.key === " "){
+      e.preventDefault();
+      this.click();
+    }
+  });
+});
+
+const passwordInput = document.getElementById("password");
+const strengthBar = document.querySelector(".strength span");
+
+passwordInput.addEventListener("input", function(){
+  let value = passwordInput.value;
+  let strength = 0;
+  if(value.length >= 6) strength++;
+  if(/[A-Z]/.test(value)) strength++;
+  if(/[0-9]/.test(value)) strength++;
+  if(/[^A-Za-z0-9]/.test(value)) strength++;
+
+  strengthBar.style.width = (strength*25)+"%";
+  strengthBar.style.background = ["red","orange","gold","lime"][strength-1] || "red";
+});
+
+// تهيئة Firebase - يفضل وضع هذه القيم في متغيرات بيئة حقيقية
+// ====================== غير هذه القيم حسب مشروعك الفعلي ======================
+firebase.initializeApp({
+  apiKey: "AIzaSyB78JT_cbPMizvzKWBrQoQUe3-zukHrr1U",   // غيّر إذا لزم الأمر
+  authDomain: "pharacoin.firebaseapp.com",             // غيّر إذا لزم الأمر
+  projectId: "pharacoin"                               // غيّر إذا لزم الأمر
+});
+// =============================================================================
+
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+document.getElementById("registerForm").addEventListener("submit", function(e){
+  e.preventDefault();
+
+  const username = document.getElementById("username").value;
+  const emailOrPhone = document.getElementById("emailOrPhone").value;
+  const password = document.getElementById("password").value;
+  const confirmPassword = document.getElementById("confirmPassword").value;
+
+  if(password !== confirmPassword){
+    alert("كلمة المرور غير متطابقة");
+    return;
+  }
+
+  auth.createUserWithEmailAndPassword(emailOrPhone, password)
+    .then((userCredential)=>{
+      const user = userCredential.user;
+
+      return db.collection("users").doc(user.uid).set({
+        username: username,
+        emailOrPhone: emailOrPhone,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        balance: 100
+      }).then(()=>{
+        localStorage.setItem("loginEmail", emailOrPhone);
+        localStorage.setItem("loginPass", password);
+        window.location.href="login.html";
+      });
+    })
+    .catch((error)=>{
+      alert(error.message);
+    });
+});
+
+function goBack(){
+  if(document.referrer){
+    history.back();
+  }else{
+    location.href="index.html";
+  }
+}
+</script>
+
+<!-- الأجزاء التي تحتاج تغيير (تلخيص) -->
+<!--
+  1. روابط الصور الاجتماعية (og:image, twitter:image) استبدل yourdomain.com بالرابط الفعلي لصورك.
+  2. روابط URL (og:url, canonical, JSON-LD) استبدل yourdomain.com بنطاق موقعك.
+  3. حساب تويتر (twitter:site) غيّره إلى حسابك أو احذفه.
+  4. إعدادات Firebase (apiKey, authDomain, projectId) تأكد من أنها صحيحة لمشروعك.
+-->
+</body>
+</html>

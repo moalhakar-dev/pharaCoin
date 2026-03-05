@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- === تحسينات SEO محسنة === -->
+    <title>إيداع الرصيد - PharaCoin | شحن المحفظة بعملات رقمية</title>
+    <meta name="description" content="قم بإيداع الرصيد في PharaCoin عبر فودافون كاش، اتصالات كاش، اورنج كاش، أو USDT. أقل مبلغ 50 جنيه، واحصل على مكافآت إضافية تصل إلى 50% بونص.">
+    <meta name="keywords" content="PharaCoin, إيداع, شحن رصيد, فودافون كاش, USDT, عملات رقمية">
+    <meta name="author" content="PharaCoin Team">
+    <meta name="robots" content="index, follow">
+
+    <!-- === بطاقات المشاركة الاجتماعية (Open Graph / Twitter) === -->
+    <!-- ====================== غير هذه الروابط ====================== -->
+    <meta property="og:title" content="إيداع الرصيد - PharaCoin">
+    <meta property="og:description" content="اشحن محفظتك بسرعة وأمان عبر وسائل دفع متعددة واحصل على بونص يصل إلى 50%.">
+    <!-- غير الرابط التالي إلى رابط الصورة التي تريد ظهورها عند المشاركة (مثل شعار الموقع) -->
+    <meta property="og:image" content="https://yourdomain.com/og-image.jpg">   <!-- قم بتغيير yourdomain.com إلى نطاقك الفعلي وحدد مسار الصورة -->
+    <!-- غير الرابط التالي إلى رابط هذه الصفحة على موقعك الفعلي -->
+    <meta property="og:url" content="https://yourdomain.com/deposit.html">      <!-- غيّر yourdomain.com إلى اسم موقعك -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="PharaCoin">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="إيداع الرصيد - PharaCoin">
+    <meta name="twitter:description" content="اشحن محفظتك بسرعة وأمان واحصل على بونص.">
+    <!-- غير الرابط التالي إلى رابط الصورة المخصصة لتويتر (يمكن أن تكون نفس الصورة أعلاه) -->
+    <meta name="twitter:image" content="https://yourdomain.com/twitter-image.jpg"> <!-- غيّر yourdomain.com ومسار الصورة -->
+    <meta name="twitter:site" content="@PharaCoinApp">                         <!-- غيّر @PharaCoinApp إلى حساب تويتر الخاص بك إن وجد -->
+    <!-- ================================================================= -->
+
+    <!-- === الرابط الأساسي (Canonical) === -->
+    <!-- غيّر الرابط التالي إلى رابط هذه الصفحة على موقعك الفعلي -->
+    <link rel="canonical" href="https://yourdomain.com/deposit.html">   <!-- غيّر yourdomain.com إلى نطاقك -->
+
+    <!-- === البيانات المنظمة (Structured Data) لصفحة الإيداع === -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "إيداع الرصيد - PharaCoin",
+        "description": "صفحة إيداع الرصيد في PharaCoin، حيث يمكن للمستخدمين شحن محافظهم عبر وسائل دفع متنوعة والحصول على مكافآت.",
+        "url": "https://yourdomain.com/deposit.html",          <!-- غيّر yourdomain.com -->
+        "isPartOf": {
+            "@type": "WebSite",
+            "name": "PharaCoin",
+            "url": "https://yourdomain.com"                   <!-- غيّر yourdomain.com -->
+        }
+    }
+    </script>
+
+    <!-- الخطوط والأنماط -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
+
+        body{
+          font-family:'Cairo',sans-serif;
+          background:url("Object/qa.jpg") no-repeat center center fixed;
+          background-size:cover;
+          color:white;
+          max-width:420px;
+          margin:auto;
+        }
+
+        body::before{
+          content:"";
+          position:fixed;
+          inset:0;
+          background:rgba(0,0,0,0.85);
+          z-index:-1;
+        }
+
+        /* ===== Header ===== */
+        .header{
+          position:sticky;
+          top:0;
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
+          padding:15px;
+          background:rgba(0,0,0,0.9);
+          border-bottom:1px solid rgba(255,215,0,0.3);
+          backdrop-filter:blur(10px);
+          z-index:10;
+        }
+
+        .header h1{
+          font-size:18px;
+          font-weight:900;
+          color:gold;
+          text-shadow:0 0 15px gold;
+          margin:0;
+        }
+
+        .back{
+          font-size:13px;
+          color:#00ffcc;
+          cursor:pointer;
+        }
+
+        /* ===== Container ===== */
+        .container{
+          padding:15px;
+          display:flex;
+          flex-direction:column;
+          gap:18px;
+        }
+
+        /* ===== Card ===== */
+        .card{
+          background:rgba(0,0,0,0.7);
+          border:2px solid gold;
+          border-radius:20px;
+          padding:15px;
+          box-shadow:0 0 15px rgba(255,215,0,0.4);
+        }
+
+        /* ===== Fields ===== */
+        .data-field{
+          background:#111;
+          padding:14px;
+          border-radius:12px;
+          word-break:break-all;
+          text-align:center;
+          border:1px solid gold;
+          font-weight:bold;
+          color:#00ffcc;
+          margin-bottom:10px;
+        }
+
+        select,input{
+          width:100%;
+          padding:14px;
+          margin-bottom:12px;
+          border-radius:12px;
+          border:1px solid gold;
+          background:#0e0e0e;
+          color:white;
+          font-family:'Cairo',sans-serif;
+        }
+
+        .coins-result{
+          text-align:center;
+          color:red;
+          font-weight:bold;
+          margin-bottom:10px;
+        }
+
+        /* ===== Button ===== */
+        button{
+          width:100%;
+          padding:12px;
+          border:none;
+          border-radius:15px;
+          background:gold;
+          color:black;
+          font-weight:bold;
+          cursor:pointer;
+          box-shadow:0 0 15px gold;
+          font-family:'Cairo',sans-serif;
+        }
+        button:hover{ background:orange; }
+
+        .note{
+          text-align:center;
+          margin-top:8px;
+          font-size:14px;
+          opacity:.85;
+        }
+
+        .success{
+          margin-top:15px;
+          text-align:center;
+          color:#00ff9d;
+          font-weight:bold;
+          display:none;
+        }
+        .error{
+          margin-top:15px;
+          text-align:center;
+          color:red;
+          font-weight:bold;
+          display:none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>💰 إيداع الرصيد</h1>  <!-- تم تغيير div إلى h1 -->
+  <div class="back" onclick="goBack()" aria-label="العودة للصفحة السابقة">⬅ رجوع</div>
+</div>
+
+<div class="container">
+
+<div class="card">
+  <div class="data-field" id="phone" aria-label="رقم الإيداع">01069806835</div>
+  <button onclick="copyText('phone')" aria-label="نسخ رقم الإيداع">نسخ رقم الإيداع</button>
+
+  <br>
+
+  <div class="data-field" id="wallet" aria-label="عنوان محفظة USDT">TPNgUyRe7GSnazUzakRU3egEU4XBS7Pu5h</div>
+  <button onclick="copyText('wallet')" aria-label="نسخ عنوان محفظة USDT">نسخ عنوان محفظة USDT</button>
+
+  <div class="note">💱 ملحوظة: 1$ = 50 جنيه</div>
+</div>
+
+<div class="card">
+
+<label for="method" class="visually-hidden" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;">اختر طريقة الإيداع</label>
+<select id="method" onchange="changePlaceholder()" aria-label="اختر طريقة الإيداع">
+  <option value="">اختر طريقة الإيداع</option>
+  <option>فودافون كاش</option>
+  <option>اتصالات كاش</option>
+  <option>اورنج كاش</option>
+  <option>USDT</option>
+</select>
+
+<label for="fromNumber" class="visually-hidden" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;">أدخل الرقم الذي تم التحويل منه أو عنوان المحفظة</label>
+<input type="text" id="fromNumber" placeholder="أدخل الرقم الذي تم التحويل منه" aria-label="أدخل الرقم الذي تم التحويل منه أو عنوان المحفظة">
+
+<label for="amount" class="visually-hidden" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;">أدخل مبلغ الإيداع بالجنيه</label>
+<input type="number" id="amount" placeholder="أدخل مبلغ الإيداع بالجنيه" oninput="calcCoins()" aria-label="أدخل مبلغ الإيداع بالجنيه">
+
+<div class="coins-result" id="coinsResult" aria-live="polite"></div>
+
+<label for="proof" class="visually-hidden" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;">صورة إثبات التحويل</label>
+<input type="file" id="proof" accept="image/*" aria-label="صورة إثبات التحويل">
+
+<button onclick="confirmDeposit()" aria-label="تأكيد الإيداع">تم تأكيد الإيداع</button>
+
+<div class="success" id="successMsg" role="status">✔ تم إرسال طلب الإيداع بنجاح وتم إضافة الرصيد</div>
+<div class="error" id="errorMsg" role="alert"></div>
+
+<div class="note">يرجى رفع صورة إثبات التحويل لتأكيد الإيداع</div>
+
+</div>
+
+<button onclick="location.href='dashboard.html'" aria-label="العودة للوحة التحكم">العودة للوحة التحكم</button>
+
+</div>
+
+<script>
+const minAmount = 50;
+
+function copyText(id){
+  let text=document.getElementById(id).innerText;
+  navigator.clipboard.writeText(text);
+  alert("تم النسخ ✔");
+}
+
+function changePlaceholder(){
+  let method=document.getElementById("method").value;
+  let input=document.getElementById("fromNumber");
+  if(method==="USDT"){
+    input.placeholder="أدخل عنوان محفظتك الخاصة بك";
+  }else{
+    input.placeholder="أدخل الرقم الذي تم التحويل منه";
+  }
+}
+
+function calcCoins(){
+  let amount=document.getElementById("amount").value;
+  let result=document.getElementById("coinsResult");
+
+  if(amount && amount>0){
+    if(amount<minAmount){
+      result.innerText="أقل إيداع 50 جنيه";
+    }else{
+      let coins=amount*2;
+
+      let depositCount=localStorage.getItem("depositCount")?
+      parseInt(localStorage.getItem("depositCount")):0;
+
+      if(depositCount<3){
+        coins+=Math.floor(coins*0.5);
+        result.innerText="🔥 عرض ترحيبي! سيتم إضافة "+coins+" Coins";
+      }else{
+        result.innerText="سيتم إضافة "+coins+" Coins";
+      }
+    }
+  }else{
+    result.innerText="";
+  }
+}
+
+function confirmDeposit(){
+
+  let method=document.getElementById("method").value;
+  let fromNumber=document.getElementById("fromNumber").value;
+  let amount=parseInt(document.getElementById("amount").value);
+  let proof=document.getElementById("proof").files[0];
+  let error=document.getElementById("errorMsg");
+
+  error.style.display="none";
+
+  if(method==""||fromNumber==""||!amount||!proof){
+    error.innerText="يرجى إدخال جميع البيانات ورفع صورة الإثبات";
+    error.style.display="block";
+    return;
+  }
+
+  if(amount<minAmount){
+    error.innerText="أقل مبلغ للإيداع هو 50 جنيه";
+    error.style.display="block";
+    return;
+  }
+
+  let coins=amount*2;
+
+  if(amount>=200){
+    coins+=Math.floor(coins*0.25);
+  }
+
+  let depositCount=localStorage.getItem("depositCount")?
+  parseInt(localStorage.getItem("depositCount")):0;
+
+  if(depositCount<3){
+    coins+=Math.floor(coins*0.5);
+  }
+
+  let currentCoins=localStorage.getItem("coins")?
+  parseInt(localStorage.getItem("coins")):0;
+
+  currentCoins+=coins;
+
+  localStorage.setItem("coins",currentCoins);
+  localStorage.setItem("depositCount",depositCount+1);
+
+  let xp=localStorage.getItem("xp")?
+  parseInt(localStorage.getItem("xp")):0;
+
+  xp+=Math.floor(amount/10);
+  localStorage.setItem("xp",xp);
+
+  if(depositCount+1>=3){
+    localStorage.setItem("vip","true");
+  }
+
+  window.dispatchEvent(new Event("storage"));
+
+  document.getElementById("successMsg").style.display="block";
+
+  setTimeout(function(){
+    window.location.href="dashboard.html";
+  },1500);
+}
+
+function goBack(){
+  if(document.referrer){
+    history.back();
+  }else{
+    location.href="dashboard.html";
+  }
+}
+</script>
+
+<!-- الأجزاء التي تحتاج تغيير (تلخيص) -->
+<!--
+  1. روابط الصور الاجتماعية (og:image, twitter:image) استبدل yourdomain.com بالرابط الفعلي لصورك.
+  2. روابط URL (og:url, canonical, JSON-LD) استبدل yourdomain.com بنطاق موقعك.
+  3. حساب تويتر (twitter:site) غيّره إلى حسابك أو احذفه.
+  4. أرقام الإيداع وعنوان المحفظة (data-field) استبدلها ببياناتك الفعلية.
+  5. نص الملحوظة 1$ = 50 جنيه يمكن تعديله حسب سعر الصرف الفعلي.
+-->
+</body>
+</html>

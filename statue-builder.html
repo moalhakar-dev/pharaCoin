@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- === تحسينات SEO محسنة === -->
+    <title>تجميع التمثال - PharaCoin | ابنِ تمثال الفرعون واربح المكافآت</title>
+    <meta name="description" content="مرحلة تجميع التمثال في لعبة PharaCoin: استخدم محاولاتك اليومية لشراء أجزاء التمثال، انتظر 20 دقيقة، ثم اجمع مكافأة 15 Coins. افتح جميع الخمس خانات لتكمل التمثال.">
+    <meta name="keywords" content="PharaCoin, تجميع التمثال, لعبة, أجزاء, مكافآت, محاولات يومية">
+    <meta name="author" content="PharaCoin Team">
+    <meta name="robots" content="index, follow">
+
+    <!-- === بطاقات المشاركة الاجتماعية (Open Graph / Twitter) === -->
+    <meta property="og:title" content="تجميع التمثال - PharaCoin">
+    <meta property="og:description" content="ابنِ تمثال الفرعون خطوة بخطوة واربح مكافآت يومية.">
+    <meta property="og:image" content="https://yourdomain.com/og-image.jpg"> <!-- استبدل بالرابط الفعلي لصورة الشعار -->
+    <meta property="og:url" content="https://yourdomain.com/statue-builder.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="PharaCoin">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="تجميع التمثال - PharaCoin">
+    <meta name="twitter:description" content="ابنِ تمثال الفرعون خطوة بخطوة واربح مكافآت يومية.">
+    <meta name="twitter:image" content="https://yourdomain.com/twitter-image.jpg"> <!-- استبدل بالرابط الفعلي لصورة الشعار -->
+    <meta name="twitter:site" content="@PharaCoinApp">
+
+    <!-- === الرابط الأساسي (Canonical) === -->
+    <link rel="canonical" href="https://yourdomain.com/statue-builder.html">
+
+    <!-- === البيانات المنظمة (Structured Data) لصفحة "كيفية التجميع" === -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        "name": "كيفية تجميع التمثال في PharaCoin",
+        "description": "خطوات بسيطة لتجميع أجزاء التمثال والحصول على المكافآت.",
+        "totalTime": "PT20M",
+        "step": [
+            {
+                "@type": "HowToStep",
+                "name": "اختر خانة",
+                "text": "اختر إحدى الخانات المتاحة (VIP تتطلب اشتراكاً مميزاً).",
+                "url": "https://yourdomain.com/statue-builder.html#step1"
+            },
+            {
+                "@type": "HowToStep",
+                "name": "اشترِ الجزء",
+                "text": "ادفع 50 Coins لشراء الجزء، مع استهلاك محاولة من محاولاتك اليومية.",
+                "url": "https://yourdomain.com/statue-builder.html#step2"
+            },
+            {
+                "@type": "HowToStep",
+                "name": "انتظر 20 دقيقة",
+                "text": "بعد الشراء، يبدأ مؤقت 20 دقيقة. يمكنك متابعة التقدم عبر شريط التقدم.",
+                "url": "https://yourdomain.com/statue-builder.html#step3"
+            },
+            {
+                "@type": "HowToStep",
+                "name": "اجمع المكافأة",
+                "text": "بعد انتهاء المؤقت، لديك دقيقة واحدة لجمع مكافأة 15 Coins قبل إعادة ضبط الخانة.",
+                "url": "https://yourdomain.com/statue-builder.html#step4"
+            }
+        ]
+    }
+    </script>
+
+    <!-- الخطوط والأنماط (كما هي) -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
+    <style>
+        /* جميع الأنماط السابقة مع إضافة الخلفية الجديدة */
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{
+          font-family:'Cairo',sans-serif;
+          background:#0a0a0a;
+          min-height:100vh;
+          overflow-x:hidden;
+        }
+        /* الخلفية الجديدة - نفس أسلوب صفحات التحويل */
+        .page-bg{
+          position:fixed;
+          inset:0;
+          z-index:-2;
+          background-size:cover;
+          background-position:center;
+          background-repeat:no-repeat;
+        }
+        .page-bg::after{
+          content:'';
+          position:absolute;
+          inset:0;
+          background:linear-gradient(180deg, rgba(0,0,0,0.2), rgba(0,0,0,0.7));
+          pointer-events:none;
+        }
+        /* إزالة أو تعطيل النمط القديم bg-pattern */
+        .bg-pattern{
+          display: none;
+        }
+
+        /* شريط التنقل */
+        .top-bar{
+          position:fixed;top:0;left:0;right:0;z-index:100;
+          background:linear-gradient(135deg, rgba(0,0,0,0.95), rgba(20,20,20,0.98));
+          border-bottom:1px solid rgba(255,215,0,0.2);
+          padding:10px 20px;
+          display:flex;align-items:center;justify-content:space-between;
+          backdrop-filter:blur(15px);
+        }
+        .top-bar .nav-links{display:flex;gap:8px;}
+        .top-bar a{
+          color:#ccc;text-decoration:none;font-size:13px;font-weight:600;
+          padding:6px 14px;border-radius:8px;transition:all 0.3s;border:1px solid transparent;
+        }
+        .top-bar a:hover{color:gold;border-color:rgba(255,215,0,0.3);background:rgba(255,215,0,0.05);}
+        .top-bar a.active{color:gold;border-color:rgba(255,215,0,0.4);background:rgba(255,215,0,0.1);}
+        .top-bar .coin-display{
+          display:flex;align-items:center;gap:8px;color:#00ff9d;font-size:16px;font-weight:700;
+        }
+        .coin-icon{
+          width:26px;height:26px;background:linear-gradient(135deg,#FFD700,#FFA500);
+          border-radius:50%;display:flex;align-items:center;justify-content:center;
+          font-size:13px;box-shadow:0 0 12px rgba(255,215,0,0.4);
+        }
+
+        /* المحتوى */
+        .content{
+          position:relative;z-index:1;
+          padding:80px 20px 30px;
+          max-width:600px;margin:0 auto;
+        }
+        .page-header{
+          text-align:center;margin-bottom:30px;
+          animation:fadeInDown 0.6s ease-out;
+        }
+        @keyframes fadeInDown{from{opacity:0;transform:translateY(-20px);}to{opacity:1;transform:translateY(0);}}
+        .page-header h1{
+          font-size:30px;font-weight:900;
+          background:linear-gradient(135deg,#FFD700,#FFA500);
+          -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+          margin-bottom:5px;
+        }
+        .page-header p{color:#666;font-size:14px;}
+
+        /* عداد المحاولات */
+        .attempts-counter{
+          color:#FFD700;
+          font-size:16px;
+          margin-top:10px;
+          background:rgba(255,215,0,0.1);
+          padding:6px 15px;
+          border-radius:30px;
+          display:inline-block;
+          border:1px solid rgba(255,215,0,0.3);
+        }
+
+        /* عنوان القسم (تمت إضافته) */
+        h2.slots-title{
+          color:gold;
+          font-size:20px;
+          margin:20px 0 10px;
+          text-align:center;
+        }
+
+        /* خانات التجميع */
+        .slots{
+          display:flex;justify-content:center;gap:15px;flex-wrap:wrap;
+          margin-top:20px;
+          min-height:200px;
+        }
+        .slot{
+          width:110px;
+          background:linear-gradient(145deg,#111,#1a1a1a);
+          border:2px solid rgba(255,215,0,0.3);
+          border-radius:16px;
+          padding:10px;
+          text-align:center;
+          cursor:pointer;
+          transition:all 0.4s cubic-bezier(0.4,0,0.2,1);
+          position:relative;
+          animation:slotIn 0.5s ease-out backwards;
+          box-shadow:0 4px 10px rgba(0,0,0,0.5);
+        }
+        .slot:nth-child(1){animation-delay:0.1s;}
+        .slot:nth-child(2){animation-delay:0.2s;}
+        .slot:nth-child(3){animation-delay:0.3s;}
+        .slot:nth-child(4){animation-delay:0.4s;}
+        .slot:nth-child(5){animation-delay:0.5s;}
+        @keyframes slotIn{from{opacity:0;transform:scale(0.8) translateY(20px);}to{opacity:1;transform:scale(1) translateY(0);}}
+
+        .slot:hover{transform:translateY(-5px);box-shadow:0 10px 30px rgba(255,215,0,0.15);}
+
+        .slot-img{
+          width:90px;height:90px;
+          background:#0a0a0a;border-radius:12px;
+          margin:0 auto 8px;overflow:hidden;
+          border:1px solid rgba(255,215,0,0.15);
+          display:flex;align-items:center;justify-content:center;
+          font-size:40px;
+          color:#FFD700;
+          text-shadow:0 0 8px rgba(255,215,0,0.5);
+        }
+        .slot-img img{width:100%;height:100%;object-fit:cover;}
+
+        .slot-label{
+          color:#888;font-size:14px;margin-bottom:6px;
+          font-weight:600;
+        }
+
+        /* شريط التقدم */
+        .progress-bar{
+          width:100%;height:6px;background:#222;border-radius:3px;overflow:hidden;margin-bottom:6px;
+          display:none;
+        }
+        .progress-fill{
+          height:100%;width:0%;
+          background:linear-gradient(90deg,#FFD700,#FFA500);
+          border-radius:3px;transition:width 1s linear;
+        }
+
+        .timer-text{
+          color:#FFD700;font-size:11px;font-weight:600;
+          min-height:16px;
+        }
+
+        /* زر المكافأة */
+        .reward-btn{
+          display:none;
+          margin-top:6px;
+          background:linear-gradient(135deg,#FFD700,#FFA500);
+          color:#000;border:none;
+          padding:6px 12px;border-radius:8px;
+          font-size:12px;font-weight:700;font-family:'Cairo';
+          cursor:pointer;transition:all 0.3s;
+          animation:rewardGlow 1s infinite;
+        }
+        @keyframes rewardGlow{
+          0%,100%{box-shadow:0 0 10px rgba(255,215,0,0.4);}
+          50%{box-shadow:0 0 25px rgba(255,215,0,0.8),0 0 50px rgba(255,165,0,0.3);}
+        }
+        .reward-btn:hover{transform:scale(1.05);}
+
+        .reward-expire{
+          color:#ff6b6b;font-size:10px;margin-top:3px;display:none;
+        }
+
+        /* المقفول */
+        .slot.locked{
+          border:2px dashed #333;
+          opacity:0.7;
+        }
+        .slot.locked:hover{transform:none;box-shadow:none;}
+        .slot.locked .slot-img{background:#080808; color:#666;}
+        .slot.locked .slot-label{color:#666;}
+
+        /* حالة نشطة */
+        @keyframes pulseGold{
+          0%{box-shadow:0 0 10px rgba(255,215,0,0.2);}
+          50%{box-shadow:0 0 25px rgba(255,215,0,0.5),0 0 50px rgba(255,165,0,0.2);}
+          100%{box-shadow:0 0 10px rgba(255,215,0,0.2);}
+        }
+        .slot.active{
+          border-color:#FFD700;
+          animation:pulseGold 1.5s infinite;
+        }
+
+        /* المودال العام */
+        .modal-overlay{
+          position:fixed;inset:0;z-index:200;
+          background:rgba(0,0,0,0.7);
+          display:flex;align-items:center;justify-content:center;
+          visibility:hidden;opacity:0;
+          transition:all 0.3s;
+          backdrop-filter:blur(5px);
+        }
+        .modal-overlay.show{visibility:visible;opacity:1;}
+        .modal-overlay.show .modal-box{transform:scale(1);opacity:1;}
+
+        .modal-box{
+          background:linear-gradient(145deg,#1a1a1a,#111);
+          border:1px solid rgba(255,215,0,0.3);
+          border-radius:20px;padding:30px;
+          text-align:center;width:320px;
+          box-shadow:0 20px 60px rgba(0,0,0,0.5),0 0 30px rgba(255,215,0,0.1);
+          transform:scale(0.8);opacity:0;
+          transition:all 0.4s cubic-bezier(0.4,0,0.2,1);
+          position:relative;overflow:hidden;
+        }
+        .modal-box::before{
+          content:'';position:absolute;top:0;left:0;right:0;height:3px;
+          background:linear-gradient(90deg,transparent,#FFD700,transparent);
+        }
+        .modal-box h3{
+          color:#FFD700;font-size:22px;margin-bottom:5px;
+        }
+        .modal-box p{
+          color:#aaa;font-size:14px;margin-bottom:15px;
+        }
+        .modal-actions{
+          display:flex;flex-direction:column;gap:10px;margin:20px 0;
+        }
+        .modal-btn{
+          background:linear-gradient(135deg,#FFD700,#FFA500);
+          color:#000;border:none;padding:12px;border-radius:12px;
+          font-size:16px;font-weight:700;font-family:'Cairo';cursor:pointer;
+          transition:all 0.3s;box-shadow:0 5px 15px rgba(255,215,0,0.3);
+          text-decoration:none;display:block;
+        }
+        .modal-btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(255,215,0,0.4);}
+        .modal-btn.secondary{
+          background:transparent;
+          border:2px solid #FFD700;
+          color:#FFD700;
+          box-shadow:none;
+        }
+        .modal-btn.secondary:hover{background:rgba(255,215,0,0.1);}
+        .close-btn{
+          background:#222;color:#aaa;border:1px solid #333;
+          padding:8px 20px;border-radius:10px;font-size:14px;font-weight:600;
+          cursor:pointer;transition:all 0.3s;margin-top:5px;
+        }
+        .close-btn:hover{background:#333;color:white;}
+
+        /* Toast */
+        .toast-container{
+          position:fixed;top:65px;left:50%;transform:translateX(-50%);
+          z-index:999;display:flex;flex-direction:column;gap:10px;pointer-events:none;
+        }
+        .toast{
+          background:linear-gradient(135deg,#1a1a1a,#222);
+          border:1px solid rgba(255,215,0,0.3);border-radius:12px;
+          padding:12px 20px;color:white;font-family:'Cairo';font-size:14px;
+          box-shadow:0 10px 40px rgba(0,0,0,0.5);
+          animation:toastIn 0.4s ease-out,toastOut 0.4s ease-in 2.5s forwards;
+          display:flex;align-items:center;gap:10px;white-space:nowrap;
+        }
+        .toast.success{border-color:#00ff9d;}
+        .toast.error{border-color:#ff4444;}
+        @keyframes toastIn{from{opacity:0;transform:translateY(-20px);}to{opacity:1;transform:translateY(0);}}
+        @keyframes toastOut{from{opacity:1;}to{opacity:0;transform:translateY(-20px);}}
+
+        @media(max-width:500px){
+          .page-header h1{font-size:24px;}
+          .slots{gap:10px;}
+          .slot{width:95px;}
+          .slot-img{width:75px;height:75px; font-size:35px;}
+        }
+        .footer-links {
+          text-align: center;
+          margin: 20px 16px;
+          padding: 10px;
+          background: rgba(0,0,0,0.5);
+          border-radius: 10px;
+          font-size: 12px;
+        }
+        .footer-links a {
+          color: gold;
+          text-decoration: none;
+          margin: 0 5px;
+        }
+        .footer-links a:hover {
+          text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<!-- الخلفية الجديدة -->
+<div class="page-bg" id="pageBg"></div>
+
+<div class="top-bar">
+  <div class="nav-links">
+    <a href="dashboard.html">🏠 الرئيسية</a>
+    <a href="museum.html">🏺 المتحف</a>
+    <a href="statue-builder.html" class="active">⚒️ التجميع</a>
+  </div>
+  <div class="coin-display">
+    <div class="coin-icon">💰</div>
+    <span id="coinCount">0</span>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<div class="content">
+  <div class="page-header">
+    <h1>⚒️ تجميع التمثال</h1>
+    <p>اختر خانة وابدأ ببناء تمثالك</p>
+    <!-- عداد المحاولات المتبقية -->
+    <div class="attempts-counter">
+      ⚡ محاولات متبقية: <span id="attemptsCount">5</span>
+    </div>
+  </div>
+
+  <!-- تمت إضافة عنوان h2 للقسم -->
+  <h2 class="slots-title">خانات التجميع</h2>
+
+  <div class="slots" id="slotsGrid"></div>
+</div>
+
+<!-- مودال الشراء العادي -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-box">
+    <h3>⚒️ إضافة جزء جديد</h3>
+    <p>هل تريد إضافة الجزء إلى هذه الخانة؟</p>
+    <div class="modal-price">💰 <span id="modalPrice">50</span> Coins</div>
+    <div class="modal-btns">
+      <button class="btn-confirm" onclick="confirmAdd()" aria-label="تأكيد الشراء">✅ نعم، أضف</button>
+      <button class="btn-cancel" onclick="closeModal()" aria-label="إلغاء">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<!-- مودال انتهت المحاولات -->
+<div class="modal-overlay" id="attemptsModal">
+  <div class="modal-box">
+    <h3>⚠️ انتهت المحاولات</h3>
+    <p>لقد استنفذت جميع محاولاتك اليومية. اختر إحدى الطرق لاستكمال التجميع:</p>
+    <div class="modal-actions">
+      <a href="deposit.html" class="modal-btn" aria-label="إيداع أي مبلغ">💰 إيداع أي مبلغ</a>
+      <a href="invite.html" class="modal-btn secondary" aria-label="دعوة 10 أصدقاء">👥 دعوة 10 أصدقاء خلال 24 ساعة</a>
+    </div>
+    <button class="close-btn" onclick="closeAttemptsModal()" aria-label="تذكير لاحقاً">تذكير لاحقاً</button>
+  </div>
+</div>
+
+<!-- روابط إضافية أسفل الصفحة (محسنة مع عناوين وصفية) -->
+<div class="footer-links">
+  <a href="convert.html" title="تحويل العملات">💱 تحويل العملات</a> |
+  <a href="contact.html" title="تواصل معنا">📞 تواصل معنا</a> |
+  <a href="about.html" title="من نحن">ℹ️ من نحن</a> |
+  <a href="faq.html" title="الأسئلة الشائعة">❓ الأسئلة الشائعة</a> |
+  <a href="terms.html" title="شروط الاستخدام">📜 الشروط</a> |
+  <a href="privacy.html" title="سياسة الخصوصية">🔒 الخصوصية</a>
+</div>
+
+<script>
+// ==================== تهيئة المتغيرات والعناصر أولاً ====================
+let coins = 200;
+let dailyAttempts = 5;
+let currentUser = null;
+let selectedSlot = null;
+const intervals = {};
+const SLOT_PRICE = 50;
+const SLOT_REWARD = 15;
+const TIMER_DURATION = 20 * 60 * 1000; // 20 دقيقة
+const REWARD_DURATION = 60 * 1000; // دقيقة واحدة
+
+// ==================== أصوات ====================
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let audioCtx = null;
+try {
+  audioCtx = new AudioCtx();
+} catch (e) {
+  console.log("Web Audio API not supported");
+}
+
+function playSound(freq, dur, type = 'sine') {
+  if (!audioCtx) return;
+  try {
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.connect(g);
+    g.connect(audioCtx.destination);
+    o.type = type;
+    o.frequency.setValueAtTime(freq, audioCtx.currentTime);
+    g.gain.setValueAtTime(0.12, audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + dur);
+    o.start();
+    o.stop(audioCtx.currentTime + dur);
+  } catch (e) {}
+}
+function playClick() { playSound(600, 0.1); }
+function playBuy() { playSound(523, 0.1); setTimeout(() => playSound(659, 0.1), 100); setTimeout(() => playSound(784, 0.15), 200); }
+function playReward() { playSound(784, 0.1); setTimeout(() => playSound(988, 0.1), 100); setTimeout(() => playSound(1175, 0.2), 200); }
+function playError() { playSound(200, 0.2, 'square'); }
+
+// ==================== Toast ====================
+function showToast(msg, type = 'success') {
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  t.innerHTML = (type === 'success' ? '✅' : '❌') + ' ' + msg;
+  document.getElementById('toastContainer').appendChild(t);
+  setTimeout(() => t.remove(), 3000);
+}
+
+// ==================== تحديث عرض العملات والمحاولات ====================
+function updateCoinDisplay() {
+  document.getElementById("coinCount").innerText = coins;
+}
+function updateAttemptsDisplay() {
+  document.getElementById("attemptsCount").innerText = dailyAttempts;
+}
+
+// ==================== التحقق من ظهور مودال انتهاء المحاولات ====================
+function checkAndShowAttemptsModal() {
+  if (dailyAttempts <= 0) {
+    document.getElementById('attemptsModal').classList.add('show');
+  }
+}
+
+function closeAttemptsModal() {
+  document.getElementById('attemptsModal').classList.remove('show');
+}
+
+// ==================== بناء الخانات ====================
+const slotsGrid = document.getElementById("slotsGrid");
+const slotsData = [
+  { id: 0, locked: false },
+  { id: 1, locked: false },
+  { id: 2, locked: true },
+  { id: 3, locked: true },
+  { id: 4, locked: true }
+];
+
+function buildSlots() {
+  slotsGrid.innerHTML = '';
+  slotsData.forEach(s => {
+    const div = document.createElement("div");
+    div.className = "slot" + (s.locked ? " locked" : "");
+    div.id = "slot" + s.id;
+    div.setAttribute('aria-label', s.locked ? 'خانة VIP مقفولة' : 'خانة ' + (s.id + 1));div.innerHTML = `
+      <div class="slot-img" id="slotImg${s.id}">${s.locked ? '🔒' : '➕'}</div>
+      <div class="slot-label">${s.locked ? 'VIP 🔒' : 'خانة ' + (s.id + 1)}</div>
+      <div class="progress-bar" id="progress${s.id}"><div class="progress-fill" id="progressFill${s.id}"></div></div>
+      <div class="timer-text" id="timer${s.id}"></div>
+      <button class="reward-btn" id="rewardBtn${s.id}" onclick="event.stopPropagation();collectReward(${s.id})" aria-label="جمع المكافأة">🎁 جمع ${SLOT_REWARD} Coins</button>
+      <div class="reward-expire" id="rewardExpire${s.id}"></div>
+    `;
+    if (s.locked) {
+      div.onclick = () => { playClick(); showToast('هذه الخانة لمستخدمي VIP فقط 🔒', 'error'); };
+    } else {
+      div.onclick = () => { playClick(); openSlot(s.id); };
+    }
+    slotsGrid.appendChild(div);
+  });
+  console.log("✅ تم بناء المربعات");
+}
+
+// تنفيذ البناء فوراً
+buildSlots();
+updateCoinDisplay();
+updateAttemptsDisplay();
+// التحقق من حالة المحاولات عند التحميل
+checkAndShowAttemptsModal();
+
+// ==================== إخفاء أي رسالة "تم استخدام التخزين المحلي" ====================
+document.querySelectorAll('*').forEach(el => {
+  if (el.childNodes.length && el.childNodes[0]?.nodeType === 3 && el.childNodes[0].textContent.includes('تم استخدام التخزين المحلي')) {
+    el.style.display = 'none';
+  }
+});
+
+// ==================== دوال التفاعل ====================
+function openSlot(index) {
+  if (localStorage.getItem("endTime" + index)) { return; }
+  selectedSlot = index;
+  document.getElementById("modalPrice").innerText = SLOT_PRICE;
+  document.getElementById("modal").classList.add("show");
+}
+
+function closeModal() {
+  document.getElementById("modal").classList.remove("show");
+}
+
+function activateSlot(index) {
+  const slot = document.getElementById("slot" + index);
+  const img = document.getElementById("slotImg" + index);
+  slot.classList.add("active");
+  img.innerHTML = `<img src="Object/statue1_part${index + 1}.jpg" onerror="this.onerror=null; this.parentElement.innerHTML='⚒️';">`;
+  document.getElementById("progress" + index).style.display = "block";
+}
+
+function startTimer(index) {
+  let endTime = parseInt(localStorage.getItem("endTime" + index));
+  if (!endTime) return;
+
+  const totalDuration = TIMER_DURATION;
+
+  intervals[index] = setInterval(() => {
+    let remaining = endTime - Date.now();
+    if (remaining <= 0) {
+      clearInterval(intervals[index]);
+      document.getElementById("timer" + index).innerText = "✅ جاهز!";
+      document.getElementById("progressFill" + index).style.width = "100%";
+      showReward(index);
+      return;
+    }
+    let elapsed = totalDuration - remaining;
+    let pct = Math.min((elapsed / totalDuration) * 100, 100);
+    document.getElementById("progressFill" + index).style.width = pct + "%";
+
+    let m = Math.floor(remaining / 1000 / 60);
+    let s = Math.floor((remaining / 1000) % 60);
+    document.getElementById("timer" + index).innerText = `⏳ ${m}:${s < 10 ? "0" + s : s}`;
+  }, 1000);
+}
+
+function showReward(index) {
+  playReward();
+  const btn = document.getElementById("rewardBtn" + index);
+  const expire = document.getElementById("rewardExpire" + index);
+  btn.style.display = "inline-block";
+  expire.style.display = "block";
+
+  let rewardEnd = Date.now() + REWARD_DURATION;
+  localStorage.setItem("rewardTime" + index, rewardEnd);
+
+  intervals["reward" + index] = setInterval(() => {
+    let remaining = rewardEnd - Date.now();
+    if (remaining <= 0) {
+      clearInterval(intervals["reward" + index]);
+      btn.style.display = "none";
+      expire.style.display = "none";
+      localStorage.removeItem("rewardTime" + index);
+      resetSlot(index);
+      return;
+    }
+    expire.innerText = "ينتهي خلال " + Math.ceil(remaining / 1000) + "ث";
+  }, 1000);
+}
+
+function resetSlot(index) {
+  localStorage.removeItem("endTime" + index);
+  const slot = document.getElementById("slot" + index);
+  slot.classList.remove("active");
+  document.getElementById("slotImg" + index).innerHTML = "➕";
+  document.getElementById("progress" + index).style.display = "none";
+  document.getElementById("progressFill" + index).style.width = "0%";
+  document.getElementById("timer" + index).innerText = "";
+}
+
+// ==================== دالة تأكيد الشراء ====================
+async function confirmAdd() {
+  // التحقق من المحاولات اليومية
+  if (dailyAttempts <= 0) {
+    playError();
+    showToast('لقد استنفذت محاولاتك اليومية', 'error');
+    closeModal();
+    checkAndShowAttemptsModal(); // إظهار المودال المناسب
+    return;
+  }
+
+  if (coins < SLOT_PRICE) {
+    playError();
+    showToast('رصيد غير كافي! تحتاج ' + SLOT_PRICE + ' Coins', 'error');
+    closeModal();
+    return;
+  }
+
+  playBuy();
+
+  // خصم العملة وتقليل المحاولات
+  coins -= SLOT_PRICE;
+  dailyAttempts--;
+  updateCoinDisplay();
+  updateAttemptsDisplay();
+
+  // حفظ في localStorage
+  localStorage.setItem('pharaCoin_coins', coins);
+  localStorage.setItem('pharaCoin_attempts', dailyAttempts);
+
+  activateSlot(selectedSlot);
+  let endTime = Date.now() + TIMER_DURATION;
+  localStorage.setItem("endTime" + selectedSlot, endTime);
+  startTimer(selectedSlot);
+  closeModal();
+  showToast('تم إضافة الجزء بنجاح! ⏳ (محاولات متبقية: ' + dailyAttempts + ')');
+
+  // إذا أصبحت المحاولات صفر بعد الخصم، أظهر المودال
+  if (dailyAttempts === 0) {
+    checkAndShowAttemptsModal();
+  }
+}
+
+async function collectReward(index) {
+  playReward();
+
+  coins += SLOT_REWARD;
+  updateCoinDisplay();
+  localStorage.setItem('pharaCoin_coins', coins);
+
+  document.getElementById("rewardBtn" + index).style.display = "none";
+  document.getElementById("rewardExpire" + index).style.display = "none";
+  clearInterval(intervals["reward" + index]);
+  localStorage.removeItem("rewardTime" + index);
+  showToast('تم إضافة ' + SLOT_REWARD + ' Coins! 🎉');
+  resetSlot(index);
+}
+
+// ==================== استعادة الحالة المحفوظة محلياً ====================
+function restoreLocalState() {
+  let savedCoins = localStorage.getItem('pharaCoin_coins');
+  if (savedCoins) coins = parseInt(savedCoins);
+  let savedAttempts = localStorage.getItem('pharaCoin_attempts');
+  if (savedAttempts) dailyAttempts = parseInt(savedAttempts);
+  updateCoinDisplay();
+  updateAttemptsDisplay();
+
+  // استعادة حالة الخانات
+  for (let i = 0; i < 2; i++) {
+    if (localStorage.getItem("endTime" + i)) {
+      let endTime = parseInt(localStorage.getItem("endTime" + i));
+      if (endTime > Date.now()) {
+        activateSlot(i);
+        startTimer(i);
+      } else {
+        document.getElementById("timer" + i).innerText = "✅ جاهز!";
+        document.getElementById("progressFill" + i).style.width = "100%";
+        let rewardTime = localStorage.getItem("rewardTime" + i);
+        if (rewardTime && parseInt(rewardTime) > Date.now()) {
+          showReward(i);
+        } else {
+          resetSlot(i);
+        }
+      }
+    }
+  }
+
+  // التحقق من ظهور مودال انتهاء المحاولات
+  checkAndShowAttemptsModal();
+}
+
+// استدعاء استعادة الحالة
+restoreLocalState();
+
+// ==================== تحميل الخلفية (مثل صفحة التحويل) ====================
+const bg = document.getElementById('pageBg');
+const localImg = "Object/qa.jpg";
+const fallbackImg = "https://images.pexels.com/photos/3350783/pexels-photo-3350783.jpeg?auto=compress&cs=tinysrgb&w=1260";
+const img = new Image();
+img.onload = ()=> bg.style.backgroundImage = `url('${localImg}')`;
+img.onerror = ()=> bg.style.backgroundImage = `url('${fallbackImg}')`;
+img.src = localImg + "?v=" + Date.now(); // تجنب التخزين المؤقت
+</script>
+
+</body>
+</html>
+    

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- === تحسينات SEO محسنة === -->
+    <title>دعوة الأصدقاء - PharaCoin | اربح 50 كوين لكل صديق</title>
+    <meta name="description" content="ادعُ أصدقاءك إلى PharaCoin واربح 50 كوين عن كل صديق يسجل عبر رابطك. تتبع دعواتك وأرباحك في لوحة الإحصائيات.">
+    <meta name="keywords" content="PharaCoin, دعوة الأصدقاء, برنامج الإحالة, كوينز, مكافآت">
+    <meta name="author" content="PharaCoin Team">
+    <meta name="robots" content="index, follow">
+
+    <!-- === بطاقات المشاركة الاجتماعية (Open Graph / Twitter) === -->
+    <!-- ====================== غير هذه الروابط ====================== -->
+    <meta property="og:title" content="دعوة الأصدقاء - PharaCoin">
+    <meta property="og:description" content="ادعُ أصدقاءك واربح 50 كوين عن كل صديق. سجل الآن وابدأ بجمع المكافآت.">
+    <!-- غير الرابط التالي إلى رابط الصورة التي تريد ظهورها عند المشاركة (مثل شعار الموقع) -->
+    <meta property="og:image" content="https://yourdomain.com/og-image.jpg">   <!-- قم بتغيير yourdomain.com إلى نطاقك الفعلي وحدد مسار الصورة -->
+    <!-- غير الرابط التالي إلى رابط هذه الصفحة على موقعك الفعلي -->
+    <meta property="og:url" content="https://yourdomain.com/invite.html">       <!-- غيّر yourdomain.com إلى اسم موقعك -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="PharaCoin">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="دعوة الأصدقاء - PharaCoin">
+    <meta name="twitter:description" content="ادعُ أصدقاءك واربح 50 كوين عن كل صديق.">
+    <!-- غير الرابط التالي إلى رابط الصورة المخصصة لتويتر (يمكن أن تكون نفس الصورة أعلاه) -->
+    <meta name="twitter:image" content="https://yourdomain.com/twitter-image.jpg"> <!-- غيّر yourdomain.com ومسار الصورة -->
+    <meta name="twitter:site" content="@PharaCoinApp">                         <!-- غيّر @PharaCoinApp إلى حساب تويتر الخاص بك إن وجد -->
+    <!-- ================================================================= -->
+
+    <!-- === الرابط الأساسي (Canonical) === -->
+    <!-- غيّر الرابط التالي إلى رابط هذه الصفحة على موقعك الفعلي -->
+    <link rel="canonical" href="https://yourdomain.com/invite.html">   <!-- غيّر yourdomain.com إلى نطاقك -->
+
+    <!-- === البيانات المنظمة (Structured Data) لصفحة الدعوة === -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "دعوة الأصدقاء - PharaCoin",
+        "description": "صفحة دعوة الأصدقاء في منصة PharaCoin، حيث يمكنك دعوة أصدقائك عبر رابط فريد والحصول على مكافآت.",
+        "url": "https://yourdomain.com/invite.html",          <!-- غيّر yourdomain.com -->
+        "isPartOf": {
+            "@type": "WebSite",
+            "name": "PharaCoin",
+            "url": "https://yourdomain.com"                   <!-- غيّر yourdomain.com -->
+        }
+    }
+    </script>
+
+    <!-- الخطوط والأنماط -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
+
+        body{
+          font-family:'Cairo',sans-serif;
+          background:url("Object/qa.jpg") no-repeat center center fixed;
+          background-size:cover;
+          color:white;
+          max-width:420px;
+          margin:auto;
+        }
+
+        body::before{
+          content:"";
+          position:fixed;
+          inset:0;
+          background:rgba(0,0,0,0.85);
+          z-index:-1;
+        }
+
+        /* ===== Header ===== */
+        .header{
+          position:sticky;
+          top:0;
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
+          padding:15px;
+          background:rgba(0,0,0,0.9);
+          border-bottom:1px solid rgba(255,215,0,0.3);
+          backdrop-filter:blur(10px);
+          z-index:10;
+        }
+
+        .header h1{
+          font-size:18px;
+          font-weight:900;
+          color:gold;
+          text-shadow:0 0 15px gold;
+          margin:0;
+        }
+
+        .back{
+          font-size:13px;
+          color:#00ffcc;
+          cursor:pointer;
+        }
+
+        /* ===== Container ===== */
+        .container{
+          padding:15px;
+          display:flex;
+          flex-direction:column;
+          gap:20px;
+          text-align:center;
+        }
+
+        /* ===== Card ===== */
+        .card{
+          background:rgba(0,0,0,0.7);
+          border:2px solid gold;
+          border-radius:20px;
+          padding:15px;
+          box-shadow:0 0 15px rgba(255,215,0,0.4);
+        }
+
+        .card h2{
+          color:gold;
+          font-size:16px;
+          margin-bottom:8px;
+        }
+
+        /* ===== Link Box ===== */
+        .link-box{
+          background:#111;
+          padding:15px;
+          border-radius:15px;
+          border:1px solid gold;
+          word-break:break-all;
+          font-size:14px;
+          color:#00ffcc;
+        }
+
+        /* ===== Button ===== */
+        button{
+          padding:12px 22px;
+          border:none;
+          border-radius:15px;
+          background:gold;
+          color:black;
+          font-weight:bold;
+          cursor:pointer;
+          box-shadow:0 0 15px gold;
+          font-family:'Cairo',sans-serif;
+        }
+
+        button:hover{
+          background:orange;
+        }
+
+        /* ===== Stats ===== */
+        .stats{
+          display:grid;
+          grid-template-columns:repeat(2,1fr);
+          gap:15px;
+        }
+
+        .stat{
+          background:rgba(0,0,0,0.7);
+          border:2px solid gold;
+          border-radius:20px;
+          padding:15px;
+          box-shadow:0 0 15px rgba(255,215,0,0.4);
+        }
+
+        .stat h3{
+          color:gold;
+          margin-top:5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🔗 دعوة الأصدقاء</h1>  <!-- تم تغيير div إلى h1 -->
+  <div class="back" onclick="goBack()" aria-label="العودة للصفحة السابقة">⬅ رجوع</div>
+</div>
+
+<div class="container">
+
+  <div class="card">
+    <h2>اربح كوينز بدعوة أصدقائك</h2>
+    <p style="color:#00ffcc;">كل صديق يسجل من رابطك يعطيك 50 كوين</p>
+  </div>
+
+  <div class="card">
+    <div class="link-box" id="inviteLink" aria-label="رابط الدعوة الخاص بك">
+      https://pharacoin.com/register?ref=USER123
+    </div>
+    <br>
+    <button onclick="copyLink()" aria-label="نسخ رابط الدعوة">نسخ الرابط</button>
+  </div>
+
+  <div class="stats">
+    <div class="stat" aria-label="عدد الدعوات الناجحة">
+      <p>عدد الدعوات</p>
+      <h3 id="invitesCount">0</h3>
+    </div>
+
+    <div class="stat" aria-label="إجمالي الأرباح من الدعوات">
+      <p>أرباحك</p>
+      <h3 id="earnings">0 🪙</h3>
+    </div>
+  </div>
+
+  <button onclick="location.href='dashboard.html'" aria-label="العودة للوحة التحكم">العودة للوحة التحكم</button>
+
+</div>
+
+<script>
+function copyLink(){
+  var text = document.getElementById("inviteLink").innerText;
+  navigator.clipboard.writeText(text);
+  alert("تم نسخ رابط الدعوة");
+}
+
+function goBack(){
+  if(document.referrer){
+    history.back();
+  }else{
+    location.href="dashboard.html";
+  }
+}
+</script>
+
+<!-- الأجزاء التي تحتاج تغيير (تلخيص) -->
+<!--
+  1. روابط الصور الاجتماعية (og:image, twitter:image) استبدل yourdomain.com بالرابط الفعلي لصورك.
+  2. روابط URL (og:url, canonical, JSON-LD) استبدل yourdomain.com بنطاق موقعك.
+  3. حساب تويتر (twitter:site) غيّره إلى حسابك أو احذفه.
+  4. نص رابط الدعوة داخل <div class="link-box">: غيّر الرابط الافتراضي إلى الرابط الفعلي الخاص بمنصتك.
+  5. يمكن تحديث الأرقام الافتراضية في الإحصائيات عبر JavaScript لاحقاً.
+-->
+</body>
+</html>

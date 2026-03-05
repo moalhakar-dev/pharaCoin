@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>سجل المعاملات — PharaCoin</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+html, body {
+  width:100%;
+  min-height:100%;
+  font-family:'Cairo', sans-serif;
+  color:#fff;
+}
+body {
+  max-width:480px;
+  margin:0 auto;
+  position:relative;
+  padding-bottom:100px;
+  background:transparent;
+}
+
+/* الخلفية */
+.page-bg {
+  position:fixed;
+  inset:0;
+  z-index:-5;
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+}
+.page-bg::after {
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg, rgba(0,0,0,0.15), rgba(0,0,0,0.65));
+}
+
+.header {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:16px 18px;
+  position:sticky; top:0; z-index:50;
+  background:rgba(0,0,0,0.85);
+  border-bottom:1px solid rgba(255,215,0,0.15);
+  backdrop-filter:blur(15px);
+}
+.logo {
+  display:flex; align-items:center; gap:8px;
+  color:gold; font-weight:800; font-size:17px;
+}
+.balance-box {
+  display:flex; align-items:center; gap:8px;
+  background:rgba(255,215,0,0.08);
+  border:1px solid rgba(255,215,0,0.25);
+  padding:6px 14px; border-radius:20px;
+  font-size:13px; font-weight:700;
+}
+.container {
+  margin:20px 16px;
+  background:rgba(0,0,0,0.65);
+  border:1px solid rgba(255,215,0,0.15);
+  border-radius:20px;
+  padding:24px;
+  backdrop-filter:blur(10px);
+}
+.title {
+  text-align:center;
+  font-size:20px;
+  font-weight:900;
+  color:gold;
+  margin-bottom:16px;
+}
+.transaction-list {
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  max-height:400px;
+  overflow-y:auto;
+}
+.transaction-item {
+  background:rgba(255,215,0,0.08);
+  border:1px solid rgba(255,215,0,0.2);
+  border-radius:12px;
+  padding:12px;
+}
+.empty-msg {
+  text-align:center;
+  color:#aaa;
+  padding:40px 0;
+}
+.btn {
+  width:100%;
+  padding:14px;
+  background:linear-gradient(135deg,#FFD700,#FFA500);
+  border:none;
+  border-radius:50px;
+  font-weight:900;
+  font-size:16px;
+  color:#000;
+  margin-top:15px;
+  cursor:pointer;
+}
+
+/* ===== التصميم الفرعوني ===== */
+.bottom-nav {
+  position:fixed; bottom:0; left:0; right:0;
+  max-width:480px; margin:0 auto;
+  background:linear-gradient(180deg, #8b1a1a, #6a0d0d); /* أحمر داكن فرعوني */
+  display:flex; justify-content:space-around;
+  padding:10px 0 18px;
+  border-top: 3px solid #e6b422; /* ذهبي */
+  box-shadow: 0 -5px 20px rgba(0,0,0,0.8), 0 0 15px #b8860b;
+  z-index:100;
+}
+
+.nav-item {
+  text-align:center;
+  cursor:pointer;
+  transition: transform 0.2s;
+  width: 70px;
+  position: relative;
+}
+.nav-item:active {
+  transform: scale(0.95);
+}
+
+.nav-circle {
+  width:55px;
+  height:55px;
+  border-radius:50%;
+  background: #1a0e0e; /* أسود محمر */
+  border: 2px solid #b22222; /* أحمر - تم تغييره من الذهبي إلى الأحمر */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  color: #b22222; /* أحمر فرعوني - لون الأيقونة */
+  margin: 0 auto 4px;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(180, 40, 40, 0.6); /* توهج أحمر */
+}
+
+/* العنصر النشط (الصفحة الحالية) - لونه أصفر */
+.nav-item.current-page .nav-circle {
+  color: #FFD700; /* ذهبي */
+  border-color: #FFD700; /* إطار ذهبي للصفحة الحالية */
+  box-shadow: 0 0 15px #FFD700;
+}
+
+/* تأثير النبض للعنصر النشط */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 5px #FFD700;
+  }
+  50% {
+    box-shadow: 0 0 20px #FFD700;
+  }
+  100% {
+    box-shadow: 0 0 5px #FFD700;
+  }
+}
+.nav-item.current-page .nav-circle {
+  animation: pulse 1.5s infinite;
+}
+
+/* النص أسفل الدائرة - مخفي افتراضياً */
+.nav-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #ffdb8e;
+  text-shadow: 0 0 5px #b8860b;
+  display: none; /* يظهر فقط أثناء الـ 3 ثوان */
+  height: 18px;
+  margin-top: 2px;
+}
+
+/* عندما يكون العنصر في حالة العرض (أثناء المؤقت) نظهر النص */
+.nav-item.showing .nav-label {
+  display: block;
+}
+</style>
+</head>
+<body>
+
+<div class="page-bg" id="pageBg"></div>
+
+<div class="header">
+  <div class="logo">🏺 PharaCoin</div>
+  <div class="balance-box">💰 <span id="headerCoins">0</span> 🪙</div>
+</div>
+
+<div class="container">
+  <div class="title">📋 سجل المعاملات</div>
+  <div class="transaction-list" id="transactionList"></div>
+  <button class="btn" onclick="window.location.href='convert.html'">🔙 العودة للتحويل</button>
+</div>
+
+<!-- Bottom Nav بالرموز المصرية -->
+<div class="bottom-nav">
+  <!-- 𓂀 : الرئيسية -->
+  <div class="nav-item" data-url="dashboard.html" data-label="الرئيسية" data-egypt="𓂀" data-alt="🏠">
+    <div class="nav-circle">𓂀</div>
+    <div class="nav-label">الرئيسية</div>
+  </div>
+  <!-- 𓆣 : المتحف -->
+  <div class="nav-item" data-url="museum.html" data-label="المتحف" data-egypt="𓆣" data-alt="🏺">
+    <div class="nav-circle">𓆣</div>
+    <div class="nav-label">المتحف</div>
+  </div>
+  <!-- 𓁹 : التجميع -->
+  <div class="nav-item" data-url="statue-builder.html" data-label="التجميع" data-egypt="𓁹" data-alt="⚒️">
+    <div class="nav-circle">𓁹</div>
+    <div class="nav-label">التجميع</div>
+  </div>
+  <!-- ☥ : حسابي -->
+  <div class="nav-item" data-url="profile.html" data-label="حسابي" data-egypt="☥" data-alt="👤">
+    <div class="nav-circle">☥</div>
+    <div class="nav-label">حسابي</div>
+  </div>
+</div>
+
+<script>
+// تحديث العملات المعروضة
+document.getElementById('headerCoins').innerText = localStorage.getItem('coins') || '0';
+
+// عرض المعاملات
+const listEl = document.getElementById('transactionList');
+let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+if (transactions.length === 0) {
+  listEl.innerHTML = '<div class="empty-msg">لا توجد معاملات بعد</div>';
+} else {
+  transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+  listEl.innerHTML = transactions.map(tx => {
+    let typeText = tx.type === 'deposit' ? 'إيداع' : tx.type === 'withdraw' ? 'سحب' : tx.type === 'convert' ? 'تحويل' : tx.type;
+    let statusText = tx.status === 'completed' ? 'مكتملة' : 'قيد المراجعة';
+    return `
+      <div class="transaction-item">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="color:gold;">${typeText}</span>
+          <span style="color:${tx.status === 'completed' ? '#0f0' : 'orange'};">${statusText}</span>
+        </div>
+        <div style="display:flex; justify-content:space-between;">
+          <span style="color:gold;">${tx.amount} ${tx.currency || '🪙'}</span>
+          <span style="color:#aaa; font-size:12px;">${new Date(tx.date).toLocaleString('ar-EG')}</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// الخلفية
+const bg = document.getElementById('pageBg');
+const localImg = "Object/qa.jpg";
+const fallback = "https://images.pexels.com/photos/3350783/pexels-photo-3350783.jpeg?auto=compress&cs=tinysrgb&w=1260";
+const img = new Image();
+img.onload = () => { bg.style.backgroundImage = `url('${localImg}')`; };
+img.onerror = () => { bg.style.backgroundImage = `url('${fallback}')`; };
+img.src = localImg + "?v=" + Date.now();
+
+// ===== الآلية المطلوبة: ضغطة أولى (تأثير) وضغطة ثانية (تنقل) =====
+const navItems = document.querySelectorAll('.nav-item');
+
+// تحديد الصفحة الحالية (للعرض، نفترض أننا في صفحة التجميع)
+const currentPath = window.location.pathname.split('/').pop() || 'statue-builder.html';
+
+// إزالة أي كلاس current-page سابق وإضافته للعنصر المطابق
+navItems.forEach(item => item.classList.remove('current-page'));
+navItems.forEach(item => {
+  if (item.dataset.url === currentPath) {
+    item.classList.add('current-page');
+  }
+});
+
+// مصفوفة لتخزين حالة "تم التفعيل" لكل عنصر (أي تم عرض التأثير من قبل)
+let effectShown = new Array(navItems.length).fill(false);
+let timerId = null;
+let currentItem = null;
+
+// دالة لعرض التأثير (تغيير الرمز وإظهار النص)
+function showEffect(item) {
+  // إذا كان العنصر هو الصفحة الحالية، لا نفعل شيئاً
+  if (item.classList.contains('current-page')) return;
+  
+  // إذا كان هناك تأثير سابق قيد العرض، نلغيه
+  if (timerId) {
+    clearTimeout(timerId);
+    timerId = null;
+    if (currentItem) {
+      const oldCircle = currentItem.querySelector('.nav-circle');
+      const oldEgypt = currentItem.dataset.egypt;
+      oldCircle.textContent = oldEgypt;
+      currentItem.classList.remove('showing');
+    }
+  }
+  
+  // تعيين العنصر الحالي وعرض التأثير
+  currentItem = item;
+  const circle = item.querySelector('.nav-circle');
+  const altSymbol = item.dataset.alt;
+  circle.textContent = altSymbol;
+  item.classList.add('showing');
+  
+  // مؤقت لإعادة الرمز المصري بعد 3 ثوان
+  timerId = setTimeout(() => {
+    const circle = currentItem.querySelector('.nav-circle');
+    const egyptSymbol = currentItem.dataset.egypt;
+    circle.textContent = egyptSymbol;
+    currentItem.classList.remove('showing');
+    
+    timerId = null;
+    currentItem = null;
+  }, 3000);
+}
+
+// معالج النقر
+navItems.forEach((item, index) => {
+  item.addEventListener('click', function(e) {
+    e.stopPropagation();
+    
+    // إذا كان العنصر هو الصفحة الحالية، لا ننقل
+    if (this.classList.contains('current-page')) return;
+    
+    // إذا كان التأثير قد ظهر من قبل لهذا العنصر (أي هذه هي الضغطة الثانية) → ننتقل
+    if (effectShown[index]) {
+      window.location.href = this.dataset.url;
+      return;
+    }
+    
+    // وإلا (أول ضغطة) → نعرض التأثير ونسجل أنه تم عرضه
+    showEffect(this);
+    effectShown[index] = true;
+  });
+});
+
+// معالج hover (اختياري، يمكن إزالته إذا أردت)
+navItems.forEach((item, index) => {
+  item.addEventListener('mouseenter', function(e) {
+    // يمكن تركه فارغاً أو إضافته حسب الرغبة
+    // حالياً لا نقوم بأي شيء على hover، فقط على click
+  });
+});
+</script>
+
+</body>
+</html>

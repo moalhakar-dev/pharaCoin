@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>المرحلة الثانية — PharaCoin</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Cairo',sans-serif;
+  background:#050505;
+  color:#fff;
+  max-width:480px;
+  margin:auto;
+  padding-bottom:110px;
+}
+
+/* الخلفية الآن ظاهرة بدون تعتيم */
+.page-bg{
+  position:fixed;inset:0;
+  background: #000 url("Object/qa.jpg") center/cover no-repeat;
+  /* filter:brightness(0.2); */ /* تم إلغاء التعتيم */
+  z-index:-1;
+}
+/* إضافة تدرج خفيف جداً لتحسين قراءة النصوص */
+.page-bg::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg, rgba(0,0,0,0.0) 0%, rgba(0,0,0,0.1) 100%);
+}
+
+.header{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:14px;
+  background:rgba(0,0,0,0.85);
+  border-bottom:1px solid rgba(255,215,0,0.2);
+}
+
+.logo{color:gold;font-weight:900}
+.balance{
+  background:rgba(255,215,0,0.1);
+  padding:6px 14px;border-radius:20px;
+  border:1px solid rgba(255,215,0,0.3);
+}
+
+.section-title{
+  text-align:center;margin:16px 0;
+  color:gold;font-size:18px;font-weight:800;
+}
+
+.box{
+  margin:0 16px;
+  padding:16px;
+  background:rgba(0,0,0,0.6);
+  border-radius:16px;
+  border:1px solid rgba(255,215,0,0.2);
+  backdrop-filter:blur(5px);
+}
+
+.progress-bar{
+  background:rgba(255,255,255,0.1);
+  border-radius:10px;overflow:hidden;margin:10px 0;
+}
+.progress{
+  height:12px;width:0%;
+  background:linear-gradient(90deg,#FFD700,#FFA500,#FF6347);
+  transition:.5s;
+}
+
+.parts{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+  margin-top:14px;
+}
+
+.part{
+  background:rgba(0,0,0,0.7);
+  border:2px solid rgba(255,215,0,0.4);
+  border-radius:14px;
+  padding:10px;
+  text-align:center;
+  backdrop-filter:blur(5px);
+}
+.part img{
+  width:100%;
+  border-radius:10px;
+  filter:grayscale(100%);
+  transition:.3s;
+}
+.part img.active{
+  filter:none;
+  transform:scale(1.05);
+}
+.part .counter{
+  margin: 8px 0 4px;
+  color: gold;
+  font-weight: 700;
+  font-size: 14px;
+}
+.part button{
+  margin-top:4px;
+  width:100%;
+  padding:8px;
+  border:none;
+  border-radius:10px;
+  background:linear-gradient(135deg,#FFD700,#FFA500);
+  font-weight:800;
+  cursor:pointer;
+}
+.part button:disabled{
+  background:gray;
+  cursor:not-allowed;
+}
+
+.message{
+  text-align:center;
+  color:#00ff9d;
+  margin-top:10px;
+  font-weight:700;
+}
+
+.fullStatue{
+  display:none;
+  margin:16px;
+  padding:16px;
+  background:rgba(0,0,0,0.7);
+  border-radius:16px;
+  border:1px solid gold;
+  text-align:center;
+  backdrop-filter:blur(5px);
+}
+.fullStatue img{
+  width:100%;
+  border-radius:14px;
+}
+
+/* ===== التصميم الجديد للـ Navbar بالرموز المصرية ===== */
+.bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;
+  max-width:480px;margin:auto;
+  background:linear-gradient(180deg, #8b1a1a, #6a0d0d); /* أحمر داكن فرعوني */
+  display:flex;
+  justify-content:space-around;
+  padding:10px 0 18px;
+  border-top: 3px solid #e6b422; /* ذهبي */
+  box-shadow: 0 -5px 20px rgba(0,0,0,0.8), 0 0 15px #b8860b;
+  z-index:100;
+}
+
+.nav-item{
+  text-align:center;
+  cursor:pointer;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:4px;
+  transition:transform 0.2s;
+  width: 70px;
+  position: relative;
+}
+.nav-item:active{transform:scale(0.95);}
+
+.nav-circle{
+  width:55px;
+  height:55px;
+  border-radius:50%;
+  background: #1a0e0e; /* أسود محمر */
+  border: 2px solid #b22222; /* إطار أحمر */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  color: #b22222; /* أحمر فرعوني */
+  margin: 0 auto 4px;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(180, 40, 40, 0.6);
+}
+
+/* العنصر النشط (الصفحة الحالية) - لونه أصفر مع نبض */
+.nav-item.current-page .nav-circle{
+  color: #FFD700; /* ذهبي */
+  border-color: #FFD700; /* إطار ذهبي */
+  box-shadow: 0 0 15px #FFD700;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+  0%{box-shadow:0 0 5px #FFD700;}
+  50%{box-shadow:0 0 20px #FFD700;}
+  100%{box-shadow:0 0 5px #FFD700;}
+}
+
+/* النص أسفل الدائرة - يظهر فقط أثناء الـ 3 ثوان */
+.nav-label{
+  font-size: 11px;
+  font-weight: 700;
+  color: #ffdb8e;
+  text-shadow: 0 0 5px #b8860b;
+  display: none;
+  height: 16px;
+  margin-top: 2px;
+}
+
+.nav-item.showing .nav-label{
+  display: block;
+}
+
+/* Transition */
+.transition{
+  position:fixed;inset:0;
+  background:radial-gradient(circle,gold,#000);
+  display:none;
+  align-items:center;justify-content:center;
+  font-size:26px;font-weight:900;
+  z-index:9999;color:black;
+}
+</style>
+</head>
+
+<body>
+
+<div class="page-bg"></div>
+
+<div class="transition" id="transition">🏺 تم تجميع التمثال النادر!</div>
+
+<div class="header">
+  <div class="logo">🏺 PharaCoin</div>
+  <div class="balance">💰 <span id="coins">0</span> 🪙</div>
+</div>
+
+<div class="section-title">🏛 المرحلة الثانية: التمثال النادر</div>
+
+<div class="box">
+<p style="text-align:center;color:#ccc">
+هذه المرحلة أصعب — كل جزء يحتاج 4 تجميعات
+</p>
+
+<div class="progress-bar">
+  <div class="progress" id="progress"></div>
+</div>
+
+<div class="parts">
+  <div class="part">
+    <img src="Object/statue2_part1.jpg" id="img0" onerror="this.style.opacity='0.3'">
+    <div class="counter" id="counter0">0/4</div>
+    <button onclick="buyPart(0,50)" id="btn0">تجميع (50🪙)</button>
+  </div>
+  <div class="part">
+    <img src="Object/statue2_part2.jpg" id="img1" onerror="this.style.opacity='0.3'">
+    <div class="counter" id="counter1">0/4</div>
+    <button onclick="buyPart(1,100)" id="btn1">تجميع (100🪙)</button>
+  </div>
+  <div class="part">
+    <img src="Object/statue2_part3.jpg" id="img2" onerror="this.style.opacity='0.3'">
+    <div class="counter" id="counter2">0/4</div>
+    <button onclick="buyPart(2,150)" id="btn2">تجميع (150🪙)</button>
+  </div>
+  <div class="part">
+    <img src="Object/statue2_part4.jpg" id="img3" onerror="this.style.opacity='0.3'">
+    <div class="counter" id="counter3">0/4</div>
+    <button onclick="buyPart(3,250)" id="btn3">تجميع (250🪙)</button>
+  </div>
+  <div class="part">
+    <img src="Object/statue2_part5.jpg" id="img4" onerror="this.style.opacity='0.3'">
+    <div class="counter" id="counter4">0/4</div>
+    <button onclick="buyPart(4,400)" id="btn4">تجميع (400🪙)</button>
+  </div>
+</div>
+
+<div class="message" id="msg"></div>
+</div>
+
+<div class="fullStatue" id="fullStatue">
+<h3 style="color:gold;">🎉 تم تجميع التمثال النادر</h3>
+<p>ربحت 600 عملة وتم فتح المرحلة الثالثة</p>
+<img src="Object/statue2_full.jpg" onerror="this.style.opacity='0.3'">
+<br><br>
+<button onclick="goNext()" style="background:gold;padding:10px 20px;border:none;border-radius:10px;font-weight:bold;">
+➡️ الانتقال للمرحلة الثالثة
+</button>
+</div>
+
+<!-- Bottom Nav بالرموز المصرية -->
+<div class="bottom-nav">
+  <!-- 𓂀 : الرئيسية -->
+  <div class="nav-item" data-url="dashboard.html" data-label="الرئيسية" data-egypt="𓂀" data-alt="🏠">
+    <div class="nav-circle">𓂀</div>
+    <div class="nav-label">الرئيسية</div>
+  </div>
+  <!-- 𓆣 : المتحف -->
+  <div class="nav-item" data-url="museum.html" data-label="المتحف" data-egypt="𓆣" data-alt="🏺">
+    <div class="nav-circle">𓆣</div>
+    <div class="nav-label">المتحف</div>
+  </div>
+  <!-- 𓁹 : التجميع (الصفحة الحالية) -->
+  <div class="nav-item current-page" data-url="statue-builder.html" data-label="التجميع" data-egypt="𓁹" data-alt="⚒️">
+    <div class="nav-circle">𓁹</div>
+    <div class="nav-label">التجميع</div>
+  </div>
+  <!-- ☥ : حسابي -->
+  <div class="nav-item" data-url="profile.html" data-label="حسابي" data-egypt="☥" data-alt="👤">
+    <div class="nav-circle">☥</div>
+    <div class="nav-label">حسابي</div>
+  </div>
+</div>
+
+<script>
+/* الصوت */
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+const audioCtx = new AudioCtx();
+function playSound() {
+  try {
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.connect(g); g.connect(audioCtx.destination);
+    o.frequency.value = 900;
+    g.gain.value = 0.05;
+    o.start(); o.stop(audioCtx.currentTime + 0.1);
+  } catch (e) {}
+}
+
+/* بيانات العملات والخبرة */
+let coins = parseInt(localStorage.getItem("coins") || "0");
+let xp = parseInt(localStorage.getItem("xp") || "0");
+
+/* تحميل حالة الأجزاء مع دعم النظام القديم (boolean) */
+function loadParts() {
+  let stored = localStorage.getItem("statue2_parts");
+  if (!stored) return [0, 0, 0, 0, 0]; // 5 أجزاء
+  let parsed = JSON.parse(stored);
+  // إذا كانت مصفوفة منطقية (true/false) نحولها إلى أعداد: true→4 , false→0
+  if (parsed.every(v => typeof v === "boolean")) {
+    return parsed.map(v => v ? 4 : 0);
+  }
+  // إذا كانت مصفوفة أعداد صحيحة (0-4) نستخدمها مباشرة
+  if (parsed.every(v => typeof v === "number")) {
+    return parsed;
+  }
+  // أي حالة أخرى نعيد الصفر
+  return [0, 0, 0, 0, 0];
+}
+
+let partsCount = loadParts(); // [عدد مرات تجميع الجزء0, الجزء1, ...] كلها 0-4
+
+const coinsSpan = document.getElementById("coins");
+const progress = document.getElementById("progress");
+const msg = document.getElementById("msg");
+// مصفوفات العناصر (لـ 5 أجزاء)
+const imgs = [
+  document.getElementById("img0"),
+  document.getElementById("img1"),
+  document.getElementById("img2"),
+  document.getElementById("img3"),
+  document.getElementById("img4")
+];
+const counters = [
+  document.getElementById("counter0"),
+  document.getElementById("counter1"),
+  document.getElementById("counter2"),
+  document.getElementById("counter3"),
+  document.getElementById("counter4")
+];
+const btns = [
+  document.getElementById("btn0"),
+  document.getElementById("btn1"),
+  document.getElementById("btn2"),
+  document.getElementById("btn3"),
+  document.getElementById("btn4")
+];
+const prices = [50, 100, 150, 250, 400]; // أسعار كل جزء
+
+coinsSpan.innerText = coins;
+
+function updateUI() {
+  // عدد الأجزاء المكتملة (التي وصلت لـ 4)
+  let completedCount = partsCount.filter(c => c === 4).length;
+  progress.style.width = (completedCount / partsCount.length) * 100 + "%";
+
+  // تحديث كل جزء
+  partsCount.forEach((count, i) => {
+    // العداد
+    counters[i].innerText = count + "/4";
+    // الصورة: active فقط إذا كان count === 4
+    if (count === 4) {
+      imgs[i].classList.add("active");
+      btns[i].disabled = true;
+      btns[i].innerText = "✔ مكتمل";
+    } else {
+      imgs[i].classList.remove("active");
+      btns[i].disabled = false;
+      btns[i].innerText = `تجميع (${prices[i]}🪙)`;
+    }
+  });
+
+  // إذا اكتمل الكل
+  if (completedCount === partsCount.length) {
+    document.getElementById("fullStatue").style.display = "block";
+  } else {
+    document.getElementById("fullStatue").style.display = "none";
+  }
+}
+
+function buyPart(index, price) {
+  // لا يمكن التجميع إذا كان الجزء مكتملاً (4)
+  if (partsCount[index] >= 4) return;
+
+  // تحقق من الرصيد
+  if (coins < price) {
+    window.location.href = "deposit.html";
+    return;
+  }
+
+  // خصم العملات وإضافة خبرة
+  coins -= price;
+  xp += 7; // خبرة ثابتة لكل تجميعة (كما في الأصل)
+
+  // زيادة عداد هذا الجزء
+  partsCount[index]++;
+
+  // حفظ كل شيء
+  localStorage.setItem("coins", coins);
+  localStorage.setItem("xp", xp);
+  localStorage.setItem("statue2_parts", JSON.stringify(partsCount));
+
+  // تحديث الواجهة
+  coinsSpan.innerText = coins;
+  msg.innerText = "✨ تم استرداد قطعة نادرة";
+  playSound();
+  updateUI();
+
+  // التحقق مما إذا اكتمل التمثال بالكامل
+  checkComplete();
+}
+
+function checkComplete() {
+  if (partsCount.every(c => c === 4)) {
+    // مكافأة الإكمال
+    coins += 600;
+    xp += 30;
+    localStorage.setItem("coins", coins);
+    localStorage.setItem("xp", xp);
+    coinsSpan.innerText = coins;
+    msg.innerText = "🏆 اكتمل التمثال النادر! تم منحك 600 عملة + 30 XP";
+    document.getElementById("transition").style.display = "flex";
+    // إخفاء الانتقال بعد ثانيتين
+    setTimeout(() => {
+      document.getElementById("transition").style.display = "none";
+    }, 2000);
+  }
+}
+
+function goNext() {
+  window.location.href = "statue3.html";
+}
+
+// ===== آلية النقر الجديدة للـ Navbar =====
+function playClick() {
+  playSound(); // استخدام نفس دالة الصوت
+}
+
+const navItems = document.querySelectorAll('.nav-item');
+
+// مصفوفة لتخزين حالة "تم عرض التأثير" لكل عنصر
+let effectShown = new Array(navItems.length).fill(false);
+let timerId = null;
+let currentItem = null;
+
+// دالة لعرض التأثير (تغيير الرمز وإظهار النص)
+function showEffect(item) {
+  // إذا كان العنصر هو الصفحة الحالية، لا نفعل شيئاً
+  if (item.classList.contains('current-page')) return;
+  
+  // إذا كان هناك تأثير سابق قيد العرض، نلغيه
+  if (timerId) {
+    clearTimeout(timerId);
+    timerId = null;
+    if (currentItem) {
+      const oldCircle = currentItem.querySelector('.nav-circle');
+      const oldEgypt = currentItem.dataset.egypt;
+      oldCircle.textContent = oldEgypt;
+      currentItem.classList.remove('showing');
+    }
+  }
+  
+  // تعيين العنصر الحالي وعرض التأثير
+  currentItem = item;
+  const circle = item.querySelector('.nav-circle');
+  const altSymbol = item.dataset.alt;
+  circle.textContent = altSymbol;
+  item.classList.add('showing');
+  
+  // مؤقت لإعادة الرمز المصري بعد 3 ثوان
+  timerId = setTimeout(() => {
+    const circle = currentItem.querySelector('.nav-circle');
+    const egyptSymbol = currentItem.dataset.egypt;
+    circle.textContent = egyptSymbol;
+    currentItem.classList.remove('showing');
+    
+    timerId = null;
+    currentItem = null;
+  }, 3000);
+}
+
+// معالج النقر لكل عنصر
+navItems.forEach((item, index) => {
+  item.addEventListener('click', function(e) {
+    e.stopPropagation();
+    playClick(); // استخدام دالة الصوت
+    
+    // إذا كان العنصر هو الصفحة الحالية، لا ننقل
+    if (this.classList.contains('current-page')) return;
+    
+    // إذا كان التأثير قد ظهر من قبل لهذا العنصر (أي هذه هي الضغطة الثانية) → ننتقل
+    if (effectShown[index]) {
+      window.location.href = this.dataset.url;
+      return;
+    }
+    
+    // وإلا (أول ضغطة) → نعرض التأثير ونسجل أنه تم عرضه
+    showEffect(this);
+    effectShown[index] = true;
+  });
+});
+
+// بدء التشغيل
+updateUI();
+</script>
+<!-- ✅ الخلفية الآن ظاهرة بدون تعتيم كما في لوحة التحكم -->
+<!-- تأكد من وجود مجلد Object يحتوي على الصور المطلوبة -->
+</body>
+</html>

@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- === تحسينات SEO محسنة === -->
+    <title>العروض الخاصة - PharaCoin | عروض حصرية على الشحن والمكافآت</title>
+    <meta name="description" content="استفد من العروض الخاصة في PharaCoin: بونص 50% على أول 3 شحنات، زيادة 25% عند شحن 200 جنيه أو أكثر، وشارة VIP بعد 3 شحنات. عروض محدودة!" />
+    <meta name="keywords" content="PharaCoin, عروض خاصة, عروض الشحن, بونص, VIP, خصومات" />
+    <meta name="author" content="PharaCoin Team" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- === بطاقات المشاركة الاجتماعية (Open Graph / Twitter) === -->
+    <meta property="og:title" content="العروض الخاصة - PharaCoin" />
+    <meta property="og:description" content="بونص 50% على أول 3 شحنات، زيادة 25% عند شحن 200+ جنيه، وشارة VIP بعد 3 شحنات. عروض حصرية!" />
+    <meta property="og:image" content="https://yourdomain.com/og-image.jpg" /> <!-- استبدل بالرابط الفعلي لصورة الشعار -->
+    <meta property="og:url" content="https://yourdomain.com/offers.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="PharaCoin" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="العروض الخاصة - PharaCoin" />
+    <meta name="twitter:description" content="بونص 50% على أول 3 شحنات، زيادة 25% عند شحن 200+ جنيه، وشارة VIP بعد 3 شحنات." />
+    <meta name="twitter:image" content="https://yourdomain.com/twitter-image.jpg" /> <!-- استبدل بالرابط الفعلي لصورة الشعار -->
+    <meta name="twitter:site" content="@PharaCoinApp" />
+
+    <!-- === الرابط الأساسي (Canonical) === -->
+    <link rel="canonical" href="https://yourdomain.com/offers.html" />
+
+    <!-- === البيانات المنظمة (Structured Data) لصفحة العروض === -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "name": "العروض الخاصة في PharaCoin",
+        "description": "قائمة بالعروض الترويجية الحالية في منصة PharaCoin.",
+        "numberOfItems": 3,
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "item": {
+                    "@type": "Product",
+                    "name": "عرض أول 3 شحنات",
+                    "description": "احصل على 50% بونص إضافي عند أول 3 عمليات إيداع.",
+                    "offers": {
+                        "@type": "Offer",
+                        "price": "0",
+                        "priceCurrency": "USD",
+                        "url": "https://yourdomain.com/deposit.html"
+                    }
+                }
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "item": {
+                    "@type": "Product",
+                    "name": "العرض الأسبوعي",
+                    "description": "اشحن 200 جنيه أو أكثر واحصل على 25% زيادة فورية.",
+                    "offers": {
+                        "@type": "Offer",
+                        "price": "0",
+                        "priceCurrency": "USD",
+                        "url": "https://yourdomain.com/deposit.html"
+                    }
+                }
+            },
+            {
+                "@type": "ListItem",
+                "position": 3,
+                "item": {
+                    "@type": "Product",
+                    "name": "عضوية VIP",
+                    "description": "بعد 3 شحنات تحصل على شارة VIP ومميزات حصرية.",
+                    "offers": {
+                        "@type": "Offer",
+                        "price": "0",
+                        "priceCurrency": "USD",
+                        "url": "https://yourdomain.com/deposit.html"
+                    }
+                }
+            }
+        ]
+    }
+    </script>
+
+    <!-- الخطوط والأنماط -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet" />
+
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+
+        body{
+          font-family:'Cairo',sans-serif;
+          background:#000;
+          color:#fff;
+          max-width:480px;
+          margin:auto;
+          padding-bottom:120px;
+          line-height:1.8;
+        }
+
+        /* الخلفية */
+        .page-bg{
+          position:fixed;
+          inset:0;
+          background:url("Object/qa.jpg") center/cover no-repeat;
+          filter:brightness(0.25) saturate(1.2);
+          z-index:-1;
+        }
+
+        /* الهيدر */
+        .header{
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
+          padding:14px 16px;
+          background:rgba(0,0,0,0.85);
+          border-bottom:1px solid rgba(255,215,0,0.25);
+          backdrop-filter:blur(10px);
+        }
+        .logo{
+          color:gold;
+          font-weight:900;
+          font-size:16px;
+          text-shadow:0 0 8px rgba(255,215,0,0.4);
+        }
+        .back{
+          color:#00ffcc;
+          cursor:pointer;
+          font-size:13px;
+        }
+
+        /* العنوان الرئيسي */
+        h1.page-title{
+          text-align:center;
+          margin:18px 0 12px;
+          color:gold;
+          font-size:18px;
+          font-weight:800;
+          text-shadow:0 0 8px rgba(255,215,0,0.3);
+        }
+
+        /* الصندوق */
+        .box{
+          margin:0 16px;
+          padding:18px;
+          background:rgba(0,0,0,0.65);
+          border-radius:18px;
+          border:1px solid rgba(255,215,0,0.25);
+          box-shadow:0 0 25px rgba(0,0,0,0.6);
+        }
+
+        /* كروت العروض */
+        .offer-card{
+          background:rgba(0,0,0,0.55);
+          border:1px solid rgba(255,215,0,0.3);
+          border-radius:14px;
+          padding:14px;
+          margin-bottom:12px;
+        }
+
+        .offer-title{
+          color:gold;
+          font-weight:bold;
+          margin-bottom:6px;
+        }
+
+        .offer-desc{
+          font-size:13px;
+          opacity:.9;
+          margin-bottom:10px;
+        }
+
+        .offer-btn{
+          width:100%;
+          padding:10px;
+          border:none;
+          border-radius:10px;
+          background:gold;
+          font-weight:bold;
+          cursor:pointer;
+        }
+        .offer-btn:hover{
+          background:orange;
+        }
+
+        /* ===== التصميم الجديد للـ Navbar بالرموز المصرية ===== */
+        .bottom-nav{
+          position:fixed;
+          bottom:0;left:0;right:0;
+          max-width:480px;
+          margin:auto;
+          background:linear-gradient(180deg, #8b1a1a, #6a0d0d); /* أحمر داكن فرعوني */
+          display:flex;
+          justify-content:space-around;
+          padding:10px 0 18px;
+          border-top: 3px solid #e6b422; /* ذهبي */
+          box-shadow: 0 -5px 20px rgba(0,0,0,0.8), 0 0 15px #b8860b;
+          z-index:100;
+        }
+
+        .nav-item{
+          text-align:center;
+          cursor:pointer;
+          display:flex;
+          flex-direction:column;
+          align-items:center;
+          gap:4px;
+          transition:transform 0.2s;
+          width: 70px;
+          position: relative;
+        }
+        .nav-item:active{transform:scale(0.95);}
+
+        .nav-circle{
+          width:55px;
+          height:55px;
+          border-radius:50%;
+          background: #1a0e0e; /* أسود محمر */
+          border: 2px solid #b22222; /* إطار أحمر */
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 30px;
+          color: #b22222; /* أحمر فرعوني */
+          margin: 0 auto 4px;
+          transition: all 0.3s ease;
+          box-shadow: 0 0 10px rgba(180, 40, 40, 0.6);
+        }
+
+        /* العنصر النشط (الصفحة الحالية) - لونه أصفر مع نبض */
+        .nav-item.current-page .nav-circle{
+          color: #FFD700; /* ذهبي */
+          border-color: #FFD700; /* إطار ذهبي */
+          box-shadow: 0 0 15px #FFD700;
+          animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse{
+          0%{box-shadow:0 0 5px #FFD700;}
+          50%{box-shadow:0 0 20px #FFD700;}
+          100%{box-shadow:0 0 5px #FFD700;}
+        }
+
+        /* النص أسفل الدائرة - يظهر فقط أثناء الـ 3 ثوان */
+        .nav-label{
+          font-size: 11px;
+          font-weight: 700;
+          color: #ffdb8e;
+          text-shadow: 0 0 5px #b8860b;
+          display: none;
+          height: 16px;
+          margin-top: 2px;
+        }
+
+        .nav-item.showing .nav-label{
+          display: block;
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-bg"></div>
+
+<div class="header">
+  <div class="logo">🔥 PharaCoin</div>
+  <div class="back" onclick="goBack()">⬅ رجوع</div>
+</div>
+
+<!-- تم تغيير العنوان إلى h1 مع الحفاظ على الكلاس -->
+<h1 class="page-title">العروض الخاصة</h1>
+
+<div class="box">
+
+  <div class="offer-card">
+    <div class="offer-title">🎁 عرض أول 3 شحنات</div>
+    <div class="offer-desc">
+      احصل على 50% بونص إضافي عند أول 3 عمليات إيداع.
+    </div>
+    <button class="offer-btn" onclick="goDeposit()" aria-label="اشحن الآن للاستفادة من عرض أول 3 شحنات">اشحن الآن</button>
+  </div>
+
+  <div class="offer-card">
+    <div class="offer-title">⏳ العرض الأسبوعي</div>
+    <div class="offer-desc">
+      اشحن 200 جنيه أو أكثر واحصل على 25% زيادة فورية.
+    </div>
+    <button class="offer-btn" onclick="goDeposit()" aria-label="استفد من العرض الأسبوعي">استفد من العرض</button>
+  </div>
+
+  <div class="offer-card">
+    <div class="offer-title">👑 عضوية VIP</div>
+    <div class="offer-desc">
+      بعد 3 شحنات تحصل على شارة VIP ومميزات حصرية.
+    </div>
+    <button class="offer-btn" onclick="goDeposit()" aria-label="ابدأ الآن للحصول على شارة VIP">ابدأ الآن</button>
+  </div>
+
+</div>
+
+<!-- Bottom Nav بالرموز المصرية مع إضافة aria-labels -->
+<div class="bottom-nav">
+  <!-- 𓂀 : الرئيسية (الصفحة الحالية) -->
+  <div class="nav-item current-page" data-url="dashboard.html" data-label="الرئيسية" data-egypt="𓂀" data-alt="🏠" aria-label="الصفحة الرئيسية">
+    <div class="nav-circle">𓂀</div>
+    <div class="nav-label">الرئيسية</div>
+  </div>
+  <!-- 𓆣 : المتحف -->
+  <div class="nav-item" data-url="museum.html" data-label="المتحف" data-egypt="𓆣" data-alt="🏺" aria-label="صفحة المتحف">
+    <div class="nav-circle">𓆣</div>
+    <div class="nav-label">المتحف</div>
+  </div>
+  <!-- 𓁹 : التجميع -->
+  <div class="nav-item" data-url="statue-builder.html" data-label="التجميع" data-egypt="𓁹" data-alt="⚒️" aria-label="صفحة تجميع التماثيل">
+    <div class="nav-circle">𓁹</div>
+    <div class="nav-label">التجميع</div>
+  </div>
+  <!-- ☥ : حسابي -->
+  <div class="nav-item" data-url="profile.html" data-label="حسابي" data-egypt="☥" data-alt="👤" aria-label="الصفحة الشخصية">
+    <div class="nav-circle">☥</div>
+    <div class="nav-label">حسابي</div>
+  </div>
+</div>
+
+<script>
+function goDeposit(){
+  location.href="deposit.html";
+}
+
+function goBack(){
+  if(document.referrer){
+    history.back();
+  }else{
+    location.href="dashboard.html";
+  }
+}
+
+// ===== آلية النقر الجديدة للـ Navbar =====
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+const audioCtx = new AudioCtx();
+
+function playClick() {
+  try {
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.connect(g);
+    g.connect(audioCtx.destination);
+    o.type = 'sine';
+    o.frequency.setValueAtTime(700, audioCtx.currentTime);
+    o.frequency.exponentialRampToValueAtTime(1100, audioCtx.currentTime + 0.08);
+    g.gain.setValueAtTime(0.1, audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.12);
+    o.start();
+    o.stop(audioCtx.currentTime + 0.12);
+  } catch (e) {}
+}
+
+const navItems = document.querySelectorAll('.nav-item');
+
+// مصفوفة لتخزين حالة "تم عرض التأثير" لكل عنصر
+let effectShown = new Array(navItems.length).fill(false);
+let timerId = null;
+let currentItem = null;
+
+// دالة لعرض التأثير (تغيير الرمز وإظهار النص)
+function showEffect(item) {
+  // إذا كان العنصر هو الصفحة الحالية، لا نفعل شيئاً
+  if (item.classList.contains('current-page')) return;
+  
+  // إذا كان هناك تأثير سابق قيد العرض، نلغيه
+  if (timerId) {
+    clearTimeout(timerId);
+    timerId = null;
+    if (currentItem) {
+      const oldCircle = currentItem.querySelector('.nav-circle');
+      const oldEgypt = currentItem.dataset.egypt;
+      oldCircle.textContent = oldEgypt;
+      currentItem.classList.remove('showing');
+    }
+  }
+  
+  // تعيين العنصر الحالي وعرض التأثير
+  currentItem = item;
+  const circle = item.querySelector('.nav-circle');
+  const altSymbol = item.dataset.alt;
+  circle.textContent = altSymbol;
+  item.classList.add('showing');
+  
+  // مؤقت لإعادة الرمز المصري بعد 3 ثوان
+  timerId = setTimeout(() => {
+    const circle = currentItem.querySelector('.nav-circle');
+    const egyptSymbol = currentItem.dataset.egypt;
+    circle.textContent = egyptSymbol;
+    currentItem.classList.remove('showing');
+    
+    timerId = null;
+    currentItem = null;
+  }, 3000);
+}
+
+// معالج النقر لكل عنصر
+navItems.forEach((item, index) => {
+  item.addEventListener('click', function(e) {
+    e.stopPropagation();
+    playClick(); // استخدام دالة الصوت
+    
+    // إذا كان العنصر هو الصفحة الحالية، لا ننقل
+    if (this.classList.contains('current-page')) return;
+    
+    // إذا كان التأثير قد ظهر من قبل لهذا العنصر (أي هذه هي الضغطة الثانية) → ننتقل
+    if (effectShown[index]) {
+      window.location.href = this.dataset.url;
+      return;
+    }
+    
+    // وإلا (أول ضغطة) → نعرض التأثير ونسجل أنه تم عرضه
+    showEffect(this);
+    effectShown[index] = true;
+  });
+});
+</script>
+
+</body>
+</html>

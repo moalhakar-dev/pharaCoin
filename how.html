@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- === تحسينات SEO محسنة === -->
+    <title>PharaCoin - كيف يعمل النظام | شرح مبسط وخطوات سريعة</title>
+    <meta name="description" content="تعرف على طريقة عمل نظام PharaCoin في 3 خطوات بسيطة: اختر الباقة، أكمل الإيداع، واستلم عملاتك. ابدأ الآن بسهولة.">
+    <meta name="keywords" content="PharaCoin, كيف يعمل, شرح, خطوات, شراء عملات, إيداع, شحن رصيد">
+    <meta name="author" content="PharaCoin Team">
+    <meta name="robots" content="index, follow">
+
+    <!-- === بطاقات المشاركة الاجتماعية (Open Graph / Twitter) === -->
+    <meta property="og:title" content="PharaCoin - كيف يعمل النظام">
+    <meta property="og:description" content="شرح مبسط لطريقة استخدام منصة PharaCoin في 3 خطوات.">
+    <meta property="og:image" content="https://yourdomain.com/og-image.jpg"> <!-- استبدل بالرابط الفعلي لصورة الشعار -->
+    <meta property="og:url" content="https://yourdomain.com/how-it-works.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="PharaCoin">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="PharaCoin - كيف يعمل النظام">
+    <meta name="twitter:description" content="شرح مبسط لطريقة استخدام منصة PharaCoin في 3 خطوات.">
+    <meta name="twitter:image" content="https://yourdomain.com/twitter-image.jpg"> <!-- استبدل بالرابط الفعلي لصورة الشعار -->
+    <meta name="twitter:site" content="@PharaCoinApp">
+
+    <!-- === الرابط الأساسي (Canonical) === -->
+    <link rel="canonical" href="https://yourdomain.com/how-it-works.html">
+
+    <!-- === البيانات المنظمة (Structured Data) لصفحة "كيف يعمل" (HowTo) === -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        "name": "كيفية استخدام نظام PharaCoin",
+        "description": "ثلاث خطوات بسيطة لشراء العملات والبدء في المنصة.",
+        "totalTime": "PT5M",
+        "step": [
+            {
+                "@type": "HowToStep",
+                "name": "اختر الباقة",
+                "text": "قم بتحديد عدد العملات التي تريد شراءها من المتجر.",
+                "url": "https://yourdomain.com/how-it-works.html#step1",
+                "image": "https://yourdomain.com/step1-image.jpg" // اختياري
+            },
+            {
+                "@type": "HowToStep",
+                "name": "أكمل عملية الإيداع",
+                "text": "اتبع خطوات الدفع الموضحة في صفحة الإيداع.",
+                "url": "https://yourdomain.com/how-it-works.html#step2",
+                "image": "https://yourdomain.com/step2-image.jpg" // اختياري
+            },
+            {
+                "@type": "HowToStep",
+                "name": "استلم عملاتك",
+                "text": "سيتم إضافة العملات إلى حسابك بعد تأكيد العملية بنجاح.",
+                "url": "https://yourdomain.com/how-it-works.html#step3",
+                "image": "https://yourdomain.com/step3-image.jpg" // اختياري
+            }
+        ]
+    }
+    </script>
+
+    <!-- الخطوط والأنماط -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+
+        body{
+          font-family:'Cairo',sans-serif;
+          background:#000;
+          color:#fff;
+          max-width:480px;
+          margin:auto;
+          padding-bottom:120px;
+          line-height:1.8;
+        }
+
+        /* الخلفية */
+        .page-bg{
+          position:fixed;
+          inset:0;
+          background:url("Object/qa.jpg") center/cover no-repeat;
+          filter:brightness(0.25) saturate(1.2);
+          z-index:-1;
+        }
+
+        /* الهيدر */
+        .header{
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
+          padding:14px 16px;
+          background:rgba(0,0,0,0.85);
+          border-bottom:1px solid rgba(255,215,0,0.25);
+          backdrop-filter:blur(10px);
+        }
+        .logo{
+          color:gold;
+          font-weight:900;
+          font-size:16px;
+          text-shadow:0 0 8px rgba(255,215,0,0.4);
+        }
+        .back{
+          color:#00ffcc;
+          cursor:pointer;
+          font-size:13px;
+        }
+
+        /* العنوان الرئيسي */
+        .page-main-title{
+          text-align:center;
+          margin:18px 0 12px;
+          color:gold;
+          font-size:18px;
+          font-weight:800;
+          text-shadow:0 0 8px rgba(255,215,0,0.3);
+        }
+
+        /* صندوق المحتوى */
+        .box{
+          margin:0 16px;
+          padding:18px;
+          background:rgba(0,0,0,0.65);
+          border-radius:18px;
+          border:1px solid rgba(255,215,0,0.25);
+          box-shadow:0 0 25px rgba(0,0,0,0.6);
+        }
+
+        .box h2{
+          color:#00ffcc;
+          font-weight:bold;
+          display:block;
+          margin-top:10px;
+          font-size:14px; /* للحفاظ على الحجم السابق */
+        }
+
+        .box p{
+          margin-bottom:10px;
+          font-size:13px;
+          color:#f1f1f1;
+        }
+
+        /* القائمة السفلية */
+        .bottom-nav{
+          position:fixed;
+          bottom:0;left:0;right:0;
+          max-width:480px;
+          margin:auto;
+          background:linear-gradient(180deg, #8b1a1a, #6a0d0d);
+          display:flex;
+          justify-content:space-around;
+          padding:10px 0 18px;
+          border-top: 3px solid #e6b422;
+          box-shadow: 0 -5px 20px rgba(0,0,0,0.8), 0 0 15px #b8860b;
+          z-index:100;
+        }
+
+        .nav-item{
+          text-align:center;
+          cursor:pointer;
+          display:flex;
+          flex-direction:column;
+          align-items:center;
+          gap:4px;
+          transition:transform 0.2s;
+          width: 70px;
+          position: relative;
+        }
+        .nav-item:active{transform:scale(0.95);}
+
+        .nav-circle{
+          width:55px;
+          height:55px;
+          border-radius:50%;
+          background: #1a0e0e;
+          border: 2px solid #b22222;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 30px;
+          color: #b22222;
+          margin: 0 auto 4px;
+          transition: all 0.3s ease;
+          box-shadow: 0 0 10px rgba(180, 40, 40, 0.6);
+        }
+
+        .nav-item.current-page .nav-circle{
+          color: #FFD700;
+          border-color: #FFD700;
+          box-shadow: 0 0 15px #FFD700;
+          animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse{
+          0%{box-shadow:0 0 5px #FFD700;}
+          50%{box-shadow:0 0 20px #FFD700;}
+          100%{box-shadow:0 0 5px #FFD700;}
+        }
+
+        .nav-label{
+          font-size: 11px;
+          font-weight: 700;
+          color: #ffdb8e;
+          text-shadow: 0 0 5px #b8860b;
+          display: none;
+          height: 16px;
+          margin-top: 2px;
+        }
+
+        .nav-item.showing .nav-label{
+          display: block;
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-bg"></div>
+
+<div class="header">
+  <div class="logo">⚙ PharaCoin</div>
+  <div class="back" onclick="goBack()">⬅ رجوع</div>
+</div>
+
+<!-- تم تغيير العنوان من div إلى h1 لتحسين SEO -->
+<h1 class="page-main-title">كيف يعمل النظام</h1>
+
+<div class="box">
+  <!-- تم تغيير span إلى h2 مع الاحتفاظ بنفس التنسيق -->
+  <h2>1️⃣ اختر الباقة</h2>
+  <p>قم بتحديد عدد العملات التي تريد شراءها من المتجر.</p>
+
+  <h2>2️⃣ أكمل عملية الإيداع</h2>
+  <p>اتبع خطوات الدفع الموضحة في صفحة الإيداع.</p>
+
+  <h2>3️⃣ استلم عملاتك</h2>
+  <p>سيتم إضافة العملات إلى حسابك بعد تأكيد العملية بنجاح.</p>
+</div>
+
+<!-- Bottom Nav بالرموز المصرية مع إضافة aria-labels لتحسين إمكانية الوصول -->
+<div class="bottom-nav">
+  <div class="nav-item" data-url="dashboard.html" data-label="الرئيسية" data-egypt="𓂀" data-alt="🏠" aria-label="الصفحة الرئيسية">
+    <div class="nav-circle">𓂀</div>
+    <div class="nav-label">الرئيسية</div>
+  </div>
+  <div class="nav-item" data-url="museum.html" data-label="المتحف" data-egypt="𓆣" data-alt="🏺" aria-label="صفحة المتحف">
+    <div class="nav-circle">𓆣</div>
+    <div class="nav-label">المتحف</div>
+  </div>
+  <div class="nav-item" data-url="statue-builder.html" data-label="التجميع" data-egypt="𓁹" data-alt="⚒️" aria-label="صفحة تجميع التماثيل">
+    <div class="nav-circle">𓁹</div>
+    <div class="nav-label">التجميع</div>
+  </div>
+  <!-- الصفحة الحالية: حسابي -->
+  <div class="nav-item current-page" data-url="profile.html" data-label="حسابي" data-egypt="☥" data-alt="👤" aria-label="الصفحة الشخصية">
+    <div class="nav-circle">☥</div>
+    <div class="nav-label">حسابي</div>
+  </div>
+</div>
+
+<script>
+function goBack(){
+  if(document.referrer){
+    history.back();
+  }else{
+    location.href='profile.html';
+  }
+}
+
+// ===== آلية النقر الجديدة للـ Navbar =====
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+const audioCtx = new AudioCtx();
+
+function playClick() {
+  try {
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.connect(g);
+    g.connect(audioCtx.destination);
+    o.type = 'sine';
+    o.frequency.setValueAtTime(700, audioCtx.currentTime);
+    o.frequency.exponentialRampToValueAtTime(1100, audioCtx.currentTime + 0.08);
+    g.gain.setValueAtTime(0.1, audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.12);
+    o.start();
+    o.stop(audioCtx.currentTime + 0.12);
+  } catch (e) {}
+}
+
+const navItems = document.querySelectorAll('.nav-item');
+let effectShown = new Array(navItems.length).fill(false);
+let timerId = null;
+let currentItem = null;
+
+function showEffect(item) {
+  if (item.classList.contains('current-page')) return;
+  
+  if (timerId) {
+    clearTimeout(timerId);
+    timerId = null;
+    if (currentItem) {
+      const oldCircle = currentItem.querySelector('.nav-circle');
+      const oldEgypt = currentItem.dataset.egypt;
+      oldCircle.textContent = oldEgypt;
+      currentItem.classList.remove('showing');
+    }
+  }
+  
+  currentItem = item;
+  const circle = item.querySelector('.nav-circle');
+  const altSymbol = item.dataset.alt;
+  circle.textContent = altSymbol;
+  item.classList.add('showing');
+  
+  timerId = setTimeout(() => {
+    const circle = currentItem.querySelector('.nav-circle');
+    const egyptSymbol = currentItem.dataset.egypt;
+    circle.textContent = egyptSymbol;
+    currentItem.classList.remove('showing');
+    
+    timerId = null;
+    currentItem = null;
+  }, 3000);
+}
+
+navItems.forEach((item, index) => {
+  item.addEventListener('click', function(e) {
+    e.stopPropagation();
+    playClick();
+    
+    if (this.classList.contains('current-page')) return;
+    
+    if (effectShown[index]) {
+      window.location.href = this.dataset.url;
+      return;
+    }
+    
+    showEffect(this);
+    effectShown[index] = true;
+  });
+});
+</script>
+
+</body>
+</html>

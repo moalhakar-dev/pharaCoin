@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- === تحسينات SEO محسنة === -->
+    <title>متجر عملات PharaCoin - اشترِ العملات الرقمية بأفضل الأسعار</title>
+    <meta name="description" content="اختر باقة العملات المناسبة لك في متجر PharaCoin: مبتدئ (100 Coins)، متقدم (300 Coins)، محترف (700 Coins)، أسطوري (1500 Coins)، الفرعوني (3000 Coins). ابدأ رحلتك الآن!">
+    <meta name="keywords" content="PharaCoin, متجر عملات, شراء عملات, باقات, شحن رصيد, عملات رقمية">
+    <meta name="author" content="PharaCoin Team">
+    <meta name="robots" content="index, follow">
+
+    <!-- === بطاقات المشاركة الاجتماعية (Open Graph / Twitter) === -->
+    <meta property="og:title" content="متجر عملات PharaCoin">
+    <meta property="og:description" content="اختر الباقة المناسبة واشحن رصيدك من العملات الرقمية داخل PharaCoin.">
+    <meta property="og:image" content="https://yourdomain.com/og-image.jpg"> <!-- استبدل بالرابط الفعلي لصورة الشعار -->
+    <meta property="og:url" content="https://yourdomain.com/shop.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="PharaCoin">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="متجر عملات PharaCoin">
+    <meta name="twitter:description" content="اختر الباقة المناسبة واشحن رصيدك من العملات الرقمية داخل PharaCoin.">
+    <meta name="twitter:image" content="https://yourdomain.com/twitter-image.jpg"> <!-- استبدل بالرابط الفعلي لصورة الشعار -->
+    <meta name="twitter:site" content="@PharaCoinApp">
+
+    <!-- === الرابط الأساسي (Canonical) === -->
+    <link rel="canonical" href="https://yourdomain.com/shop.html">
+
+    <!-- === البيانات المنظمة (Structured Data) لصفحة المتجر === -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "name": "باقات عملات PharaCoin",
+        "description": "قائمة باقات شراء العملات المتاحة في متجر PharaCoin.",
+        "numberOfItems": 5,
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "item": {
+                    "@type": "Product",
+                    "name": "باقة مبتدئ",
+                    "description": "100 عملة رقمية (Coins) لبدء رحلتك.",
+                    "offers": {
+                        "@type": "Offer",
+                        "price": "1",
+                        "priceCurrency": "USD",
+                        "url": "https://yourdomain.com/deposit.html?amount=100"
+                    }
+                }
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "item": {
+                    "@type": "Product",
+                    "name": "باقة متقدم",
+                    "description": "300 عملة رقمية (Coins) لمزيد من التقدم.",
+                    "offers": {
+                        "@type": "Offer",
+                        "price": "3",
+                        "priceCurrency": "USD",
+                        "url": "https://yourdomain.com/deposit.html?amount=300"
+                    }
+                }
+            },
+            {
+                "@type": "ListItem",
+                "position": 3,
+                "item": {
+                    "@type": "Product",
+                    "name": "باقة محترف",
+                    "description": "700 عملة رقمية (Coins) للمحترفين.",
+                    "offers": {
+                        "@type": "Offer",
+                        "price": "6",
+                        "priceCurrency": "USD",
+                        "url": "https://yourdomain.com/deposit.html?amount=700"
+                    }
+                }
+            },
+            {
+                "@type": "ListItem",
+                "position": 4,
+                "item": {
+                    "@type": "Product",
+                    "name": "باقة أسطوري",
+                    "description": "1500 عملة رقمية (Coins) لتجربة أسطورية.",
+                    "offers": {
+                        "@type": "Offer",
+                        "price": "10",
+                        "priceCurrency": "USD",
+                        "url": "https://yourdomain.com/deposit.html?amount=1500"
+                    }
+                }
+            },
+            {
+                "@type": "ListItem",
+                "position": 5,
+                "item": {
+                    "@type": "Product",
+                    "name": "الباقة الفرعوني",
+                    "description": "3000 عملة رقمية (Coins) لعملاء النخبة.",
+                    "offers": {
+                        "@type": "Offer",
+                        "price": "18",
+                        "priceCurrency": "USD",
+                        "url": "https://yourdomain.com/deposit.html?amount=3000"
+                    }
+                }
+            }
+        ]
+    }
+    </script>
+
+    <!-- الخطوط والأنماط -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+
+        body{
+          font-family:'Cairo',sans-serif;
+          background:#000;
+          color:#fff;
+          max-width:480px;
+          margin:auto;
+          padding-bottom:120px;
+          line-height:1.8;
+        }
+
+        /* الخلفية */
+        .page-bg{
+          position:fixed;
+          inset:0;
+          background:url("Object/qa.jpg") center/cover no-repeat;
+          filter:brightness(0.25) saturate(1.2);
+          z-index:-1;
+        }
+
+        /* الهيدر */
+        .header{
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
+          padding:14px 16px;
+          background:rgba(0,0,0,0.85);
+          border-bottom:1px solid rgba(255,215,0,0.25);
+          backdrop-filter:blur(10px);
+        }
+        .logo{
+          color:gold;
+          font-weight:900;
+          font-size:16px;
+          text-shadow:0 0 8px rgba(255,215,0,0.4);
+        }
+        .back{
+          color:#00ffcc;
+          cursor:pointer;
+          font-size:13px;
+        }
+
+        /* العنوان الرئيسي */
+        h1.page-title{
+          text-align:center;
+          margin:18px 0 12px;
+          color:gold;
+          font-size:18px;
+          font-weight:800;
+          text-shadow:0 0 8px rgba(255,215,0,0.3);
+        }
+
+        /* صندوق المحتوى */
+        .box{
+          margin:0 16px;
+          padding:18px;
+          background:rgba(0,0,0,0.65);
+          border-radius:18px;
+          border:1px solid rgba(255,215,0,0.25);
+          box-shadow:0 0 25px rgba(0,0,0,0.6);
+        }
+
+        /* الباقات */
+        .pack{
+          background:rgba(0,0,0,.5);
+          border:1px solid rgba(255,215,0,.4);
+          border-radius:14px;
+          padding:14px;
+          margin-bottom:14px;
+          text-align:center;
+        }
+
+        .pack h2{
+          color:gold;
+          margin-bottom:6px;
+          font-size:16px;
+        }
+
+        .coins{
+          font-size:18px;
+          font-weight:bold;
+          color:#00ffcc;
+        }
+
+        .price{
+          margin:6px 0;
+          font-size:13px;
+          opacity:.9;
+        }
+
+        .pack button{
+          width:100%;
+          padding:10px;
+          border:none;
+          border-radius:10px;
+          background:gold;
+          font-weight:bold;
+          cursor:pointer;
+        }
+        .pack button:hover{
+          background:orange;
+        }
+
+        /* القائمة السفلية */
+        .bottom-nav{
+          position:fixed;
+          bottom:0;left:0;right:0;
+          max-width:480px;
+          margin:auto;
+          background:linear-gradient(180deg, #8b1a1a, #6a0d0d); /* أحمر داكن فرعوني */
+          display:flex;
+          justify-content:space-around;
+          padding:10px 0 18px;
+          border-top: 3px solid #e6b422; /* ذهبي */
+          box-shadow: 0 -5px 20px rgba(0,0,0,0.8), 0 0 15px #b8860b;
+          z-index:100;
+        }
+
+        .nav-item{
+          text-align:center;
+          cursor:pointer;
+          display:flex;
+          flex-direction:column;
+          align-items:center;
+          gap:4px;
+          transition:transform 0.2s;
+          width: 70px;
+          position: relative;
+        }
+        .nav-item:active{transform:scale(0.95);}
+
+        .nav-circle{
+          width:55px;
+          height:55px;
+          border-radius:50%;
+          background: #1a0e0e; /* أسود محمر */
+          border: 2px solid #b22222; /* إطار أحمر */
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 30px;
+          color: #b22222; /* أحمر فرعوني */
+          margin: 0 auto 4px;
+          transition: all 0.3s ease;
+          box-shadow: 0 0 10px rgba(180, 40, 40, 0.6);
+        }
+
+        /* العنصر النشط (الصفحة الحالية) - لونه أصفر مع نبض */
+        .nav-item.current-page .nav-circle{
+          color: #FFD700; /* ذهبي */
+          border-color: #FFD700; /* إطار ذهبي */
+          box-shadow: 0 0 15px #FFD700;
+          animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse{
+          0%{box-shadow:0 0 5px #FFD700;}
+          50%{box-shadow:0 0 20px #FFD700;}
+          100%{box-shadow:0 0 5px #FFD700;}
+        }
+
+        /* النص أسفل الدائرة - يظهر فقط أثناء الـ 3 ثوان */
+        .nav-label{
+          font-size: 11px;
+          font-weight: 700;
+          color: #ffdb8e;
+          text-shadow: 0 0 5px #b8860b;
+          display: none;
+          height: 16px;
+          margin-top: 2px;
+        }
+
+        .nav-item.showing .nav-label{
+          display: block;
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-bg"></div>
+
+<div class="header">
+  <div class="logo">🏪 PharaCoin</div>
+  <div class="back" onclick="goBack()">⬅ رجوع</div>
+</div>
+
+<!-- تم تغيير العنوان إلى h1 مع الحفاظ على التنسيق -->
+<h1 class="page-title">متجر العملات</h1>
+
+<div class="box">
+
+  <div class="pack">
+    <h2>🟢 مبتدئ</h2>
+    <div class="coins">100 Coins</div>
+    <div class="price">السعر: 1$</div>
+    <button onclick="goDeposit(100)">اختيار الباقة</button>
+  </div>
+
+  <div class="pack">
+    <h2>🔵 متقدم</h2>
+    <div class="coins">300 Coins</div>
+    <div class="price">السعر: 3$</div>
+    <button onclick="goDeposit(300)">اختيار الباقة</button>
+  </div>
+
+  <div class="pack">
+    <h2>🟣 محترف</h2>
+    <div class="coins">700 Coins</div>
+    <div class="price">السعر: 6$</div>
+    <button onclick="goDeposit(700)">اختيار الباقة</button>
+  </div>
+
+  <div class="pack">
+    <h2>🟡 أسطوري</h2>
+    <div class="coins">1500 Coins</div>
+    <div class="price">السعر: 10$</div>
+    <button onclick="goDeposit(1500)">اختيار الباقة</button>
+  </div>
+
+  <div class="pack">
+    <h2>🔴 الفرعوني</h2>
+    <div class="coins">3000 Coins</div>
+    <div class="price">السعر: 18$</div>
+    <button onclick="goDeposit(3000)">اختيار الباقة</button>
+  </div>
+
+</div>
+
+<!-- Bottom Nav بالرموز المصرية مع إضافة aria-labels -->
+<div class="bottom-nav">
+  <!-- الصفحة الحالية: الرئيسية (كما هو محدد في الكود الأصلي) -->
+  <div class="nav-item current-page" data-url="dashboard.html" data-label="الرئيسية" data-egypt="𓂀" data-alt="🏠" aria-label="الصفحة الرئيسية">
+    <div class="nav-circle">𓂀</div>
+    <div class="nav-label">الرئيسية</div>
+  </div>
+  <div class="nav-item" data-url="museum.html" data-label="المتحف" data-egypt="𓆣" data-alt="🏺" aria-label="صفحة المتحف">
+    <div class="nav-circle">𓆣</div>
+    <div class="nav-label">المتحف</div>
+  </div>
+  <div class="nav-item" data-url="statue-builder.html" data-label="التجميع" data-egypt="𓁹" data-alt="⚒️" aria-label="صفحة تجميع التماثيل">
+    <div class="nav-circle">𓁹</div>
+    <div class="nav-label">التجميع</div>
+  </div>
+  <div class="nav-item" data-url="profile.html" data-label="حسابي" data-egypt="☥" data-alt="👤" aria-label="الصفحة الشخصية">
+    <div class="nav-circle">☥</div>
+    <div class="nav-label">حسابي</div>
+  </div>
+</div>
+
+<script>
+function goDeposit(amount){
+  localStorage.setItem("pendingCoins",amount);
+  location.href="deposit.html";
+}
+
+function goBack(){
+  if(document.referrer){
+    history.back();
+  }else{
+    location.href="dashboard.html";
+  }
+}
+
+// ===== آلية النقر الجديدة للـ Navbar =====
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+const audioCtx = new AudioCtx();
+
+function playClick() {
+  try {
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.connect(g);
+    g.connect(audioCtx.destination);
+    o.type = 'sine';
+    o.frequency.setValueAtTime(700, audioCtx.currentTime);
+    o.frequency.exponentialRampToValueAtTime(1100, audioCtx.currentTime + 0.08);
+    g.gain.setValueAtTime(0.1, audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.12);
+    o.start();
+    o.stop(audioCtx.currentTime + 0.12);
+  } catch (e) {}
+}
+
+const navItems = document.querySelectorAll('.nav-item');
+let effectShown = new Array(navItems.length).fill(false);
+let timerId = null;
+let currentItem = null;
+
+function showEffect(item) {
+  if (item.classList.contains('current-page')) return;
+  
+  if (timerId) {
+    clearTimeout(timerId);
+    timerId = null;
+    if (currentItem) {
+      const oldCircle = currentItem.querySelector('.nav-circle');
+      const oldEgypt = currentItem.dataset.egypt;
+      oldCircle.textContent = oldEgypt;
+      currentItem.classList.remove('showing');
+    }
+  }
+  
+  currentItem = item;
+  const circle = item.querySelector('.nav-circle');
+  const altSymbol = item.dataset.alt;
+  circle.textContent = altSymbol;
+  item.classList.add('showing');
+  
+  timerId = setTimeout(() => {
+    const circle = currentItem.querySelector('.nav-circle');
+    const egyptSymbol = currentItem.dataset.egypt;
+    circle.textContent = egyptSymbol;
+    currentItem.classList.remove('showing');
+    
+    timerId = null;
+    currentItem = null;
+  }, 3000);
+}
+
+navItems.forEach((item, index) => {
+  item.addEventListener('click', function(e) {
+    e.stopPropagation();
+    playClick();
+    
+    if (this.classList.contains('current-page')) return;
+    
+    if (effectShown[index]) {
+      window.location.href = this.dataset.url;
+      return;
+    }
+    
+    showEffect(this);
+    effectShown[index] = true;
+  });
+});
+</script>
+
+</body>
+</html>

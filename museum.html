@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>المتحف الملكي — PharaCoin</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{
+  overflow-x:hidden;width:100%;
+  font-family:'Cairo',sans-serif;color:#fff;
+}
+body{
+  max-width:480px;
+  margin:0 auto;
+  min-height:100vh;
+  padding-bottom:90px;
+  background:transparent; /* مهم */
+}
+
+/* الخلفية */
+.page-bg{
+  position:fixed;
+  inset:0;
+  z-index:-2;
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+}
+.page-bg::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg,rgba(0,0,0,0.2),rgba(0,0,0,0.7));
+}
+
+/* Header */
+.top-bar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(0,0,0,0.75);
+  border-bottom:1px solid rgba(255,215,0,0.15);
+  padding:12px 16px;
+  display:flex;align-items:center;justify-content:space-between;
+  backdrop-filter:blur(15px);
+}
+.top-bar .nav-links{display:flex;gap:6px;}
+.top-bar a{
+  color:rgba(255,255,255,0.5);text-decoration:none;font-size:12px;font-weight:700;
+  padding:6px 12px;border-radius:10px;
+  transition:all 0.3s;
+}
+.top-bar a:hover{color:gold;background:rgba(255,215,0,0.05);}
+.top-bar a.active{color:gold;border:1px solid rgba(255,215,0,0.3);background:rgba(255,215,0,0.08);}
+
+.coin-display{display:flex;align-items:center;gap:7px;font-size:14px;font-weight:700;}
+.coin-icon{
+  width:24px;height:24px;border-radius:50%;
+  background:linear-gradient(135deg,#FFD700,#FFA500);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;box-shadow:0 0 8px rgba(255,215,0,0.3);
+}
+
+/* Content */
+.content{padding:16px;position:relative;z-index:1;}
+
+.page-header{text-align:center;margin-bottom:20px;
+  animation:fadeInDown 0.6s ease-out;
+}
+@keyframes fadeInDown{from{opacity:0;transform:translateY(-15px);}to{opacity:1;transform:translateY(0);}}
+.page-header h1{
+  font-size:26px;font-weight:900;
+  background:linear-gradient(135deg,#FFD700,#FFA500);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:4px;
+}
+.page-header p{color:rgba(255,255,255,0.4);font-size:13px;}
+
+/* Grid */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(85px,1fr));
+  gap:10px;
+}
+.square{
+  aspect-ratio:1;
+  background:rgba(15,15,15,0.8);
+  border-radius:14px;
+  overflow:hidden;
+  cursor:pointer;
+  border:2px solid rgba(255,215,0,0.25);
+  box-shadow:0 2px 10px rgba(0,0,0,0.3);
+  transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
+  position:relative;
+  animation:itemIn 0.5s ease-out backwards;
+  backdrop-filter:blur(5px);
+}
+.square:nth-child(1){animation-delay:0.05s;}
+.square:nth-child(2){animation-delay:0.1s;}
+.square:nth-child(3){animation-delay:0.15s;}
+.square:nth-child(4){animation-delay:0.2s;}
+.square:nth-child(5){animation-delay:0.25s;}
+.square:nth-child(6){animation-delay:0.3s;}
+.square:nth-child(7){animation-delay:0.35s;}
+.square:nth-child(8){animation-delay:0.4s;}
+@keyframes itemIn{from{opacity:0;transform:scale(0.85) translateY(15px);}to{opacity:1;transform:scale(1) translateY(0);}}
+
+.square img{width:100%;height:100%;object-fit:cover;}
+.square:hover{transform:scale(1.06);box-shadow:0 4px 20px rgba(255,215,0,0.2);border-color:rgba(255,215,0,0.5);}
+
+.square.locked{
+  filter:grayscale(100%) brightness(0.35);
+  border:2px dashed rgba(100,100,100,0.4);
+  box-shadow:none;
+}
+.square.locked::after{
+  content:'🔒';
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;background:rgba(0,0,0,0.4);
+}
+.square.locked:hover{transform:scale(1.02);filter:grayscale(80%) brightness(0.4);}
+
+@keyframes pulseGold{
+  0%{box-shadow:0 0 8px rgba(255,215,0,0.3);}
+  50%{box-shadow:0 0 25px rgba(255,215,0,0.5),0 0 50px rgba(255,165,0,0.15);}
+  100%{box-shadow:0 0 8px rgba(255,215,0,0.3);}
+}
+.square.active{
+  border:2px solid #FFD700;
+  animation:pulseGold 1.5s infinite;
+  transform:scale(1.08);z-index:10;
+}
+
+/* Details */
+.details-box{
+  grid-column:1/-1;
+  background:rgba(10,10,10,0.9);
+  border:1px solid rgba(255,215,0,0.25);
+  border-radius:14px;padding:18px;
+  text-align:center;
+  animation:detailsIn 0.35s ease-out;
+  position:relative;overflow:hidden;
+  backdrop-filter:blur(10px);
+}
+.details-box::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,#FFD700,transparent);
+}
+@keyframes detailsIn{from{opacity:0;transform:translateY(-10px);}to{opacity:1;transform:translateY(0);}}
+
+.details-box .info{
+  display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:14px;
+}
+.details-box .info-item{
+  background:rgba(255,215,0,0.06);
+  border:1px solid rgba(255,215,0,0.12);
+  border-radius:10px;padding:7px 14px;
+  color:#ddd;font-size:12px;
+}
+.details-box .info-item span{color:#FFD700;font-weight:700;}
+
+.buy-btn{
+  background:linear-gradient(135deg,#FFD700,#FFA500);
+  color:#000;border:none;
+  padding:10px 28px;border-radius:10px;
+  font-size:14px;font-weight:800;font-family:'Cairo';
+  cursor:pointer;transition:all 0.3s;
+  box-shadow:0 4px 15px rgba(255,215,0,0.25);
+}
+.buy-btn:hover{transform:translateY(-2px);box-shadow:0 6px 25px rgba(255,215,0,0.35);}
+.buy-btn:active{transform:translateY(0);}
+
+.lock-msg{
+  color:rgba(255,255,255,0.5);font-size:14px;font-weight:600;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+
+/* Toast */
+.toast-container{
+  position:fixed;top:60px;left:50%;transform:translateX(-50%);
+  z-index:999;display:flex;flex-direction:column;gap:10px;pointer-events:none;
+  max-width:340px;width:90%;
+}
+.toast{
+  background:rgba(10,10,10,0.95);
+  border:1px solid rgba(255,215,0,0.3);border-radius:12px;
+  padding:11px 16px;color:#fff;font-family:'Cairo';font-size:13px;
+  box-shadow:0 10px 40px rgba(0,0,0,0.5);
+  animation:toastIn 0.4s ease-out,toastOut 0.4s ease-in 2.5s forwards;
+  display:flex;align-items:center;gap:10px;
+  backdrop-filter:blur(10px);
+}
+.toast.success{border-color:rgba(0,255,100,0.4);}
+.toast.error{border-color:rgba(255,60,60,0.4);}
+.toast.info{border-color:rgba(78,168,255,0.4);}
+@keyframes toastIn{from{opacity:0;transform:translateY(-15px);}to{opacity:1;transform:translateY(0);}}
+@keyframes toastOut{from{opacity:1;}to{opacity:0;transform:translateY(-15px);}}
+
+/* ===== التصميم الجديد للـ Navbar بالرموز المصرية ===== */
+.bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;
+  max-width:480px;margin:0 auto;
+  background:linear-gradient(180deg, #8b1a1a, #6a0d0d); /* أحمر داكن فرعوني */
+  display:flex;justify-content:space-around;
+  padding:10px 0 18px;
+  border-top: 3px solid #e6b422; /* ذهبي */
+  box-shadow: 0 -5px 20px rgba(0,0,0,0.8), 0 0 15px #b8860b;
+  backdrop-filter:blur(15px);
+  z-index:100;
+}
+
+.nav-item{
+  text-align:center;
+  cursor:pointer;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:4px;
+  transition:transform 0.2s;
+  width: 70px;
+  position: relative;
+  text-decoration: none;
+}
+.nav-item:active{transform:scale(0.95);}
+
+.nav-circle{
+  width:55px;
+  height:55px;
+  border-radius:50%;
+  background: #1a0e0e; /* أسود محمر */
+  border: 2px solid #b22222; /* إطار أحمر */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  color: #b22222; /* أحمر فرعوني */
+  margin: 0 auto 4px;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(180, 40, 40, 0.6);
+}
+
+/* العنصر النشط (الصفحة الحالية) - لونه أصفر مع نبض */
+.nav-item.current-page .nav-circle{
+  color: #FFD700; /* ذهبي */
+  border-color: #FFD700; /* إطار ذهبي */
+  box-shadow: 0 0 15px #FFD700;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+  0%{box-shadow:0 0 5px #FFD700;}
+  50%{box-shadow:0 0 20px #FFD700;}
+  100%{box-shadow:0 0 5px #FFD700;}
+}
+
+/* النص أسفل الدائرة - يظهر فقط أثناء الـ 3 ثوان */
+.nav-label{
+  font-size: 11px;
+  font-weight: 700;
+  color: #ffdb8e;
+  text-shadow: 0 0 5px #b8860b;
+  display: none;
+  height: 16px;
+  margin-top: 2px;
+}
+
+.nav-item.showing .nav-label{
+  display: block;
+}
+
+/* تعديلات للتوافق مع الروابط */
+.bottom-nav a.nav-item {
+  color: inherit;
+}
+</style>
+</head>
+<body>
+
+<!-- الخلفية -->
+<div class="page-bg" id="pageBg"></div>
+
+<div class="top-bar">
+  <div class="nav-links">
+    <a href="dashboard.html">🏠 الرئيسية</a>
+    <a href="museum.html" class="active">🏺 المتحف</a>
+    <a href="statue-builder.html">⚒️ التجميع</a>
+  </div>
+  <div class="coin-display">
+    <div class="coin-icon">💰</div>
+    <span id="coinCount">500</span>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<div class="content">
+  <div class="page-header">
+    <h1>🏛 متحف القطع الأثرية</h1>
+    <p>اختر قطعة لعرض تفاصيلها وشرائها</p>
+  </div>
+  <div class="grid" id="grid"></div>
+</div>
+
+<!-- Bottom Nav بالرموز المصرية -->
+<div class="bottom-nav">
+  <!-- 𓂀 : الرئيسية -->
+  <div class="nav-item" data-url="dashboard.html" data-label="الرئيسية" data-egypt="𓂀" data-alt="🏠">
+    <div class="nav-circle">𓂀</div>
+    <div class="nav-label">الرئيسية</div>
+  </div>
+  <!-- 𓆣 : المتحف (الصفحة الحالية) -->
+  <div class="nav-item current-page" data-url="museum.html" data-label="المتحف" data-egypt="𓆣" data-alt="🏺">
+    <div class="nav-circle">𓆣</div>
+    <div class="nav-label">المتحف</div>
+  </div>
+  <!-- 𓁹 : التجميع -->
+  <div class="nav-item" data-url="statue-builder.html" data-label="التجميع" data-egypt="𓁹" data-alt="⚒️">
+    <div class="nav-circle">𓁹</div>
+    <div class="nav-label">التجميع</div>
+  </div>
+  <!-- ☥ : حسابي -->
+  <div class="nav-item" data-url="profile.html" data-label="حسابي" data-egypt="☥" data-alt="👤">
+    <div class="nav-circle">☥</div>
+    <div class="nav-label">حسابي</div>
+  </div>
+</div>
+
+<script>
+// Audio
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+const audioCtx = new AudioCtx();
+
+function playSound(freq, dur, type = 'sine') {
+  try {
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.connect(g);
+    g.connect(audioCtx.destination);
+    o.type = type;
+    o.frequency.setValueAtTime(freq, audioCtx.currentTime);
+    g.gain.setValueAtTime(0.1, audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+    o.start();
+    o.stop(audioCtx.currentTime + dur);
+  } catch (e) {}
+}
+function playClick() { playSound(600, 0.08); }
+function playBuy() {
+  playSound(523, 0.1);
+  setTimeout(() => playSound(659, 0.1), 100);
+  setTimeout(() => playSound(784, 0.12), 200);
+}
+function playError() { playSound(200, 0.2, 'square'); }
+
+// Toast
+function showToast(msg, type = 'success') {
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  const icons = { success: '✅', error: '❌', info: 'ℹ️' };
+  t.innerHTML = (icons[type] || '✅') + ' ' + msg;
+  document.getElementById('toastContainer').appendChild(t);
+  setTimeout(() => t.remove(), 3000);
+}
+
+// Coins
+let coins = parseInt(localStorage.getItem('coins')) || 500;
+document.getElementById('coinCount').innerText = coins;
+
+function updateCoins(val) {
+  coins = val;
+  localStorage.setItem('coins', coins);
+  document.getElementById('coinCount').innerText = coins;
+}
+
+let activeIndex = null;
+
+// مصفوفة الأجزاء كاملة
+const parts = [
+  { img: "Object/statue1_part1.jpg", open: true, price: 50, reward: 15, time: "20 دقيقة", name: "جزء التمثال ١" },
+  { img: "Object/statue1_part2.jpg", open: true, price: 100, reward: 30, time: "30 دقيقة", name: "جزء التمثال ٢" },
+  { img: "Object/statue1_part3.jpg", open: true, price: 200, reward: 70, time: "45 دقيقة", name: "جزء التمثال ٣" },
+  { img: "Object/statue1_part4.jpg", open: true, price: 400, reward: 150, time: "60 دقيقة", name: "جزء التمثال ٤" },
+  { img: "Object/statue2_part1.jpg", open: false, name: "تمثال ٢ - جزء ١" },
+  { img: "Object/statue2_part2.jpg", open: false, name: "تمثال ٢ - جزء ٢" },
+  { img: "Object/statue2_part3.jpg", open: false, name: "تمثال ٢ - جزء ٣" },
+  { img: "Object/statue2_part4.jpg", open: false, name: "تمثال ٢ - جزء ٤" },
+  { img: "Object/statue2_part5.jpg", open: false, name: "تمثال ٢ - جزء ٥" },
+  { img: "Object/statue3_part1.jpg", open: false, name: "تمثال ٣ - جزء ١" },
+  { img: "Object/statue3_part2.jpg", open: false, name: "تمثال ٣ - جزء ٢" },
+  { img: "Object/statue3_part3.jpg", open: false, name: "تمثال ٣ - جزء ٣" },
+  { img: "Object/statue3_part4.jpg", open: false, name: "تمثال ٣ - جزء ٤" },
+  { img: "Object/statue3_part5.jpg", open: false, name: "تمثال ٣ - جزء ٥" },
+  { img: "Object/statue3_part6.jpg", open: false, name: "تمثال ٣ - جزء ٦" },
+  { img: "Object/statue4_part1.jpg", open: false, name: "تمثال ٤ - جزء ١" },
+  { img: "Object/statue4_part2.jpg", open: false, name: "تمثال ٤ - جزء ٢" },
+  { img: "Object/statue4_part3.jpg", open: false, name: "تمثال ٤ - جزء ٣" },
+  { img: "Object/statue4_part4.jpg", open: false, name: "تمثال ٤ - جزء ٤" },
+  { img: "Object/statue4_part5.jpg", open: false, name: "تمثال ٤ - جزء ٥" },
+  { img: "Object/statue4_part6.jpg", open: false, name: "تمثال ٤ - جزء ٦" },
+  { img: "Object/statue4_part7.jpg", open: false, name: "تمثال ٤ - جزء ٧" }
+];
+
+const grid = document.getElementById('grid');
+
+// بناء المربعات
+parts.forEach((part, index) => {
+  const div = document.createElement('div');
+  div.className = 'square';
+  if (!part.open) div.classList.add('locked');
+  div.innerHTML = `<img src="${part.img}" alt="${part.name}" onerror="this.style.display='none'">`;
+  div.onclick = () => { playClick(); toggleDetails(index, div); };
+  grid.appendChild(div);
+});
+
+function toggleDetails(index, element) {
+  const oldDetails = document.querySelector('.details-box');
+  if (oldDetails) oldDetails.remove();
+  document.querySelectorAll('.square').forEach(s => s.classList.remove('active'));
+
+  if (activeIndex === index) {
+    activeIndex = null;
+    return;
+  }
+  activeIndex = index;
+  element.classList.add('active');
+
+  const part = parts[index];
+  const details = document.createElement('div');
+  details.className = 'details-box';
+
+  if (!part.open) {
+    details.innerHTML = `<div class="lock-msg">🔒 هذه القطعة مغلقة — أكمل التمثال السابق لفتحها</div>`;
+  } else {
+    details.innerHTML = `
+      <div class="info">
+        <div class="info-item">💰 السعر: <span>${part.price} Coins</span></div>
+        <div class="info-item">📈 الربح: <span>${part.reward} Coins</span></div>
+        <div class="info-item">⏳ المدة: <span>${part.time}</span></div>
+      </div>
+      <button class="buy-btn" onclick="buyPart(${index})">🛒 شراء القطعة</button>
+    `;
+  }
+  element.after(details);
+}
+
+function buyPart(index) {
+  const part = parts[index];
+  if (coins < part.price) {
+    playError();
+    showToast('رصيد غير كافي! تحتاج ' + part.price + ' Coins', 'error');
+    return;
+  }
+  playBuy();
+  updateCoins(coins - part.price);
+  // إضافة خبرة
+  let xp = parseInt(localStorage.getItem('xp')) || 0;
+  xp += 10;
+  localStorage.setItem('xp', xp);
+  showToast('🔥 تمت إضافة القطعة إلى صفحة التجميع! (+10 XP)');
+}
+
+// الخلفية
+const bg = document.getElementById('pageBg');
+const localImg = "Object/qa.jpg";
+const fallbackImg = "https://images.pexels.com/photos/3350783/pexels-photo-3350783.jpeg?auto=compress&cs=tinysrgb&w=1260";
+
+const img = new Image();
+img.onload = () => bg.style.backgroundImage = `url('${localImg}')`;
+img.onerror = () => bg.style.backgroundImage = `url('${fallbackImg}')`;
+img.src = localImg + "?v=" + Date.now(); // تجنب الكاش
+
+// ===== آلية النقر الجديدة للـ Navbar =====
+const navItems = document.querySelectorAll('.nav-item');
+
+// مصفوفة لتخزين حالة "تم عرض التأثير" لكل عنصر
+let effectShown = new Array(navItems.length).fill(false);
+let timerId = null;
+let currentItem = null;
+
+// دالة لعرض التأثير (تغيير الرمز وإظهار النص)
+function showEffect(item) {
+  // إذا كان العنصر هو الصفحة الحالية، لا نفعل شيئاً
+  if (item.classList.contains('current-page')) return;
+  
+  // إذا كان هناك تأثير سابق قيد العرض، نلغيه
+  if (timerId) {
+    clearTimeout(timerId);
+    timerId = null;
+    if (currentItem) {
+      const oldCircle = currentItem.querySelector('.nav-circle');
+      const oldEgypt = currentItem.dataset.egypt;
+      oldCircle.textContent = oldEgypt;
+      currentItem.classList.remove('showing');
+    }
+  }
+  
+  // تعيين العنصر الحالي وعرض التأثير
+  currentItem = item;
+  const circle = item.querySelector('.nav-circle');
+  const altSymbol = item.dataset.alt;
+  circle.textContent = altSymbol;
+  item.classList.add('showing');
+  
+  // مؤقت لإعادة الرمز المصري بعد 3 ثوان
+  timerId = setTimeout(() => {
+    const circle = currentItem.querySelector('.nav-circle');
+    const egyptSymbol = currentItem.dataset.egypt;
+    circle.textContent = egyptSymbol;
+    currentItem.classList.remove('showing');
+    
+    timerId = null;
+    currentItem = null;
+  }, 3000);
+}
+
+// معالج النقر لكل عنصر
+navItems.forEach((item, index) => {
+  item.addEventListener('click', function(e) {
+    e.stopPropagation();
+    playClick(); // استخدام دالة الصوت
+    
+    // إذا كان العنصر هو الصفحة الحالية، لا ننقل
+    if (this.classList.contains('current-page')) return;
+    
+    // إذا كان التأثير قد ظهر من قبل لهذا العنصر (أي هذه هي الضغطة الثانية) → ننتقل
+    if (effectShown[index]) {
+      window.location.href = this.dataset.url;
+      return;
+    }
+    
+    // وإلا (أول ضغطة) → نعرض التأثير ونسجل أنه تم عرضه
+    showEffect(this);
+    effectShown[index] = true;
+  });
+});
+</script>
+</body>
+</html>
