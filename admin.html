@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة المشرف - PharaCoin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome للأيقونات -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{
+            font-family:'Cairo',sans-serif;
+            background:#111;
+            color:#fff;
+            padding:20px;
+        }
+        .container{
+            max-width:800px;
+            margin:auto;
+        }
+        h1{
+            color:gold;
+            text-align:center;
+            margin-bottom:30px;
+        }
+        /* التبويبات */
+        .tabs{
+            display:flex;
+            gap:10px;
+            margin-bottom:20px;
+            justify-content:center;
+        }
+        .tab-btn{
+            padding:10px 20px;
+            background:#333;
+            border:none;
+            border-radius:30px;
+            cursor:pointer;
+            font-weight:bold;
+            color:gold;
+            font-family:'Cairo',sans-serif;
+            transition:0.3s;
+        }
+        .tab-btn.active{
+            background:gold;
+            color:black;
+        }
+        .tab-btn:hover{
+            background:#444;
+        }
+        .tab-content{
+            display:none;
+        }
+        .tab-content.active{
+            display:block;
+        }
+        /* البطاقات */
+        .request-card{
+            background:#1a1a1a;
+            border:2px solid gold;
+            border-radius:10px;
+            padding:15px;
+            margin-bottom:15px;
+            word-break: break-word; /* منع خروج النص */
+            overflow-wrap: break-word;
+        }
+        .request-header{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:10px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .user-info{
+            color:#00ff9d;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .copy-icon{
+            cursor:pointer;
+            color:gold;
+            font-size:14px;
+            transition:0.2s;
+            background: rgba(255,215,0,0.2);
+            padding:4px 8px;
+            border-radius:5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .copy-icon:hover{
+            background: gold;
+            color: black;
+        }
+        .amount{
+            font-size:20px;
+            color:gold;
+            font-weight:bold;
+            white-space: nowrap;
+        }
+        .details{
+            display:grid;
+            grid-template-columns:repeat(3,1fr);
+            gap:10px;
+            margin:10px 0;
+            color:#ccc;
+        }
+        .detail-item{
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(255,255,255,0.05);
+            padding: 5px 8px;
+            border-radius: 5px;
+            word-break: break-word;
+        }
+        .detail-item span{
+            flex:1;
+        }
+        .actions{
+            display:flex;
+            gap:10px;
+            margin-top:10px;
+        }
+        .approve-btn{
+            flex:1;
+            padding:10px;
+            background:#00cc66;
+            border:none;
+            border-radius:5px;
+            color:white;
+            font-weight:bold;
+            cursor:pointer;
+        }
+        .reject-btn{
+            flex:1;
+            padding:10px;
+            background:#ff3333;
+            border:none;
+            border-radius:5px;
+            color:white;
+            font-weight:bold;
+            cursor:pointer;
+        }
+        .approve-btn:hover{ background:#00aa55; }
+        .reject-btn:hover{ background:#dd2222; }
+        .image-preview{
+            max-width:200px;
+            max-height:200px;
+            margin:10px 0;
+            border:1px solid gold;
+            border-radius:5px;
+            cursor:pointer;
+        }
+        .loader{
+            text-align:center;
+            padding:20px;
+            color:#888;
+        }
+        /* زر نسخ البطاقة بالكامل */
+        .copy-card-btn{
+            background: #333;
+            border: 1px solid gold;
+            color: gold;
+            padding: 8px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            margin-top: 10px;
+            width: 100%;
+        }
+        .copy-card-btn:hover{
+            background: gold;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>👑 لوحة تحكم المشرف</h1>
+
+        <div class="tabs">
+            <button class="tab-btn active" id="tabDepositsBtn" onclick="switchTab('deposits')">💰 طلبات الإيداع</button>
+            <button class="tab-btn" id="tabWithdrawalsBtn" onclick="switchTab('withdrawals')">💸 طلبات السحب</button>
+        </div>
+
+        <!-- قسم الإيداعات -->
+        <div id="depositsSection" class="tab-content active">
+            <div id="depositsList">
+                <p class="loader">جاري تحميل طلبات الإيداع...</p>
+            </div>
+        </div>
+
+        <!-- قسم السحوبات -->
+        <div id="withdrawalsSection" class="tab-content">
+            <div id="withdrawalsList">
+                <p class="loader">جاري تحميل طلبات السحب...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ========== تهيئة Firebase ==========
+        firebase.initializeApp({
+            apiKey: "AIzaSyB78JT_cbPMizvzKWBrQoQUe3-zukHrr1U",
+            authDomain: "pharacoin.firebaseapp.com",
+            projectId: "pharacoin"
+        });
+
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // قائمة معرفات المشرفين المسموح لهم (ضع معرفك هنا)
+        const ADMIN_UIDS = ["4XFv2bbGZaMj451pSd43KZUUEr32"]; // استبدل بمعرفك
+
+        // التحقق من أن المستخدم هو مشرف
+        auth.onAuthStateChanged(user => {
+            if (!user) {
+                window.location.href = "login.html";
+                return;
+            }
+            
+            if (!ADMIN_UIDS.includes(user.uid)) {
+                document.body.innerHTML = `<p style="color:red; text-align:center; margin-top:50px;">⛔ ليس لديك صلاحية الدخول إلى لوحة المشرف</p>`;
+                return;
+            }
+            
+            // تحميل البيانات
+            loadDeposits();
+            loadWithdrawals();
+        });
+
+        // ========== التبويبات ==========
+        function switchTab(tab) {
+            document.getElementById('tabDepositsBtn').classList.remove('active');
+            document.getElementById('tabWithdrawalsBtn').classList.remove('active');
+            document.getElementById('depositsSection').classList.remove('active');
+            document.getElementById('withdrawalsSection').classList.remove('active');
+            
+            if (tab === 'deposits') {
+                document.getElementById('tabDepositsBtn').classList.add('active');
+                document.getElementById('depositsSection').classList.add('active');
+            } else {
+                document.getElementById('tabWithdrawalsBtn').classList.add('active');
+                document.getElementById('withdrawalsSection').classList.add('active');
+            }
+        }
+
+        // ========== دوال النسخ ==========
+        function copyText(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('✅ تم النسخ: ' + text);
+            }).catch(() => {
+                alert('❌ فشل النسخ');
+            });
+        }
+
+        function copyCard(data, type) {
+            let text = '';
+            if (type === 'deposit') {
+                text = `مستخدم: ${data.username}\nالمبلغ: ${data.amount} جنيه\nالطريقة: ${data.method}\nالرقم المحول منه: ${data.fromNumber}\nالعملات: ${data.coins} Coins\nالتاريخ: ${data.date}`;
+            } else {
+                text = `مستخدم: ${data.username}\nالمبلغ: ${data.amount} دولار\nالطريقة: ${data.method}\nالعنوان: ${data.address}\nالتاريخ: ${data.date}`;
+            }
+            copyText(text);
+        }
+
+        // ========== طلبات الإيداع ==========
+        async function loadDeposits() {
+            const listEl = document.getElementById('depositsList');
+            try {
+                const snapshot = await db.collection("deposits")
+                    .where("status", "==", "pending")
+                    .orderBy("createdAt", "desc")
+                    .get();
+
+                if (snapshot.empty) {
+                    listEl.innerHTML = '<p style="text-align:center;">✅ لا توجد طلبات إيداع معلقة</p>';
+                    return;
+                }
+
+                let html = '';
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const date = data.createdAt ? new Date(data.createdAt.seconds * 1000).toLocaleString('ar-EG') : 'غير معروف';
+                    
+                    html += `
+                        <div class="request-card" id="deposit-${doc.id}">
+                            <div class="request-header">
+                                <div class="user-info">
+                                    <span>👤 ${data.username || 'غير معروف'}</span>
+                                    <span class="copy-icon" onclick="copyText('${data.username || ''}')">
+                                        <i class="fas fa-copy"></i> نسخ
+                                    </span>
+                                </div>
+                                <span class="amount">💰 ${data.amount} جنيه</span>
+                            </div>
+                            <div class="details">
+                                <div class="detail-item">
+                                    <i class="fas fa-mobile-alt" style="color:gold;"></i>
+                                    <span>${data.method || 'غير محدد'}</span>
+                                    <span class="copy-icon" onclick="copyText('${data.method || ''}')">
+                                        <i class="fas fa-copy"></i>
+                                    </span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-phone" style="color:gold;"></i>
+                                    <span>${data.fromNumber || 'غير محدد'}</span>
+                                    <span class="copy-icon" onclick="copyText('${data.fromNumber || ''}')">
+                                        <i class="fas fa-copy"></i>
+                                    </span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-coins" style="color:gold;"></i>
+                                    <span>${data.coins || 0} Coins</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-calendar" style="color:gold;"></i>
+                                    <span>${date}</span>
+                                </div>
+                                <div class="detail-item" style="grid-column: span 2;">
+                                    <i class="fas fa-id-card" style="color:gold;"></i>
+                                    <span>${data.userId}</span>
+                                    <span class="copy-icon" onclick="copyText('${data.userId || ''}')">
+                                        <i class="fas fa-copy"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <img class="image-preview" src="${data.proofBase64 || ''}" onclick="window.open(this.src)" title="اضغط للتكبير">
+                            <div class="actions">
+                                <button class="approve-btn" onclick="approveDeposit('${doc.id}', '${data.userId}', ${data.coins})">✅ الموافقة</button>
+                                <button class="reject-btn" onclick="rejectDeposit('${doc.id}')">❌ الرفض</button>
+                            </div>
+                            <button class="copy-card-btn" onclick="copyCard({username:'${data.username || ''}', amount:${data.amount}, method:'${data.method || ''}', fromNumber:'${data.fromNumber || ''}', coins:${data.coins || 0}, date:'${date}'}, 'deposit')">
+                                <i class="fas fa-copy"></i> نسخ البطاقة بالكامل
+                            </button>
+                        </div>
+                    `;
+                });
+
+                listEl.innerHTML = html;
+
+            } catch (err) {
+                console.error(err);
+                listEl.innerHTML = `<p style="color:red;">❌ خطأ في تحميل الإيداعات: ${err.message}</p>`;
+            }
+        }
+
+        async function approveDeposit(docId, userId, coins) {
+            if (!confirm('هل أنت متأكد من الموافقة على هذا الإيداع؟')) return;
+
+            try {
+                await db.collection("deposits").doc(docId).update({
+                    status: "completed",
+                    approvedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                const userRef = db.collection("users").doc(userId);
+                await db.runTransaction(async (transaction) => {
+                    const userDoc = await transaction.get(userRef);
+                    if (!userDoc.exists) throw new Error("المستخدم غير موجود!");
+                    const newBalance = (userDoc.data().coins || 0) + coins;
+                    transaction.update(userRef, { coins: newBalance });
+                });
+
+                document.getElementById(`deposit-${docId}`).style.display = 'none';
+                alert('✅ تمت الموافقة على الإيداع وإضافة الرصيد');
+
+            } catch (err) {
+                console.error(err);
+                alert('❌ خطأ: ' + err.message);
+            }
+        }
+
+        async function rejectDeposit(docId) {
+            if (!confirm('هل أنت متأكد من رفض هذا الإيداع؟')) return;
+
+            try {
+                await db.collection("deposits").doc(docId).update({
+                    status: "rejected",
+                    rejectedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                document.getElementById(`deposit-${docId}`).style.display = 'none';
+                alert('❌ تم رفض الإيداع');
+
+            } catch (err) {
+                console.error(err);
+                alert('❌ خطأ: ' + err.message);
+            }
+        }
+
+        // ========== طلبات السحب ==========
+        async function loadWithdrawals() {
+            const listEl = document.getElementById('withdrawalsList');
+            try {
+                const snapshot = await db.collection("withdrawals")
+                    .where("status", "==", "pending")
+                    .orderBy("createdAt", "desc")
+                    .get();
+
+                if (snapshot.empty) {
+                    listEl.innerHTML = '<p style="text-align:center;">✅ لا توجد طلبات سحب معلقة</p>';
+                    return;
+                }
+
+                let html = '';
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const date = data.createdAt ? new Date(data.createdAt.seconds * 1000).toLocaleString('ar-EG') : 'غير معروف';
+                    
+                    html += `
+                        <div class="request-card" id="withdraw-${doc.id}">
+                            <div class="request-header">
+                                <div class="user-info">
+                                    <span>👤 ${data.username || 'غير معروف'}</span>
+                                    <span class="copy-icon" onclick="copyText('${data.username || ''}')">
+                                        <i class="fas fa-copy"></i> نسخ
+                                    </span>
+                                </div>
+                                <span class="amount">💸 ${data.amount} دولار</span>
+                            </div>
+                            <div class="details">
+                                <div class="detail-item">
+                                    <i class="fas fa-mobile-alt" style="color:gold;"></i>
+                                    <span>${data.method || 'غير محدد'}</span>
+                                    <span class="copy-icon" onclick="copyText('${data.method || ''}')">
+                                        <i class="fas fa-copy"></i>
+                                    </span>
+                                </div>
+                                <div class="detail-item" style="grid-column: span 2;">
+                                    <i class="fas fa-map-marker-alt" style="color:gold;"></i>
+                                    <span>${data.address || 'غير محدد'}</span>
+                                    <span class="copy-icon" onclick="copyText('${data.address || ''}')">
+                                        <i class="fas fa-copy"></i>
+                                    </span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-calendar" style="color:gold;"></i>
+                                    <span>${date}</span>
+                                </div>
+                                <div class="detail-item" style="grid-column: span 2;">
+                                    <i class="fas fa-id-card" style="color:gold;"></i>
+                                    <span>${data.userId}</span>
+                                    <span class="copy-icon" onclick="copyText('${data.userId || ''}')">
+                                        <i class="fas fa-copy"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="actions">
+                                <button class="approve-btn" onclick="approveWithdraw('${doc.id}', '${data.userId}', ${data.amount})">✅ الموافقة</button>
+                                <button class="reject-btn" onclick="rejectWithdraw('${doc.id}', '${data.userId}', ${data.amount})">❌ الرفض</button>
+                            </div>
+                            <button class="copy-card-btn" onclick="copyCard({username:'${data.username || ''}', amount:${data.amount}, method:'${data.method || ''}', address:'${data.address || ''}', date:'${date}'}, 'withdraw')">
+                                <i class="fas fa-copy"></i> نسخ البطاقة بالكامل
+                            </button>
+                        </div>
+                    `;
+                });
+
+                listEl.innerHTML = html;
+
+            } catch (err) {
+                console.error(err);
+                listEl.innerHTML = `<p style="color:red;">❌ خطأ في تحميل السحوبات: ${err.message}</p>`;
+            }
+        }
+
+        async function approveWithdraw(docId, userId, amount) {
+            if (!confirm('هل أنت متأكد من الموافقة على هذا السحب؟')) return;
+
+            try {
+                await db.collection("withdrawals").doc(docId).update({
+                    status: "completed",
+                    approvedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                document.getElementById(`withdraw-${docId}`).style.display = 'none';
+                alert('✅ تمت الموافقة على السحب');
+
+            } catch (err) {
+                console.error(err);
+                alert('❌ خطأ: ' + err.message);
+            }
+        }
+
+        async function rejectWithdraw(docId, userId, amount) {
+            if (!confirm('هل أنت متأكد من رفض هذا السحب؟')) return;
+
+            try {
+                await db.collection("withdrawals").doc(docId).update({
+                    status: "rejected",
+                    rejectedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                // إعادة الرصيد
+                const userRef = db.collection("users").doc(userId);
+                await userRef.update({
+                    fiatBalance: firebase.firestore.FieldValue.increment(amount)
+                });
+
+                document.getElementById(`withdraw-${docId}`).style.display = 'none';
+                alert('❌ تم رفض السحب وإعادة الرصيد');
+
+            } catch (err) {
+                console.error(err);
+                alert('❌ خطأ: ' + err.message);
+            }
+        }
+    </script>
+</body>
+</html>

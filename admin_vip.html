@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة المشرف - طلبات VIP | PharaCoin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{
+            font-family:'Cairo',sans-serif;
+            background:#111;
+            color:#fff;
+            padding:20px;
+        }
+        .container{
+            max-width:800px;
+            margin:auto;
+        }
+        h1{
+            color:gold;
+            text-align:center;
+            margin-bottom:30px;
+        }
+        .filter-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            background: rgba(255,215,0,0.1);
+            border: 1px solid gold;
+            border-radius: 30px;
+            padding: 8px 16px;
+            color: gold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .filter-btn.active {
+            background: gold;
+            color: black;
+            border-color: gold;
+            box-shadow: 0 0 15px gold;
+        }
+        .request-card{
+            background:#1a1a1a;
+            border:2px solid gold;
+            border-radius:10px;
+            padding:15px;
+            margin-bottom:15px;
+            box-shadow:0 0 15px rgba(255,215,0,0.2);
+        }
+        .request-header{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:10px;
+        }
+        .user-info{
+            color:#00ff9d;
+            font-weight:bold;
+        }
+        .plan-name{
+            font-size:20px;
+            color:gold;
+            font-weight:bold;
+        }
+        .details{
+            display:grid;
+            grid-template-columns:repeat(2,1fr);
+            gap:10px;
+            margin:10px 0;
+            color:#ccc;
+            background:rgba(0,0,0,0.4);
+            padding:10px;
+            border-radius:8px;
+        }
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+        }
+        .status-pending {
+            background: #ff9900;
+            color: black;
+        }
+        .status-approved {
+            background: #00cc66;
+            color: black;
+        }
+        .status-rejected {
+            background: #ff3333;
+            color: white;
+        }
+        .actions{
+            display:flex;
+            gap:10px;
+            margin-top:10px;
+        }
+        .approve-btn{
+            flex:1;
+            padding:10px;
+            background:#00cc66;
+            border:none;
+            border-radius:5px;
+            color:white;
+            font-weight:bold;
+            cursor:pointer;
+            transition:0.2s;
+        }
+        .approve-btn:hover{
+            background:#00aa55;
+            transform:translateY(-2px);
+            box-shadow:0 0 15px #00cc66;
+        }
+        .reject-btn{
+            flex:1;
+            padding:10px;
+            background:#ff3333;
+            border:none;
+            border-radius:5px;
+            color:white;
+            font-weight:bold;
+            cursor:pointer;
+            transition:0.2s;
+        }
+        .reject-btn:hover{
+            background:#dd2222;
+            transform:translateY(-2px);
+            box-shadow:0 0 15px #ff3333;
+        }
+        .btn{
+            width:100%;
+            padding:14px;
+            background:linear-gradient(135deg,#FFD700,#FFA500);
+            border:none;
+            border-radius:50px;
+            font-weight:900;
+            font-size:16px;
+            color:#000;
+            margin-top:20px;
+            cursor:pointer;
+            box-shadow:0 4px 15px rgba(255,215,0,0.4);
+        }
+        .btn:hover{
+            transform:translateY(-2px);
+            box-shadow:0 8px 25px rgba(255,215,0,0.6);
+        }
+        .empty-msg{
+            text-align:center;
+            color:#aaa;
+            padding:40px 0;
+        }
+        .error-msg{
+            color:#ff4444;
+            text-align:center;
+            margin:20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>👑 طلبات اشتراك VIP</h1>
+        
+        <div class="filter-bar">
+            <button class="filter-btn active" onclick="filterRequests('all')" id="filterAll">الكل</button>
+            <button class="filter-btn" onclick="filterRequests('pending')" id="filterPending">⏳ قيد المراجعة</button>
+            <button class="filter-btn" onclick="filterRequests('approved')" id="filterApproved">✅ مقبولة</button>
+            <button class="filter-btn" onclick="filterRequests('rejected')" id="filterRejected">❌ مرفوضة</button>
+        </div>
+        
+        <div id="requestsList">
+            <p class="empty-msg">جاري تحميل الطلبات...</p>
+        </div>
+        
+        <button class="btn" onclick="location.href='admin.html'">🔙 العودة للوحة الرئيسية</button>
+    </div>
+
+    <script>
+        // ========== تهيئة Firebase ==========
+        firebase.initializeApp({
+            apiKey: "AIzaSyB78JT_cbPMizvzKWBrQoQUe3-zukHrr1U",
+            authDomain: "pharacoin.firebaseapp.com",
+            projectId: "pharacoin"
+        });
+
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        
+        // 🔥 قائمة المشرفين - ضع UID الخاص بك هنا
+        const ADMIN_UIDS = ["GhdVL8XW2xM9WF3Yi9Bnu7m4Nt93"]; // استبدل هذا بالـ UID الخاص بك
+        
+        let allRequests = [];
+        let currentFilter = 'all';
+        let unsubscribe = null;
+        
+        // التحقق من تسجيل الدخول وصلاحية المشرف
+        auth.onAuthStateChanged(user => {
+            if (!user) {
+                window.location.href = "login.html";
+                return;
+            }
+            
+            console.log("المستخدم الحالي:", user.uid);
+            console.log("المشرفون المسموح لهم:", ADMIN_UIDS);
+            
+            if (!ADMIN_UIDS.includes(user.uid)) {
+                document.getElementById('requestsList').innerHTML = `
+                    <div class="error-msg">
+                        ⚠️ ليس لديك صلاحية الدخول<br>
+                        <small style="color:#aaa;">UID الخاص بك: ${user.uid}</small>
+                    </div>
+                `;
+                return;
+            }
+            
+            // إذا كان المشرف مسموحاً له، نبدأ الاستماع
+            if (unsubscribe) unsubscribe();
+            unsubscribe = db.collection("vip_requests")
+                .orderBy("requestedAt", "desc")
+                .onSnapshot((snapshot) => {
+                    allRequests = [];
+                    snapshot.forEach(doc => {
+                        allRequests.push({ id: doc.id, ...doc.data() });
+                    });
+                    renderRequests();
+                }, (error) => {
+                    console.error("خطأ في الاستماع:", error);
+                    document.getElementById('requestsList').innerHTML = `
+                        <div class="error-msg">
+                            ❌ خطأ: ${error.message}<br>
+                            ${error.message.includes('index') ? 
+                                '<small>تحتاج إلى إنشاء Index في Firestore</small>' : ''}
+                        </div>
+                    `;
+                });
+        });
+        
+        // عرض الطلبات حسب الفلتر
+        function renderRequests() {
+            const listEl = document.getElementById('requestsList');
+            
+            let filtered = allRequests;
+            if (currentFilter !== 'all') {
+                filtered = allRequests.filter(r => r.status === currentFilter);
+            }
+            
+            if (filtered.length === 0) {
+                let filterText = '';
+                if (currentFilter === 'pending') filterText = 'معلقة';
+                else if (currentFilter === 'approved') filterText = 'مقبولة';
+                else if (currentFilter === 'rejected') filterText = 'مرفوضة';
+                
+                listEl.innerHTML = `<p class="empty-msg">📭 لا توجد طلبات ${filterText ? filterText : ''}</p>`;
+                return;
+            }
+            
+            listEl.innerHTML = filtered.map(req => {
+                const date = req.requestedAt ? new Date(req.requestedAt.seconds * 1000).toLocaleString('ar-EG') : 'غير معروف';
+                
+                let statusClass = '';
+                let statusText = '';
+                if (req.status === 'pending') {
+                    statusClass = 'status-pending';
+                    statusText = '⏳ قيد المراجعة';
+                } else if (req.status === 'approved') {
+                    statusClass = 'status-approved';
+                    statusText = '✅ مقبولة';
+                } else if (req.status === 'rejected') {
+                    statusClass = 'status-rejected';
+                    statusText = '❌ مرفوضة';
+                }
+                
+                return `
+                    <div class="request-card" id="req-${req.id}">
+                        <div class="request-header">
+                            <span class="user-info">👤 ${req.username || 'غير معروف'}</span>
+                            <span class="plan-name">${req.planName}</span>
+                        </div>
+                        <div class="details">
+                            <div>📊 المستوى: ${req.planLevel}</div>
+                            <div>💰 السعر: ${req.priceUSD}$</div>
+                            <div>🪙 العملات: ${req.priceCoins} Coins</div>
+                            <div>🆔 المستخدم: ${req.userId.substring(0,10)}...</div>
+                            <div>🕐 الطلب: ${date}</div>
+                            <div><span class="status-badge ${statusClass}">${statusText}</span></div>
+                        </div>
+                        ${req.status === 'pending' ? `
+                            <div class="actions">
+                                <button class="approve-btn" onclick="approveRequest('${req.id}', '${req.userId}', '${req.planName}', ${req.planLevel}, ${req.priceUSD})">✅ قبول</button>
+                                <button class="reject-btn" onclick="rejectRequest('${req.id}')">❌ رفض</button>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // قبول طلب VIP
+        async function approveRequest(docId, userId, planName, planLevel, priceUSD) {
+            if (!confirm(`هل أنت متأكد من قبول طلب ${planName}؟`)) return;
+            
+            try {
+                // تحديث حالة الطلب
+                await db.collection("vip_requests").doc(docId).update({
+                    status: "approved",
+                    approvedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                // حساب تاريخ انتهاء الصلاحية (30 يوم)
+                const expireDate = new Date();
+                expireDate.setDate(expireDate.getDate() + 30);
+                
+                // خصم الرصيد وتحديث بيانات المستخدم
+                await db.collection("users").doc(userId).update({
+                    coins: firebase.firestore.FieldValue.increment(-(priceUSD * 100)), // 1$ = 100 Coins
+                    vipPlan: planName,
+                    vipLevel: planLevel,
+                    vipExpire: expireDate
+                });
+                
+                alert('✅ تم قبول الطلب وتفعيل الاشتراك');
+                
+            } catch (err) {
+                console.error(err);
+                alert('❌ خطأ: ' + err.message);
+            }
+        }
+        
+        // رفض طلب VIP
+        async function rejectRequest(docId) {
+            if (!confirm('هل أنت متأكد من رفض هذا الطلب؟')) return;
+            
+            try {
+                await db.collection("vip_requests").doc(docId).update({
+                    status: "rejected",
+                    rejectedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                alert('❌ تم رفض الطلب');
+                
+            } catch (err) {
+                console.error(err);
+                alert('❌ خطأ: ' + err.message);
+            }
+        }
+        
+        // تغيير الفلتر
+        function filterRequests(filter) {
+            currentFilter = filter;
+            
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            
+            if (filter === 'all') document.getElementById('filterAll').classList.add('active');
+            else if (filter === 'pending') document.getElementById('filterPending').classList.add('active');
+            else if (filter === 'approved') document.getElementById('filterApproved').classList.add('active');
+            else if (filter === 'rejected') document.getElementById('filterRejected').classList.add('active');
+            
+            renderRequests();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تجميع التمثال - PharaCoin | ابنِ تمثال الفرعون واربح المكافآت</title>
+    <meta name="description" content="مرحلة تجميع التمثال في لعبة PharaCoin: استخدم محاولاتك اليومية لشراء أجزاء التمثال، انتظر 20 دقيقة، ثم اجمع مكافأة 15 Coins. افتح جميع الخمس خانات لتكمل التمثال.">
+    <meta name="keywords" content="PharaCoin, تجميع التمثال, لعبة, أجزاء, مكافآت, محاولات يومية">
+    <meta name="author" content="PharaCoin Team">
+    <meta name="robots" content="noindex, nofollow">
+
+    <meta property="og:title" content="تجميع التمثال - PharaCoin">
+    <meta property="og:description" content="ابنِ تمثال الفرعون خطوة بخطوة واربح مكافآت يومية.">
+    <meta property="og:image" content="https://pharacoin.pages.dev/og-image.jpg">
+    <meta property="og:url" content="https://pharacoin.pages.dev/statue-builder.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="PharaCoin">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="تجميع التمثال - PharaCoin">
+    <meta name="twitter:description" content="ابنِ تمثال الفرعون خطوة بخطوة واربح مكافآت يومية.">
+    <meta name="twitter:image" content="https://pharacoin.pages.dev/twitter-image.jpg">
+    <meta name="twitter:site" content="@PharaCoinApp">
+
+    <link rel="canonical" href="https://pharacoin.pages.dev/statue-builder.html">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        "name": "كيفية تجميع التمثال في PharaCoin",
+        "description": "خطوات بسيطة لتجميع أجزاء التمثال والحصول على المكافآت.",
+        "totalTime": "PT20M",
+        "step": [
+            {
+                "@type": "HowToStep",
+                "name": "اختر خانة",
+                "text": "اختر إحدى الخانات المتاحة (VIP تتطلب اشتراكاً مميزاً).",
+                "url": "https://pharacoin.pages.dev/statue-builder.html#step1"
+            },
+            {
+                "@type": "HowToStep",
+                "name": "اشترِ الجزء",
+                "text": "ادفع 50 Coins لشراء الجزء، مع استهلاك محاولة من محاولاتك اليومية.",
+                "url": "https://pharacoin.pages.dev/statue-builder.html#step2"
+            },
+            {
+                "@type": "HowToStep",
+                "name": "انتظر 20 دقيقة",
+                "text": "بعد الشراء، يبدأ مؤقت 20 دقيقة. يمكنك متابعة التقدم عبر شريط التقدم.",
+                "url": "https://pharacoin.pages.dev/statue-builder.html#step3"
+            },
+            {
+                "@type": "HowToStep",
+                "name": "اجمع المكافأة",
+                "text": "بعد انتهاء المؤقت، لديك دقيقة واحدة لجمع مكافأة 15 Coins قبل إعادة ضبط الخانة.",
+                "url": "https://pharacoin.pages.dev/statue-builder.html#step4"
+            }
+        ]
+    }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{
+          font-family:'Cairo',sans-serif;
+          background:#0a0a0a;
+          min-height:100vh;
+          overflow-x:hidden;
+        }
+        .page-bg{
+          position:fixed;
+          inset:0;
+          z-index:-2;
+          background-size:cover;
+          background-position:center;
+          background-repeat:no-repeat;
+        }
+        .page-bg::after{
+          content:'';
+          position:absolute;
+          inset:0;
+          background:linear-gradient(180deg, rgba(0,0,0,0.2), rgba(0,0,0,0.7));
+          pointer-events:none;
+        }
+
+        .top-bar{
+          position:fixed;top:0;left:0;right:0;z-index:100;
+          background:linear-gradient(135deg, rgba(0,0,0,0.95), rgba(20,20,20,0.98));
+          border-bottom:1px solid rgba(255,215,0,0.2);
+          padding:10px 20px;
+          display:flex;align-items:center;justify-content:space-between;
+          backdrop-filter:blur(15px);
+        }
+        .top-bar .nav-links{display:flex;gap:8px;}
+        .top-bar a{
+          color:#ccc;text-decoration:none;font-size:13px;font-weight:600;
+          padding:6px 14px;border-radius:8px;transition:all 0.3s;border:1px solid transparent;
+        }
+        .top-bar a:hover{color:gold;border-color:rgba(255,215,0,0.3);background:rgba(255,215,0,0.05);}
+        .top-bar a.active{color:gold;border-color:rgba(255,215,0,0.4);background:rgba(255,215,0,0.1);}
+        .top-bar .coin-display{
+          display:flex;align-items:center;gap:8px;color:#00ff9d;font-size:16px;font-weight:700;
+        }
+        .coin-icon{
+          width:26px;height:26px;background:linear-gradient(135deg,#FFD700,#FFA500);
+          border-radius:50%;display:flex;align-items:center;justify-content:center;
+          font-size:13px;box-shadow:0 0 12px rgba(255,215,0,0.4);
+        }
+
+        .content{
+          position:relative;z-index:1;
+          padding:80px 20px 30px;
+          max-width:600px;margin:0 auto;
+        }
+        .page-header{
+          text-align:center;margin-bottom:30px;
+          animation:fadeInDown 0.6s ease-out;
+        }
+        @keyframes fadeInDown{from{opacity:0;transform:translateY(-20px);}to{opacity:1;transform:translateY(0);}}
+        .page-header h1{
+          font-size:30px;font-weight:900;
+          background:linear-gradient(135deg,#FFD700,#FFA500);
+          -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+          margin-bottom:5px;
+        }
+        .page-header p{color:#666;font-size:14px;}
+
+        .attempts-counter{
+          color:#FFD700;
+          font-size:16px;
+          margin-top:10px;
+          background:rgba(255,215,0,0.1);
+          padding:6px 15px;
+          border-radius:30px;
+          display:inline-block;
+          border:1px solid rgba(255,215,0,0.3);
+        }
+
+        /* ✅ زر إعادة تعيين المحاولات */
+        .reset-attempts-btn {
+          background: linear-gradient(135deg, #ff9900, #ff5500);
+          color: white;
+          border: none;
+          border-radius: 30px;
+          padding: 10px 20px;
+          font-size: 14px;
+          font-weight: bold;
+          cursor: pointer;
+          box-shadow: 0 0 15px #ff9900;
+          transition: 0.3s;
+          width: 100%;
+          max-width: 280px;
+          margin: 0 auto;
+        }
+        .reset-attempts-btn:hover {
+          transform: scale(1.05);
+          box-shadow: 0 0 25px #ffaa00;
+        }
+
+        h2.slots-title{
+          color:gold;
+          font-size:20px;
+          margin:20px 0 10px;
+          text-align:center;
+        }
+
+        .slots{
+          display:flex;justify-content:center;gap:15px;flex-wrap:wrap;
+          margin-top:20px;
+          min-height:200px;
+        }
+        .slot{
+          width:110px;
+          background:linear-gradient(145deg,#111,#1a1a1a);
+          border:2px solid rgba(255,215,0,0.3);
+          border-radius:16px;
+          padding:10px;
+          text-align:center;
+          cursor:pointer;
+          transition:all 0.4s cubic-bezier(0.4,0,0.2,1);
+          position:relative;
+          animation:slotIn 0.5s ease-out backwards;
+          box-shadow:0 4px 10px rgba(0,0,0,0.5);
+        }
+        .slot:nth-child(1){animation-delay:0.1s;}
+        .slot:nth-child(2){animation-delay:0.2s;}
+        .slot:nth-child(3){animation-delay:0.3s;}
+        .slot:nth-child(4){animation-delay:0.4s;}
+        .slot:nth-child(5){animation-delay:0.5s;}
+        @keyframes slotIn{from{opacity:0;transform:scale(0.8) translateY(20px);}to{opacity:1;transform:scale(1) translateY(0);}}
+
+        .slot:hover{transform:translateY(-5px);box-shadow:0 10px 30px rgba(255,215,0,0.15);}
+
+        .slot-img{
+          width:90px;height:90px;
+          background:#0a0a0a;border-radius:12px;
+          margin:0 auto 8px;overflow:hidden;
+          border:1px solid rgba(255,215,0,0.15);
+          display:flex;align-items:center;justify-content:center;
+          font-size:40px;
+          color:#FFD700;
+          text-shadow:0 0 8px rgba(255,215,0,0.5);
+        }
+        .slot-img img{width:100%;height:100%;object-fit:cover;}
+
+        .slot-label{
+          color:#888;font-size:14px;margin-bottom:6px;
+          font-weight:600;
+        }
+
+        .progress-bar{
+          width:100%;height:6px;background:#222;border-radius:3px;overflow:hidden;margin-bottom:6px;
+          display:none;
+        }
+        .progress-fill{
+          height:100%;width:0%;
+          background:linear-gradient(90deg,#FFD700,#FFA500);
+          border-radius:3px;transition:width 1s linear;
+        }
+
+        .timer-text{
+          color:#FFD700;font-size:11px;font-weight:600;
+          min-height:16px;
+        }
+
+        .reward-btn{
+          display:none;
+          margin-top:6px;
+          background:linear-gradient(135deg,#FFD700,#FFA500);
+          color:#000;border:none;
+          padding:6px 12px;border-radius:8px;
+          font-size:12px;font-weight:700;font-family:'Cairo';
+          cursor:pointer;transition:all 0.3s;
+          animation:rewardGlow 1s infinite;
+        }
+        @keyframes rewardGlow{
+          0%,100%{box-shadow:0 0 10px rgba(255,215,0,0.4);}
+          50%{box-shadow:0 0 25px rgba(255,215,0,0.8),0 0 50px rgba(255,165,0,0.3);}
+        }
+        .reward-btn:hover{transform:scale(1.05);}
+
+        .reward-expire{
+          color:#ff6b6b;font-size:10px;margin-top:3px;display:none;
+        }
+
+        .slot.locked{
+          border:2px dashed #333;
+          opacity:0.7;
+        }
+        .slot.locked:hover{transform:none;box-shadow:none;}
+        .slot.locked .slot-img{background:#080808; color:#666;}
+        .slot.locked .slot-label{color:#666;}
+
+        @keyframes pulseGold{
+          0%{box-shadow:0 0 10px rgba(255,215,0,0.2);}
+          50%{box-shadow:0 0 25px rgba(255,215,0,0.5),0 0 50px rgba(255,165,0,0.2);}
+          100%{box-shadow:0 0 10px rgba(255,215,0,0.2);}
+        }
+        .slot.active{
+          border-color:#FFD700;
+          animation:pulseGold 1.5s infinite;
+        }
+
+        .modal-overlay{
+          position:fixed;inset:0;z-index:200;
+          background:rgba(0,0,0,0.7);
+          display:flex;align-items:center;justify-content:center;
+          visibility:hidden;opacity:0;
+          transition:all 0.3s;
+          backdrop-filter:blur(5px);
+        }
+        .modal-overlay.show{visibility:visible;opacity:1;}
+        .modal-overlay.show .modal-box{transform:scale(1);opacity:1;}
+
+        .modal-box{
+          background:linear-gradient(145deg,#1a1a1a,#111);
+          border:1px solid rgba(255,215,0,0.3);
+          border-radius:20px;padding:30px;
+          text-align:center;width:320px;
+          box-shadow:0 20px 60px rgba(0,0,0,0.5),0 0 30px rgba(255,215,0,0.1);
+          transform:scale(0.8);opacity:0;
+          transition:all 0.4s cubic-bezier(0.4,0,0.2,1);
+          position:relative;overflow:hidden;
+        }
+        .modal-box::before{
+          content:'';position:absolute;top:0;left:0;right:0;height:3px;
+          background:linear-gradient(90deg,transparent,#FFD700,transparent);
+        }
+        .modal-box h3{
+          color:#FFD700;font-size:22px;margin-bottom:5px;
+        }
+        .modal-box p{
+          color:#aaa;font-size:14px;margin-bottom:15px;
+        }
+        .modal-price{
+          color:gold;
+          font-size:24px;
+          font-weight:bold;
+          margin-bottom:20px;
+        }
+        .modal-btns{
+          display:flex;
+          gap:10px;
+        }
+        .btn-confirm{
+          flex:1;
+          padding:12px;
+          background:gold;
+          border:none;
+          border-radius:8px;
+          font-weight:bold;
+          cursor:pointer;
+        }
+        .btn-cancel{
+          flex:1;
+          padding:12px;
+          background:#333;
+          color:white;
+          border:none;
+          border-radius:8px;
+          font-weight:bold;
+          cursor:pointer;
+        }
+        .modal-actions{
+          display:flex;flex-direction:column;gap:10px;margin:20px 0;
+        }
+        .modal-btn{
+          background:linear-gradient(135deg,#FFD700,#FFA500);
+          color:#000;border:none;padding:12px;border-radius:12px;
+          font-size:16px;font-weight:700;font-family:'Cairo';cursor:pointer;
+          transition:all 0.3s;box-shadow:0 5px 15px rgba(255,215,0,0.3);
+          text-decoration:none;display:block;
+        }
+        .modal-btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(255,215,0,0.4);}
+        .modal-btn.secondary{
+          background:transparent;
+          border:2px solid #FFD700;
+          color:#FFD700;
+          box-shadow:none;
+        }
+        .modal-btn.secondary:hover{background:rgba(255,215,0,0.1);}
+        .close-btn{
+          background:#222;color:#aaa;border:1px solid #333;
+          padding:8px 20px;border-radius:10px;font-size:14px;font-weight:600;
+          cursor:pointer;transition:all 0.3s;margin-top:5px;
+        }
+        .close-btn:hover{background:#333;color:white;}
+
+        .toast-container{
+          position:fixed;top:65px;left:50%;transform:translateX(-50%);
+          z-index:999;display:flex;flex-direction:column;gap:10px;pointer-events:none;
+        }
+        .toast{
+          background:linear-gradient(135deg,#1a1a1a,#222);
+          border:1px solid rgba(255,215,0,0.3);border-radius:12px;
+          padding:12px 20px;color:white;font-family:'Cairo';font-size:14px;
+          box-shadow:0 10px 40px rgba(0,0,0,0.5);
+          animation:toastIn 0.4s ease-out,toastOut 0.4s ease-in 2.5s forwards;
+          display:flex;align-items:center;gap:10px;white-space:nowrap;
+        }
+        .toast.success{border-color:#00ff9d;}
+        .toast.error{border-color:#ff4444;}
+        @keyframes toastIn{from{opacity:0;transform:translateY(-20px);}to{opacity:1;transform:translateY(0);}}
+        @keyframes toastOut{from{opacity:1;}to{opacity:0;transform:translateY(-20px);}}
+
+        @media(max-width:500px){
+          .page-header h1{font-size:24px;}
+          .slots{gap:10px;}
+          .slot{width:95px;}
+          .slot-img{width:75px;height:75px; font-size:35px;}
+        }
+        .footer-links {
+          text-align: center;
+          margin: 20px 16px;
+          padding: 10px;
+          background: rgba(0,0,0,0.5);
+          border-radius: 10px;
+          font-size: 12px;
+        }
+        .footer-links a {
+          color: gold;
+          text-decoration: none;
+          margin: 0 5px;
+        }
+        .footer-links a:hover {
+          text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<!-- الخلفية -->
+<div class="page-bg" id="pageBg"></div>
+
+<div class="top-bar">
+  <div class="nav-links">
+    <a href="dashboard.html">🏠 الرئيسية</a>
+    <a href="museum.html">🏺 المتحف</a>
+    <a href="statue-builder.html" class="active">⚒️ التجميع</a>
+  </div>
+  <div class="coin-display">
+    <div class="coin-icon">💰</div>
+    <span id="coinCount">0</span>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<div class="content">
+  <div class="page-header">
+    <h1>⚒️ تجميع التمثال</h1>
+    <p>اختر قطعة من مخزونك وابدأ التجميع</p>
+    <div class="attempts-counter">
+      ⚡ محاولات متبقية: <span id="attemptsCount">5</span>
+    </div>
+
+    <!-- ✅ زر إعادة تعيين المحاولات (يظهر فقط عند نفاذ المحاولات) -->
+    <div id="resetAttemptsContainer" style="margin-top:10px; display:none;">
+      <button class="reset-attempts-btn" onclick="resetAttempts()">🔄 إعادة تعيين المحاولات (100 Coins)</button>
+    </div>
+  </div>
+
+  <h2 class="slots-title">خانات التجميع</h2>
+  <div class="slots" id="slotsGrid"></div>
+</div>
+
+<!-- مودال بدء التجميع -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-box">
+    <h3>⚒️ بدء التجميع</h3>
+    <p id="modalPartName"></p>
+    <div class="modal-price">💰 <span id="modalPrice">0</span> Coins</div>
+    <div class="modal-btns">
+      <button class="btn-confirm" onclick="confirmAdd()">✅ نعم، ابدأ</button>
+      <button class="btn-cancel" onclick="closeModal()">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<!-- مودال انتهاء المحاولات -->
+<div class="modal-overlay" id="attemptsModal">
+  <div class="modal-box">
+    <h3>⚠️ انتهت المحاولات</h3>
+    <p>لقد استنفذت جميع محاولاتك اليومية. اختر إحدى الطرق لاستكمال التجميع:</p>
+    <div class="modal-actions">
+      <a href="deposit.html" class="modal-btn">💰 إيداع أي مبلغ</a>
+      <a href="invite.html" class="modal-btn secondary">👥 دعوة 10 أصدقاء خلال 24 ساعة</a>
+    </div>
+    <button class="close-btn" onclick="closeAttemptsModal()">تذكير لاحقاً</button>
+  </div>
+</div>
+
+<!-- روابط إضافية -->
+<div class="footer-links">
+  <a href="convert.html" title="تحويل العملات">💱 تحويل العملات</a> |
+  <a href="contact.html" title="تواصل معنا">📞 تواصل معنا</a> |
+  <a href="about.html" title="من نحن">ℹ️ من نحن</a> |
+  <a href="faq.html" title="الأسئلة الشائعة">❓ الأسئلة الشائعة</a> |
+  <a href="terms.html" title="شروط الاستخدام">📜 الشروط</a> |
+  <a href="privacy.html" title="سياسة الخصوصية">🔒 الخصوصية</a>
+</div>
+
+<script>
+// ========== متغيرات ثابتة ==========
+const REWARD_DURATION = 60 * 1000; // دقيقة واحدة
+const RESET_PRICE = 100; // سعر إعادة تعيين المحاولات (5 محاولات)
+
+// ========== Audio ==========
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let audioCtx = null;
+try {
+  audioCtx = new AudioCtx();
+} catch (e) {
+  console.log("Web Audio API not supported");
+}
+
+function playSound(freq, dur, type = 'sine') {
+  if (!audioCtx) return;
+  try {
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.connect(g);
+    g.connect(audioCtx.destination);
+    o.type = type;
+    o.frequency.setValueAtTime(freq, audioCtx.currentTime);
+    g.gain.setValueAtTime(0.12, audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + dur);
+    o.start();
+    o.stop(audioCtx.currentTime + dur);
+  } catch (e) {}
+}
+function playClick() { playSound(600, 0.1); }
+function playBuy() { playSound(523, 0.1); setTimeout(() => playSound(659, 0.1), 100); setTimeout(() => playSound(784, 0.15), 200); }
+function playReward() { playSound(784, 0.1); setTimeout(() => playSound(988, 0.1), 100); setTimeout(() => playSound(1175, 0.2), 200); }
+function playError() { playSound(200, 0.2, 'square'); }
+
+// ========== Toast ==========
+function showToast(msg, type = 'success') {
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  t.innerHTML = (type === 'success' ? '✅' : '❌') + ' ' + msg;
+  document.getElementById('toastContainer').appendChild(t);
+  setTimeout(() => t.remove(), 3000);
+}
+
+// ========== تهيئة Firebase ==========
+firebase.initializeApp({
+  apiKey: "AIzaSyB78JT_cbPMizvzKWBrQoQUe3-zukHrr1U",
+  authDomain: "pharacoin.firebaseapp.com",
+  projectId: "pharacoin"
+});
+
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+let currentUser = null;
+let userDocRef = null;
+let unsubscribe = null;
+let coins = 0;
+let dailyAttempts = 5;
+let selectedSlot = null;
+let selectedPart = null;
+const intervals = {};
+
+// بيانات الخانات
+let slotsData = [
+  { id: 0, locked: false, part: null, endTime: null, rewardTime: null, rewardAmount: 0 },
+  { id: 1, locked: false, part: null, endTime: null, rewardTime: null, rewardAmount: 0 },
+  { id: 2, locked: true, part: null, endTime: null, rewardTime: null, rewardAmount: 0 },
+  { id: 3, locked: true, part: null, endTime: null, rewardTime: null, rewardAmount: 0 },
+  { id: 4, locked: true, part: null, endTime: null, rewardTime: null, rewardAmount: 0 }
+];
+
+// التحقق من تسجيل الدخول والاستماع للبيانات
+auth.onAuthStateChanged(user => {
+  if (!user) {
+    window.location.href = "login.html";
+  } else {
+ currentUser = user;
+    userDocRef = db.collection("users").doc(user.uid);
+    
+    if (unsubscribe) unsubscribe();
+    unsubscribe = userDocRef.onSnapshot((doc) => {
+      if (doc.exists) {
+        const data = doc.data();
+        coins = data.coins || 0;
+        dailyAttempts = data.dailyAttempts || 5;
+        
+        document.getElementById("coinCount").innerText = coins;
+        document.getElementById("attemptsCount").innerText = dailyAttempts;
+
+        // ✅ إظهار/إخفاء زر إعادة التعيين
+        const resetBtnContainer = document.getElementById('resetAttemptsContainer');
+        if (dailyAttempts <= 0) {
+          resetBtnContainer.style.display = 'block';
+        } else {
+          resetBtnContainer.style.display = 'none';
+        }
+        
+        // تحميل المخزون من القطع المشتراة
+        const inventory = data.inventory || {};
+        const partsArray = inventory.parts || [];
+        
+        // تحديث الخانات بناءً على القطع المتاحة والمؤقتات النشطة
+        // أولاً: استعادة المؤقتات المخزنة في حقول slot0, slot1, ...
+        for (let i = 0; i < 2; i++) {
+          const slotField = data[`slot${i}`];
+          if (slotField) {
+            slotsData[i].endTime = slotField.endTime || null;
+            slotsData[i].rewardTime = slotField.rewardTime || null;
+            slotsData[i].rewardAmount = slotField.rewardAmount || 0;
+            // لا نضع part هنا لأن القطعة بدأت بالفعل
+          } else {
+            slotsData[i].endTime = null;
+            slotsData[i].rewardTime = null;
+            slotsData[i].rewardAmount = 0;
+          }
+        }
+        
+        // ثانياً: توزيع القطع من المخزون على الخانات الفارغة (غير المشغولة)
+        let partIndex = 0;
+        for (let i = 0; i < 2; i++) {
+          if (!slotsData[i].endTime && !slotsData[i].rewardTime && partIndex < partsArray.length) {
+            slotsData[i].part = partsArray[partIndex];
+            partIndex++;
+          } else {
+            // إذا كانت الخانة مشغولة بمؤقت، نترك الـ part كما هو (قد يكون null)
+          }
+        }
+        
+        // بناء الواجهة
+        buildSlots();
+        
+        // التحقق من ظهور مودال انتهاء المحاولات
+        checkAndShowAttemptsModal();
+      } else {
+        userDocRef.set({ coins: 500, dailyAttempts: 5, inventory: { parts: [] } }).catch(err => console.error(err));
+      }
+    }, (error) => {
+      console.error(error);
+      showToast("فشل تحميل البيانات", "error");
+    });
+  }
+});
+
+// بناء الخانات
+function buildSlots() {
+  const slotsGrid = document.getElementById("slotsGrid");
+  if (!slotsGrid) return;
+  
+  slotsGrid.innerHTML = '';
+  
+  slotsData.forEach(slot => {
+    const div = document.createElement("div");
+    div.className = "slot" + (slot.locked ? " locked" : "");
+    div.id = "slot" + slot.id;
+    
+    let imgContent = '➕';
+    let priceLabel = '';
+    let rewardLabel = '';
+    let timeLabel = '';
+    let partName = '';
+    
+    if (slot.part) {
+      imgContent = `<img src="${slot.part.image}" onerror="this.onerror=null; this.parentElement.innerHTML='⚒️';">`;
+      priceLabel = `<div style="font-size:10px; color:gold;">💰 ${slot.part.price}</div>`;
+      rewardLabel = `<div style="font-size:10px; color:#00ff9d;">🎁 ${slot.part.reward}</div>`;
+      timeLabel = `<div style="font-size:10px; color:#ff9900;">⏳ ${slot.part.time}</div>`;
+      partName = slot.part.name;
+    } else if (slot.endTime) {
+      // إذا كان هناك مؤقت فقط (بدون جزء) نستخدم صورة افتراضية
+      imgContent = '⏳';
+    }
+    
+    div.innerHTML = `
+      <div class="slot-img" id="slotImg${slot.id}">${imgContent}</div>
+      ${priceLabel}
+      ${rewardLabel}
+      ${timeLabel}
+      <div class="slot-label">${slot.locked ? 'VIP 🔒' : (partName ? partName : 'خانة ' + (slot.id + 1))}</div>
+      <div class="progress-bar" id="progress${slot.id}" style="${slot.endTime && slot.endTime > Date.now() ? 'display:block;' : 'display:none;'}">
+        <div class="progress-fill" id="progressFill${slot.id}" style="width:0%;"></div>
+      </div>
+      <div class="timer-text" id="timer${slot.id}"></div>
+      <button class="reward-btn" id="rewardBtn${slot.id}" onclick="event.stopPropagation();collectReward(${slot.id})" style="${slot.rewardTime && slot.rewardTime > Date.now() ? 'display:inline-block;' : 'display:none;'}">🎁 جمع المكافأة</button>
+      <div class="reward-expire" id="rewardExpire${slot.id}" style="${slot.rewardTime && slot.rewardTime > Date.now() ? 'display:block;' : 'display:none;'}"></div>
+    `;
+    
+    if (slot.locked) {
+      div.onclick = () => { playClick(); showToast('هذه الخانة لمستخدمي VIP فقط 🔒', 'error'); };
+    } else {
+      div.onclick = () => { playClick(); openSlot(slot.id); };
+    }
+    
+    slotsGrid.appendChild(div);
+    
+    // بدء المؤقتات إذا كانت موجودة
+    if (slot.endTime && slot.endTime > Date.now()) {
+      startTimer(slot.id, slot.endTime);
+    }
+    if (slot.rewardTime && slot.rewardTime > Date.now()) {
+      showRewardUI(slot.id, slot.rewardTime, slot.rewardAmount);
+    }
+  });
+}
+
+// فتح خانة
+function openSlot(index) {
+  const slot = slotsData[index];
+  if (slot.endTime && slot.endTime > Date.now()) {
+    showToast('هذه الخانة مشغولة بالفعل', 'error');
+    return;
+  }
+  if (!slot.part) {
+    showToast('لا توجد قطعة في هذه الخانة', 'error');
+    return;
+  }
+  selectedSlot = index;
+  selectedPart = slot.part;
+  
+  document.getElementById("modalPartName").innerText = selectedPart.name;
+  document.getElementById("modalPrice").innerText = selectedPart.price;
+  document.getElementById("modal").classList.add("show");
+}
+
+function closeModal() {
+  document.getElementById("modal").classList.remove("show");
+  selectedPart = null;
+  selectedSlot = null;
+}
+
+// تأكيد بدء التجميع
+async function confirmAdd() {
+  if (!selectedPart || selectedSlot === null) return;
+  
+  if (dailyAttempts <= 0) {
+    playError();
+    showToast('لقد استنفذت محاولاتك اليومية', 'error');
+    closeModal();
+    checkAndShowAttemptsModal();
+    return;
+  }
+
+  if (coins < selectedPart.price) {
+    playError();
+    showToast('رصيد غير كافي! تحتاج ' + selectedPart.price + ' Coins', 'error');
+    closeModal();
+    return;
+  }
+
+  playBuy();
+
+  const endTime = Date.now() + parseTimeToMillis(selectedPart.time);
+  
+  try {
+    // جلب بيانات المستخدم الحالية
+    const userDoc = await userDocRef.get();
+    const userData = userDoc.data();
+    const partsArray = userData.inventory?.parts || [];
+    
+    // إزالة القطعة المستخدمة من المخزون (نستخدم purchasedAt كمعرف فريد)
+    const partToRemove = selectedPart;
+    const newParts = partsArray.filter(p => p.purchasedAt !== partToRemove.purchasedAt);
+    
+    // تحديث Firestore
+    await userDocRef.update({
+      coins: firebase.firestore.FieldValue.increment(-selectedPart.price),
+      dailyAttempts: firebase.firestore.FieldValue.increment(-1),
+      'inventory.parts': newParts,
+      [`slot${selectedSlot}`]: {
+        part: {
+          name: selectedPart.name,
+          reward: selectedPart.reward,
+          time: selectedPart.time
+        },
+        endTime: endTime,
+        rewardTime: null,
+        rewardAmount: selectedPart.reward
+      }
+    });
+    
+    // تحديث البيانات المحلية
+    slotsData[selectedSlot].endTime = endTime;
+    slotsData[selectedSlot].part = null; // لم نعد نحتفظ بالجزء بعد البدء
+    coins -= selectedPart.price;
+    dailyAttempts--;
+    
+    // تفعيل الخانة وبدء المؤقت
+    activateSlot(selectedSlot);
+    startTimer(selectedSlot, endTime);
+    closeModal();
+    showToast('تم بدء التجميع بنجاح! ⏳');
+    
+  } catch (err) {
+    console.error(err);
+    showToast('حدث خطأ', 'error');
+  }
+}
+
+// تحويل الوقت النصي (مثل "20 دقيقة") إلى ميلي ثانية
+function parseTimeToMillis(timeStr) {
+  const minutes = parseInt(timeStr);
+  return minutes * 60 * 1000;
+}
+
+// تفعيل خانة (إضافة كلاس active)
+function activateSlot(index) {
+  const slot = document.getElementById("slot" + index);
+  if (!slot) return;
+  slot.classList.add("active");
+  // الصورة موجودة بالفعل من buildSlots
+}
+
+// بدء المؤقت
+function startTimer(index, endTime) {
+  const totalDuration = endTime - Date.now();
+
+  intervals[index] = setInterval(() => {
+    let remaining = endTime - Date.now();
+    if (remaining <= 0) {
+      clearInterval(intervals[index]);
+      document.getElementById("timer" + index).innerText = "✅ جاهز!";
+      document.getElementById("progressFill" + index).style.width = "100%";
+      
+      // تحديث وقت المكافأة في Firestore
+      const rewardTime = Date.now() + REWARD_DURATION;
+      userDocRef.update({
+        [`slot${index}.rewardTime`]: rewardTime,
+        [`slot${index}.endTime`]: null
+      }).catch(console.error);
+      
+      slotsData[index].rewardTime = rewardTime;
+      slotsData[index].endTime = null;
+      
+      db.collection("users").doc(currentUser.uid).get().then(doc => {
+        const slotData = doc.data()[`slot${index}`];
+        if (slotData) {
+          const reward = slotData.rewardAmount || 15;
+          showRewardUI(index, rewardTime, reward);
+        }
+      });
+      return;
+    }
+    let elapsed = totalDuration - remaining;
+    let pct = Math.min((elapsed / totalDuration) * 100, 100);
+    document.getElementById("progressFill" + index).style.width = pct + "%";
+
+    let m = Math.floor(remaining / 1000 / 60);
+    let s = Math.floor((remaining / 1000) % 60);
+    document.getElementById("timer" + index).innerText = `⏳ ${m}:${s < 10 ? "0" + s : s}`;
+  }, 1000);
+}
+
+// إظهار واجهة المكافأة
+function showRewardUI(index, rewardTime, rewardAmount) {
+  playReward();
+  const btn = document.getElementById("rewardBtn" + index);
+  const expire = document.getElementById("rewardExpire" + index);
+  if (btn) btn.style.display = "inline-block";
+  if (expire) expire.style.display = "block";
+
+  intervals["reward" + index] = setInterval(() => {
+    let remaining = rewardTime - Date.now();
+    if (remaining <= 0) {
+      clearInterval(intervals["reward" + index]);
+      if (btn) btn.style.display = "none";
+      if (expire) expire.style.display = "none";
+      
+      // إعادة تعيين الخانة في Firestore
+      userDocRef.update({
+        [`slot${index}`]: null
+      }).catch(console.error);
+      
+      slotsData[index].rewardTime = null;
+      resetSlot(index);
+      return;
+    }
+    if (expire) expire.innerText = "ينتهي خلال " + Math.ceil(remaining / 1000) + "ث";
+  }, 1000);
+}
+
+// إعادة تعيين خانة
+function resetSlot(index) {
+  const slot = document.getElementById("slot" + index);
+  if (!slot) return;
+  slot.classList.remove("active");
+  // إعادة بناء الواجهة يتم عبر onSnapshot
+}
+
+// جمع المكافأة
+async function collectReward(index) {
+  playReward();
+
+  try {
+    const rewardAmount = slotsData[index].rewardAmount || 15;
+    
+    await userDocRef.update({
+      coins: firebase.firestore.FieldValue.increment(rewardAmount),
+      [`slot${index}`]: null
+    });
+    
+    showToast('تم إضافة ' + rewardAmount + ' Coins! 🎉');
+    
+  } catch (err) {
+    console.error(err);
+    showToast('حدث خطأ', 'error');
+  }
+}
+
+// التحقق من ظهور مودال انتهاء المحاولات
+function checkAndShowAttemptsModal() {
+  if (dailyAttempts <= 0) {
+    document.getElementById('attemptsModal').classList.add('show');
+  }
+}
+
+function closeAttemptsModal() {
+  document.getElementById('attemptsModal').classList.remove('show');
+}
+
+// ========== دالة إعادة تعيين المحاولات ==========
+async function resetAttempts() {
+  if (!currentUser) {
+    showToast("يجب تسجيل الدخول أولاً", "error");
+    return;
+  }
+
+  if (coins < RESET_PRICE) {
+    playError();
+    showToast(`رصيد غير كافٍ! تحتاج ${RESET_PRICE} Coins`, 'error');
+    return;
+  }
+
+  playBuy();
+
+  try {
+    await userDocRef.update({
+      coins: firebase.firestore.FieldValue.increment(-RESET_PRICE),
+      dailyAttempts: 5
+    });
+
+    showToast('تم إعادة تعيين المحاولات بنجاح! ✅', 'success');
+  } catch (err) {
+    console.error(err);
+    showToast('حدث خطأ، حاول مرة أخرى', 'error');
+  }
+}
+
+// تحميل الخلفية
+const bg = document.getElementById('pageBg');
+const localImg = "Object/qa.jpg";
+const fallbackImg = "https://images.pexels.com/photos/3350783/pexels-photo-3350783.jpeg?auto=compress&cs=tinysrgb&w=1260";
+const img = new Image();
+img.onload = ()=> bg.style.backgroundImage = `url('${localImg}')`;
+img.onerror = ()=> bg.style.backgroundImage = `url('${fallbackImg}')`;
+img.src = localImg + "?v=" + Date.now();
+
+// ===== آلية النقر للـ Navbar =====
+const navItems = document.querySelectorAll('.nav-item');
+let effectShown = new Array(navItems.length).fill(false);
+let timerId = null;
+let currentItem = null;
+
+function showEffect(item) {
+  if (item.classList.contains('current-page')) return;
+  
+  if (timerId) {
+    clearTimeout(timerId);
+    timerId = null;
+    if (currentItem) {
+      const oldCircle = currentItem.querySelector('.nav-circle');
+      const oldEgypt = currentItem.dataset.egypt;
+      oldCircle.textContent = oldEgypt;
+      currentItem.classList.remove('showing');
+    }
+  }
+  
+  currentItem = item;
+  const circle = item.querySelector('.nav-circle');
+  const altSymbol = item.dataset.alt;
+  circle.textContent = altSymbol;
+  item.classList.add('showing');
+  
+  timerId = setTimeout(() => {
+    const circle = currentItem.querySelector('.nav-circle');
+    const egyptSymbol = currentItem.dataset.egypt;
+    circle.textContent = egyptSymbol;
+    currentItem.classList.remove('showing');
+    timerId = null;
+    currentItem = null;
+  }, 3000);
+}
+
+navItems.forEach((item, index) => {
+  item.addEventListener('click', function(e) {
+    e.stopPropagation();
+    playClick();
+    
+    if (this.classList.contains('current-page')) return;
+    
+    if (effectShown[index]) {
+      window.location.href = this.dataset.url;
+      return;
+    }
+    
+    showEffect(this);
+    effectShown[index] = true;
+  });
+});
+</script>
+
+</body>
+</html>
