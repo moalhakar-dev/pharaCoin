@@ -555,12 +555,12 @@ async function buyPart(index) {
     
     // إذا اكتمل التمثال (جميع الأجزاء 4)، نتحقق من إضافة المكافأة
     if (newParts.every(v => v === 4)) {
-      // المكافأة: 300 عملة + 20 XP
+      // المكافأة: 3000 عملة + 60 XP
       await userDocRef.update({
         coins: firebase.firestore.FieldValue.increment(300),
         xp: firebase.firestore.FieldValue.increment(20)
       });
-      msgDiv.innerText = "🏆 اكتمل التمثال! تم منحك 300 عملة + 20 XP";
+      msgDiv.innerText = "🏆 اكتمل التمثال! تم منحك 3000 عملة + 60 XP";
       showCustomToast("اكتمل التمثال! حصلت على المكافأة", "success");
       document.getElementById("transition").style.display = "flex";
       setTimeout(() => {
