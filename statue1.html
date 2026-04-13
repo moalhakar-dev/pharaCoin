@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>⚒️ تعدين التمثال • المرحلة الأولى • المتحف الكبير</title>
+    <meta name="description" content="اشترِ أدوات التعدين الفرعونية واربح جنيهات كل ثانية.">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: #000;
+            color: #fff;
+            min-height: 100vh;
+            position: relative;
+        }
+        .bg {
+            position: fixed; inset: 0;
+            background: url("Object/qa.jpg") center/cover no-repeat;
+            filter: brightness(0.2) saturate(1.2);
+            z-index: -2;
+        }
+        .bg::after {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(ellipse at 50% 0%, rgba(255,215,0,0.1) 0%, transparent 60%);
+        }
+        .particles {
+            position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none;
+        }
+        .particle {
+            position: absolute; border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,215,0,0.8), transparent);
+            animation: particleRise linear infinite; opacity: 0;
+        }
+        @keyframes particleRise {
+            0% { opacity: 0; transform: translateY(100vh) scale(0); }
+            10% { opacity: 1; transform: scale(1); }
+            90% { opacity: 0.5; }
+            100% { opacity: 0; transform: translateY(-10vh) scale(0.5); }
+        }
+
+        /* شريط علوي - تحسين العرض */
+        .top-bar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+            border-bottom: 1px solid #ffd700; padding: 8px 16px;
+            display: flex; align-items: center; justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .nav-links { display: flex; gap: 5px; }
+        .nav-links a {
+            color: #ddd; text-decoration: none; font-size: 13px; font-weight: 600;
+            padding: 5px 10px; border-radius: 20px; transition: 0.2s;
+        }
+        .nav-links a.active { color: #ffd700; background: rgba(255,215,0,0.15); }
+        .coin-display {
+            background: rgba(0,0,0,0.6); padding: 5px 12px; border-radius: 30px;
+            border: 1px solid #ffd700; color: #ffd700; font-weight: bold; font-size: 14px;
+            white-space: nowrap;
+        }
+
+        /* تم زيادة padding-top لمنع التداخل مع الشريط العلوي */
+        .content {
+            padding: 85px 16px 80px;
+            max-width: 550px;
+            margin: 0 auto;
+        }
+
+        /* صندوق التعدين الرئيسي */
+        .mining-box {
+            background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,215,0,0.4); border-radius: 30px;
+            padding: 12px 16px; margin-bottom: 15px;
+            display: flex; align-items: center; justify-content: space-between;
+            flex-wrap: wrap; box-shadow: 0 0 30px rgba(0,0,0,0.8);
+        }
+        .mining-label {
+            color: #ffd700; font-weight: 700; display: flex; align-items: center; gap: 6px;
+        }
+        .mining-value {
+            font-size: 26px; font-weight: 900; color: white;
+            text-shadow: 0 0 15px gold; direction: ltr;
+            word-break: break-word;
+        }
+        .live-badge {
+            background: #8B0000; color: white; padding: 2px 12px;
+            border-radius: 20px; font-size: 12px; font-weight: 800;
+        }
+        .collect-btn {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            border: none; color: #000; font-weight: 900; padding: 8px 22px;
+            border-radius: 30px; cursor: pointer; font-family: 'Cairo';
+            font-size: 15px; box-shadow: 0 0 12px gold;
+        }
+        .pending-amount {
+            font-size: 14px; color: #aaa; margin-top: 5px;
+        }
+
+        /* صورة التمثال */
+        .statue-full-img {
+            background: rgba(0,0,0,0.5); backdrop-filter: blur(5px);
+            border: 2px solid rgba(255,215,0,0.5); border-radius: 24px;
+            padding: 15px; margin: 15px 0; text-align: center;
+        }
+        .statue-full-img img {
+            width: 100%; max-width: 220px; border-radius: 20px;
+            filter: drop-shadow(0 0 15px gold);
+        }
+
+        /* شريط تقدم الأدوات */
+        .progress-section {
+            background: rgba(0,0,0,0.5); border-radius: 30px;
+            padding: 12px 16px; margin: 15px 0; border: 1px solid #ffd70033;
+        }
+        .progress-label {
+            color: #ffd700; font-weight: bold; margin-bottom: 6px;
+            display: flex; justify-content: space-between;
+        }
+        .progress-bar {
+            height: 10px; background: #222; border-radius: 10px; overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%; width: 0%; background: linear-gradient(90deg, #ffd700, #ff8c00);
+            transition: width 0.3s;
+        }
+
+        /* أدوات التعدين (كروت) */
+        .tools-container {
+            display: flex; flex-direction: column; gap: 12px; margin-top: 15px;
+        }
+        .tool-card {
+            background: linear-gradient(145deg, #1a1200, #0d0800);
+            border: 2px solid rgba(255,215,0,0.4); border-radius: 25px;
+            padding: 15px 20px; display: flex; align-items: center; justify-content: space-between;
+            box-shadow: 0 0 20px rgba(0,0,0,0.7);
+        }
+        .tool-card.owned {
+            border-color: #00ff9d;
+        }
+        .tool-info {
+            display: flex; align-items: center; gap: 15px;
+        }
+        .tool-icon {
+            width: 55px; height: 55px; background: #1a1000;
+            border-radius: 16px; display: flex; align-items: center; justify-content: center;
+            border: 1px solid gold;
+        }
+        .tool-icon img {
+            width: 45px; height: 45px; object-fit: cover; border-radius: 12px;
+        }
+        .tool-details h4 {
+            color: #ffd700; font-size: 16px; margin-bottom: 2px;
+        }
+        .tool-rate {
+            color: #00ff9d; font-size: 14px; font-weight: bold;
+        }
+        .tool-price {
+            color: #ffd700; font-size: 14px; background: rgba(0,0,0,0.5);
+            padding: 2px 10px; border-radius: 20px; display: inline-block;
+        }
+        .tool-action button {
+            background: linear-gradient(45deg, #ffd700, #ffa500);
+            border: none; color: #000; font-weight: 900; padding: 10px 20px;
+            border-radius: 30px; cursor: pointer; font-family: 'Cairo';
+            font-size: 14px; box-shadow: 0 0 12px gold; min-width: 110px;
+        }
+        .tool-action button:disabled {
+            background: #555; box-shadow: none; color: #ccc; cursor: not-allowed;
+        }
+        .owned-badge {
+            background: #00aa55; color: white; padding: 6px 16px; border-radius: 30px;
+            font-weight: bold; font-size: 13px;
+        }
+
+        /* المكافأة النهائية */
+        .reward-card {
+            background: rgba(0,0,0,0.7); border: 2px solid #00ff9d;
+            border-radius: 25px; padding: 20px; margin-top: 25px;
+            text-align: center; display: none;
+        }
+        .reward-card h3 { color: #00ff9d; font-size: 20px; }
+        .next-btn {
+            background: #ffd700; border: none; padding: 10px 30px;
+            border-radius: 40px; font-weight: bold; margin-top: 15px;
+            cursor: pointer; font-size: 16px;
+        }
+
+        /* شريط سفلي */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: rgba(0,0,0,0.9); backdrop-filter: blur(10px);
+            border-top: 1px solid #ffd700; display: flex;
+            justify-content: space-around; padding: 8px 0; z-index: 100;
+        }
+        .nav-item {
+            color: #ccc; text-decoration: none; font-size: 13px;
+            padding: 5px 10px; border-radius: 20px;
+        }
+        .nav-item.active { color: #ffd700; background: rgba(255,215,0,0.1); }
+
+        /* إشعارات (Toast) */
+        .toast-container {
+            position: fixed; top: 70px; left: 50%; transform: translateX(-50%);
+            z-index: 2000; width: 90%; max-width: 300px;
+        }
+        .toast {
+            background: #1a1a1a; border: 1px solid #ffd700; border-radius: 30px;
+            padding: 10px 18px; margin-bottom: 8px; text-align: center;
+            color: white; font-weight: bold; animation: fadeToast 3s forwards;
+        }
+        .toast.success { border-color: #00ff9d; }
+        .pulse {
+            animation: pulseGreen 0.6s ease;
+        }
+        @keyframes pulseGreen {
+            0% { box-shadow: 0 0 0 0 #00ff9d; }
+            50% { box-shadow: 0 0 20px 5px #00ff9d; }
+            100% { box-shadow: 0 0 0 0 #00ff9d; }
+        }
+        @keyframes fadeToast {
+            0% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        /* استجابة للشاشات الصغيرة */
+        @media (max-width: 480px) {
+            .top-bar { padding: 6px 10px; }
+            .content { padding-top: 80px; }
+            .mining-value { font-size: 22px; }
+            .tool-card { padding: 12px; }
+            .tool-icon { width: 45px; height: 45px; }
+        }
+    </style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="particles" id="particles"></div>
+
+<!-- شريط علوي -->
+<div class="top-bar">
+    <div class="nav-links">
+        <a href="dashboard.html">🏠 الرئيسية</a>
+        <a href="museum.html">🏺 المتحف</a>
+        <a href="statue-builder.html" class="active">⚒️ المرحلة 1</a>
+    </div>
+    <div class="coin-display">💰 <span id="coinCount">0</span> ج.م</div>
+</div>
+
+<!-- المحتوى -->
+<div class="content">
+    <!-- معدل الاستخراج المباشر -->
+    <div class="mining-box">
+        <span class="mining-label">⛏️ إجمالي الاستخراج</span>
+        <span class="mining-value" id="totalRate">0.0</span>
+        <span class="live-badge">LIVE</span>
+        <button class="collect-btn" id="collectBtn">⛏️ جمع</button>
+    </div>
+    <div class="pending-amount" id="pendingDisplay">⏳ قيد التعدين: 0.0 جنيه</div>
+
+    <!-- صورة التمثال الكامل -->
+    <div class="statue-full-img">
+        <img src="Object/statue1_full.jpg" alt="التمثال الكامل" onerror="this.style.display='none'">
+        <p>☥ تمثال الفرعون الأول ☥</p>
+    </div>
+
+    <!-- شريط تقدم الأدوات -->
+    <div class="progress-section">
+        <div class="progress-label">
+            <span>📊 الأدوات المملوكة</span>
+            <span id="progressText">0/4</span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width:0%"></div>
+        </div>
+    </div>
+
+    <!-- قائمة أدوات التعدين -->
+    <div class="tools-container" id="toolsContainer"></div>
+
+    <!-- بطاقة إكمال جميع الأدوات -->
+    <div class="reward-card" id="completionCard">
+        <h3>🎉 اكتملت جميع الأدوات! 🎉</h3>
+        <p>لقد قمت بشراء جميع أدوات التعدين الفرعونية.</p>
+        <p style="color:#ffd700; margin:10px 0">+2000 جنيه مكافأة إتمام</p>
+        <button class="next-btn" onclick="goToNextStage()">➡️ المرحلة التالية</button>
+    </div>
+</div>
+
+<!-- شريط سفلي -->
+<div class="bottom-nav">
+    <a href="dashboard.html" class="nav-item">🏠 الرئيسية</a>
+    <a href="museum.html" class="nav-item">🏺 المتحف</a>
+    <a href="statue-builder.html" class="nav-item active">⚒️ المرحلة 1</a>
+    <a href="profile.html" class="nav-item">👤 حسابي</a>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+    // تهيئة Firebase
+    firebase.initializeApp({
+        apiKey: "AIzaSyB78JT_cbPMizvzKWBrQoQUe3-zukHrr1U",
+        authDomain: "pharacoin.firebaseapp.com",
+        projectId: "pharacoin"
+    });
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    let currentUser = null;
+    let userDocRef = null;
+    let userCoins = 0;
+    
+    // أدوات التعدين: الأسعار والمعدلات (جنيه / ثانية)
+    const TOOLS = [
+        { id: 0, name: "صولجان الصدر", price: 200, rate: 0.5, img: "Object/statue1_part1.jpg" },
+        { id: 1, name: "صولجان اليد", price: 400, rate: 1.0, img: "Object/statue1_part2.jpg" },
+        { id: 2, name: "صولجان الرأس", price: 600, rate: 1.5, img: "Object/statue1_part3.jpg" },
+        { id: 3, name: "صولجان التاج", price: 800, rate: 2.0, img: "Object/statue1_part4.jpg" }
+    ];
+    
+    // حالة الأدوات (مملوكة أم لا)
+    let toolsOwned = [false, false, false, false];
+    let totalRate = 0.0;
+    
+    // بيانات التعدين التراكمي
+    let lastCollectTimestamp = Date.now();
+    let pendingEarnings = 0.0;
+    let earningsInterval = null;
+
+    // عناصر DOM
+    const coinSpan = document.getElementById('coinCount');
+    const totalRateSpan = document.getElementById('totalRate');
+    const pendingDisplay = document.getElementById('pendingDisplay');
+    const progressFill = document.getElementById('progressFill');
+    const progressText = document.getElementById('progressText');
+    const toolsContainer = document.getElementById('toolsContainer');
+    const completionCard = document.getElementById('completionCard');
+    const collectBtn = document.getElementById('collectBtn');
+
+    // عرض إشعار
+    function showToast(msg, success = true, isPulse = false) {
+        const container = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        toast.className = `toast ${success ? 'success' : ''}`;
+        toast.innerHTML = (success ? '✅ ' : '❌ ') + msg;
+        container.appendChild(toast);
+        if (isPulse) {
+            toast.classList.add('pulse');
+        }
+        setTimeout(() => toast.remove(), 2800);
+    }
+
+    // حساب إجمالي المعدل وتحديث الواجهة
+    function updateTotalRate() {
+        totalRate = toolsOwned.reduce((sum, owned, idx) => owned ? sum + TOOLS[idx].rate : sum, 0);
+        totalRateSpan.innerText = totalRate.toFixed(1) + ' جنيه/ث';
+    }
+
+    // تحديث شريط التقدم
+    function updateProgress() {
+        const ownedCount = toolsOwned.filter(v => v).length;
+        progressFill.style.width = (ownedCount / 4 * 100) + '%';
+        progressText.innerText = `${ownedCount}/4 أدوات`;
+        completionCard.style.display = ownedCount === 4 ? 'block' : 'none';
+    }
+
+    // تحديث عرض الأرباح المعلقة
+    function updatePendingDisplay() {
+        pendingDisplay.innerText = `⏳ قيد التعدين: ${pendingEarnings.toFixed(2)} جنيه`;
+    }
+
+    // تحديث الرصيد في الواجهة
+    function updateCoinDisplay() {
+        coinSpan.innerText = userCoins;
+    }
+
+    // رسم كروت الأدوات
+    function renderTools() {
+        toolsContainer.innerHTML = '';
+        TOOLS.forEach((tool, idx) => {
+            const owned = toolsOwned[idx];
+            const card = document.createElement('div');
+            card.className = `tool-card ${owned ? 'owned' : ''}`;
+            card.innerHTML = `
+                <div class="tool-info">
+                    <div class="tool-icon">
+                        <img src="${tool.img}" onerror="this.style.display='none'">
+                    </div>
+                    <div class="tool-details">
+                        <h4>${tool.name}</h4>
+                        <div class="tool-rate">⚡ ${tool.rate} جنيه / ثانية</div>
+                        <div class="tool-price">💎 ${tool.price} جنيه</div>
+                    </div>
+                </div>
+                <div class="tool-action">
+                    ${owned ? 
+                        '<span class="owned-badge">✔ مملوكة</span>' : 
+                        `<button onclick="purchaseTool(${idx})">شراء</button>`
+                    }
+                </div>
+            `;
+            toolsContainer.appendChild(card);
+        });
+    }
+
+    // دالة شراء الأداة
+    window.purchaseTool = async function(index) {
+        if (!currentUser) return;
+        if (toolsOwned[index]) {
+            showToast('هذه الأداة مملوكة بالفعل', false);
+            return;
+        }
+        const tool = TOOLS[index];
+        if (userCoins < tool.price) {
+            showToast(`رصيد غير كافٍ! تحتاج ${tool.price} جنيه`, false);
+            return;
+        }
+
+        try {
+            // خصم السعر وتحديث حالة الأداة
+            await userDocRef.update({
+                coins: firebase.firestore.FieldValue.increment(-tool.price),
+                [`tool_owned_${index}`]: true
+            });
+            
+            // نجاح الشراء
+            showToast(`🎉 تم شراء ${tool.name}! أضافت ${tool.rate} جنيه/ثانية`, true, true);
+        } catch (err) {
+            console.error(err);
+            showToast('حدث خطأ أثناء الشراء', false);
+        }
+    };
+
+    // جمع الأرباح
+    async function collectEarnings() {
+        if (!currentUser) return;
+        if (pendingEarnings < 0.01) {
+            showToast('لا توجد أرباح كافية بعد', false);
+            return;
+        }
+        const amount = pendingEarnings;
+        const now = Date.now();
+        try {
+            await userDocRef.update({
+                coins: firebase.firestore.FieldValue.increment(amount),
+                last_collect: now
+            });
+            showToast(`💰 تم جمع ${amount.toFixed(2)} جنيه!`, true, true);
+            // سيتم تحديث pendingEarnings عبر snapshot
+        } catch (err) {
+            console.error(err);
+            showToast('فشل جمع الأرباح', false);
+        }
+    }
+
+    // الانتقال للمرحلة التالية
+    window.goToNextStage = function() {
+        window.location.href = 'statue2.html';
+    };
+
+    // تحديث الأرباح المعلقة بناءً على الوقت
+    function computePendingEarnings(lastCollect, currentTime) {
+        if (!lastCollect) return 0;
+        const secondsElapsed = (currentTime - lastCollect) / 1000;
+        return totalRate * secondsElapsed;
+    }
+
+    // مزامنة البيانات مع Firestore
+    function setupRealtimeUpdates() {
+        auth.onAuthStateChanged(user => {
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+            currentUser = user;
+            userDocRef = db.collection('users').doc(user.uid);
+            
+            userDocRef.onSnapshot(doc => {
+                if (!doc.exists) {
+                    // إنشاء مستند جديد مع بيانات افتراضية
+                    userDocRef.set({
+                        coins: 500,
+                        xp: 0,
+                        tool_owned_0: false,
+                        tool_owned_1: false,
+                        tool_owned_2: false,
+                        tool_owned_3: false,
+                        last_collect: Date.now()
+                    });
+                    return;
+                }
+                
+                const data = doc.data();
+                userCoins = data.coins || 0;
+                toolsOwned = [
+                    data.tool_owned_0 || false,
+                    data.tool_owned_1 || false,
+                    data.tool_owned_2 || false,
+                    data.tool_owned_3 || false
+                ];
+                lastCollectTimestamp = data.last_collect || Date.now();
+                
+                // حساب الأرباح المعلقة
+                updateTotalRate();
+                const now = Date.now();
+                pendingEarnings = computePendingEarnings(lastCollectTimestamp, now);
+                
+                // تحديث الواجهة
+                updateCoinDisplay();
+                updatePendingDisplay();
+                updateProgress();
+                renderTools();
+                
+                // التحقق من اكتمال جميع الأدوات (مكافأة تلقائية مرة واحدة)
+                if (toolsOwned.every(v => v) && !data.stage1_completed) {
+                    // منح مكافأة الإتمام 2000 جنيه
+                    userDocRef.update({
+                        coins: firebase.firestore.FieldValue.increment(2000),
+                        stage1_completed: true
+                    });
+                    showToast('🏆 مبروك! اكتملت جميع الأدوات +2000 جنيه', true, true);
+                }
+            });
+        });
+    }
+
+    // بدء تحديث دوري للأرباح المعلقة (كل ثانية)
+    function startEarningsTimer() {
+        if (earningsInterval) clearInterval(earningsInterval);
+        earningsInterval = setInterval(() => {
+            if (!currentUser) return;
+            // لا نحدث Firestore كل ثانية، فقط نحسب محلياً
+            const now = Date.now();
+            pendingEarnings = computePendingEarnings(lastCollectTimestamp, now);
+            updatePendingDisplay();
+        }, 1000);
+    }
+
+    // ربط الأحداث
+    collectBtn.addEventListener('click', collectEarnings);
+
+    // تهيئة الجسيمات
+    function initParticles() {
+        const container = document.getElementById('particles');
+        for (let i = 0; i < 25; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.animationDuration = (8 + Math.random() * 12) + 's';
+            p.style.animationDelay = Math.random() * 5 + 's';
+            p.style.width = (2 + Math.random() * 4) + 'px';
+            p.style.height = p.style.width;
+            container.appendChild(p);
+        }
+    }
+
+    // بدء التطبيق
+    initParticles();
+    setupRealtimeUpdates();
+    startEarningsTimer();
+
+    // تنظيف عند مغادرة الصفحة
+    window.addEventListener('beforeunload', () => {
+        if (earningsInterval) clearInterval(earningsInterval);
+    });
+</script>
+</body>
+</html>
