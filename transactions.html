@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>سجل المعاملات — PharaCoin</title>
+<title>سجل المعاملات • المتحف الكبير</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
@@ -333,8 +333,8 @@ body {
 <div class="page-bg" id="pageBg"></div>
 
 <div class="header">
-  <div class="logo">🏺 PharaCoin</div>
-  <div class="balance-box">💰 <span id="headerCoins">0</span> 🪙</div>
+  <div class="logo">🏺 المتحف الكبير</div>
+  <div class="balance-box">💰 <span id="headerCoins">0</span> ج.م</div>
 </div>
 
 <div class="container">
@@ -363,9 +363,9 @@ body {
     <div class="nav-circle">𓆣</div>
     <div class="nav-label">المتحف</div>
   </div>
-  <div class="nav-item" data-url="statue-builder.html" data-label="التجميع" data-egypt="𓁹" data-alt="⚒️">
+  <div class="nav-item" data-url="statue1.html" data-label="المرحلة 1" data-egypt="𓁹" data-alt="⚒️">
     <div class="nav-circle">𓁹</div>
-    <div class="nav-label">التجميع</div>
+    <div class="nav-label">المرحلة 1</div>
   </div>
   <div class="nav-item" data-url="profile.html" data-label="حسابي" data-egypt="☥" data-alt="👤">
     <div class="nav-circle">☥</div>
@@ -402,19 +402,20 @@ firebase.initializeApp({
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-// تحديث العملات المعروضة
+// تحديث العملات المعروضة (بالجنيه)
 function updateHeaderCoins() {
   const user = auth.currentUser;
   if (user) {
     db.collection("users").doc(user.uid).get().then(doc => {
       if (doc.exists) {
-        document.getElementById('headerCoins').innerText = doc.data().coins || '0';
+        const coins = doc.data().coins || 0;
+        document.getElementById('headerCoins').innerText = coins.toLocaleString();
       }
     }).catch(() => {
-      document.getElementById('headerCoins').innerText = localStorage.getItem('coins') || '0';
+      document.getElementById('headerCoins').innerText = '0';
     });
   } else {
-    document.getElementById('headerCoins').innerText = localStorage.getItem('coins') || '0';
+    document.getElementById('headerCoins').innerText = '0';
   }
 }
 
@@ -434,7 +435,7 @@ auth.onAuthStateChanged(user => {
   }
 });
 
-// تحميل جميع المعاملات (إيداع + سحب + VIP)
+// تحميل جميع المعاملات (إيداع + سحب + VIP) - بدون Coins
 async function loadAllTransactions() {
   if (!currentUser) return;
   
@@ -442,8 +443,6 @@ async function loadAllTransactions() {
   listEl.innerHTML = '<div class="loader" style="margin: 40px auto;"></div>';
   
   try {
-    console.log("جاري تحميل المعاملات للمستخدم:", currentUser.uid);
-    
     // جلب الإيداعات
     const depositsSnap = await db.collection("deposits")
       .where("userId", "==", currentUser.uid)
@@ -462,8 +461,6 @@ async function loadAllTransactions() {
       .orderBy("requestedAt", "desc")
       .get();
     
-    console.log("إيداعات:", depositsSnap.size, "سحوبات:", withdrawalsSnap.size, "VIP:", vipSnap.size);
-    
     // دمج المعاملات
     allTransactions = [];
     
@@ -475,7 +472,6 @@ async function loadAllTransactions() {
         method: data.method,
         fromNumber: data.fromNumber,
         amount: data.amount,
-        coins: data.coins,
         status: data.status,
         createdAt: data.createdAt
       });
@@ -489,7 +485,7 @@ async function loadAllTransactions() {
         method: data.method,
         address: data.address,
         amount: data.amount,
-        currency: data.currency || 'USD', // ✅ العملة الأصلية (افتراضي دولار)
+        currency: data.currency || 'USD',
         status: data.status,
         createdAt: data.createdAt
       });
@@ -503,13 +499,12 @@ async function loadAllTransactions() {
         planName: data.planName,
         planLevel: data.planLevel,
         priceUSD: data.priceUSD,
-        priceCoins: data.priceCoins,
         status: data.status,
         createdAt: data.requestedAt
       });
     });
     
-    // ترتيب تنازلي حسب التاريخ (الأحدث أولاً)
+    // ترتيب تنازلي حسب التاريخ
     allTransactions.sort((a, b) => {
       const timeA = a.createdAt ? a.createdAt.seconds : 0;
       const timeB = b.createdAt ? b.createdAt.seconds : 0;
@@ -530,20 +525,8 @@ async function loadAllTransactions() {
     renderTransactions();
     
   } catch (err) {
-    console.error("🔥 خطأ مفصل:", err);
-    
-    let errorMessage = '';
-    if (err.code === 'permission-denied') {
-      errorMessage = '❌ ليس لديك صلاحية لعرض المعاملات. تأكد من قواعد Firestore.';
-    } else if (err.code === 'unavailable') {
-      errorMessage = '❌ لا يمكن الاتصال بقاعدة البيانات. تحقق من اتصالك بالإنترنت.';
-    } else if (err.code === 'not-found') {
-      errorMessage = '❌ المجموعات غير موجودة. قم بإنشاء معاملة أولاً.';
-    } else {
-      errorMessage = '❌ حدث خطأ في تحميل المعاملات: ' + err.message;
-    }
-    
-    listEl.innerHTML = `<div class="empty-msg"><span>⚠️</span>${errorMessage}</div>`;
+    console.error("خطأ:", err);
+    listEl.innerHTML = `<div class="empty-msg"><span>⚠️</span>فشل تحميل المعاملات</div>`;
     showCustomToast("فشل تحميل المعاملات", "error");
   }
 }
@@ -552,7 +535,6 @@ async function loadAllTransactions() {
 function renderTransactions() {
   const listEl = document.getElementById('transactionList');
   
-  // تصفية حسب الحالة
   let filtered = allTransactions;
   if (currentFilter !== 'all') {
     filtered = allTransactions.filter(t => t.status === currentFilter);
@@ -607,7 +589,7 @@ function renderTransactions() {
       statusText = tx.status || 'غير معروف';
     }
     
-    // عرض مختلف حسب نوع المعاملة
+    // عرض مختلف حسب نوع المعاملة (بدون Coins)
     if (tx.type === 'deposit') {
       return `
         <div class="transaction-item">
@@ -616,18 +598,16 @@ function renderTransactions() {
               <span style="color:gold; font-weight:bold;">💰 إيداع</span>
               <span class="status-badge ${statusClass}">${statusText}</span>
             </div>
-            <div class="transaction-amount">${tx.amount || 0} ${tx.amount ? 'جنيه' : ''}</div>
+            <div class="transaction-amount">${tx.amount || 0} جنيه</div>
           </div>
           <div class="transaction-details">
             <div class="detail-item">📱 ${tx.method || 'غير محدد'}</div>
             <div class="detail-item">🆔 من: ${tx.fromNumber || 'غير محدد'}</div>
-            <div class="detail-item">🪙 ${tx.coins || 0} Coins</div>
           </div>
           <div class="transaction-time">${dateStr}</div>
         </div>
       `;
     } else if (tx.type === 'withdraw') {
-      // ✅ عرض العملة الأصلية
       const currencySymbol = tx.currency === 'EGP' ? 'جنيه' : 'دولار';
       return `
         <div class="transaction-item">
@@ -657,9 +637,8 @@ function renderTransactions() {
           </div>
           <div class="transaction-details">
             <div class="detail-item">📊 الباقة: ${tx.planName || 'غير محدد'}</div>
-            <div class="detail-item">🪙 ${tx.priceCoins || 0} Coins</div>
-            <div class="detail-item">🕐 ${dateStr}</div>
           </div>
+          <div class="transaction-time">${dateStr}</div>
         </div>
       `;
     }
