@@ -203,6 +203,101 @@
           box-shadow: 0 0 25px #FFD700;
         }
 
+        /* ===== قسم إثباتات السحب (جديد - تصميم مميز) ===== */
+        .proof-section {
+          margin-top: 20px;
+          border-top: 2px solid rgba(0, 255, 157, 0.4);
+          padding-top: 18px;
+          background: linear-gradient(145deg, rgba(0, 40, 20, 0.3), rgba(0, 20, 10, 0.5));
+          border-radius: 16px;
+          padding: 18px 16px;
+          margin-top: 25px;
+          box-shadow: 0 0 30px rgba(0, 255, 157, 0.2);
+        }
+        .proof-header {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+          margin-bottom: 12px;
+        }
+        .proof-header i {
+          color: #00ff9d;
+          font-size: 28px;
+          text-shadow: 0 0 15px #00ff9d;
+        }
+        .proof-header span {
+          font-weight: 800;
+          color: #00ff9d;
+          font-size: 18px;
+          text-shadow: 0 0 10px #00ff9d;
+        }
+        .proof-desc {
+          color: #ccc;
+          font-size: 13px;
+          margin-bottom: 15px;
+          text-align: center;
+        }
+        .proof-username {
+          background: #0a1a0a;
+          padding: 12px;
+          border-radius: 12px;
+          border: 1px solid #00ff9d;
+          font-weight: bold;
+          font-size: 18px;
+          margin-bottom: 15px;
+          word-break: break-all;
+          color: #00ff9d;
+          box-shadow: inset 0 0 10px rgba(0, 255, 157, 0.1);
+        }
+        .proof-buttons {
+          display: flex;
+          gap: 10px;
+          justify-content: center;
+        }
+        .proof-btn {
+          flex: 1;
+          padding: 12px;
+          border: none;
+          border-radius: 12px;
+          font-weight: bold;
+          cursor: pointer;
+          transition: .2s;
+          font-size: 14px;
+          background: transparent;
+        }
+        .proof-btn-primary {
+          background: #00ff9d;
+          color: #000;
+          box-shadow: 0 0 20px #00ff9d;
+          border: 1px solid #00ff9d;
+        }
+        .proof-btn-primary:hover {
+          transform: scale(1.03);
+          box-shadow: 0 0 30px #00ff9d;
+          background: #33ffb2;
+        }
+        .proof-btn-secondary {
+          border: 2px solid #00ff9d;
+          color: #00ff9d;
+          box-shadow: 0 0 10px #00ff9d;
+        }
+        .proof-btn-secondary:hover {
+          transform: scale(1.03);
+          background: rgba(0, 255, 157, 0.1);
+          box-shadow: 0 0 25px #00ff9d;
+        }
+        .proof-badge {
+          display: inline-block;
+          background: #00ff9d;
+          color: #000;
+          padding: 4px 12px;
+          border-radius: 30px;
+          font-size: 12px;
+          font-weight: bold;
+          margin-bottom: 10px;
+        }
+
         /* ===== الفوتر المكبر ===== */
         .footer-links {
           text-align: center;
@@ -287,7 +382,7 @@
       <i class="fa-brands fa-telegram"></i>
       <span>القناة الرسمية</span>
     </div>
-    <a href="https://t.me/pharacoinegy" target="_blank" class="channel-btn" aria-label="الانضمام إلى قناة التليجرام الرسمية">
+    <a href="https://t.me/+_ibJJaGKwdlhZGJk" target="_blank" class="channel-btn" aria-label="الانضمام إلى قناة التليجرام الرسمية">
       انضم إلى قناة التليجرام
     </a>
     <div class="note" style="margin-top: 8px;">
@@ -295,6 +390,33 @@
     </div>
   </div>
   <!-- نهاية قسم القناة -->
+
+  <!-- ===== قسم إثباتات السحب (جديد - تصميم مميز) ===== -->
+  <div class="proof-section">
+    <span class="proof-badge">🔥 حصرياً</span>
+    <div class="proof-header">
+      <i class="fa-solid fa-circle-check"></i>
+      <span>إثباتات السحب</span>
+    </div>
+    <div class="proof-desc">
+      شاهد إثباتات سحب حقيقية من أعضائنا - يتم تحديثها يومياً
+    </div>
+    <div class="proof-username" id="proofChannel" aria-label="رابط قناة إثباتات السحب">
+      @pharacoinproof
+    </div>
+    <div class="proof-buttons">
+      <button class="proof-btn proof-btn-primary" onclick="openProofChannel()" aria-label="عرض قناة إثباتات السحب">
+        <i class="fa-brands fa-telegram"></i> عرض الإثباتات
+      </button>
+      <button class="proof-btn proof-btn-secondary" onclick="copyProofLink()" aria-label="نسخ رابط قناة الإثباتات">
+        <i class="fa-regular fa-copy"></i> نسخ الرابط
+      </button>
+    </div>
+    <div class="note" style="margin-top: 12px; color: #00ff9d;">
+      <i class="fa-solid fa-shield-hal"></i> جميع الإثباتات موثقة وحقيقية
+    </div>
+  </div>
+  <!-- نهاية قسم إثباتات السحب -->
 
 </div>
 
@@ -316,6 +438,16 @@ function openTelegram(){
 function copyUser(){
   navigator.clipboard.writeText("@PharacoinSupport");
   alert("تم نسخ اليوزر ✔");
+}
+
+// دوال قناة إثباتات السحب
+function openProofChannel(){
+  window.open("https://t.me/pharacoinproof", "_blank");
+}
+
+function copyProofLink(){
+  navigator.clipboard.writeText("@pharacoinproof");
+  alert("تم نسخ معرف القناة ✔");
 }
 </script>
 
