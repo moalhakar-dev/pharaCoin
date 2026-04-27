@@ -4,27 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>عضويات VIP • المتحف الكبير</title>
+    <!-- جميع الوسوم التعريفية والمظهر كما هي لم تتغير -->
     <meta name="description" content="اختر باقة VIP المناسبة لك وابدأ بمزايا حصرية: مضاعف أرباح، سحب أسرع، وأولوية في الدعم.">
     <meta name="keywords" content="VIP, عضوية مميزة, باقات VIP, مزايا حصرية, المتحف الكبير">
     <meta name="author" content="PharaCoin Team">
     <meta name="robots" content="noindex, nofollow">
-
     <meta property="og:title" content="عضويات VIP • المتحف الكبير">
     <meta property="og:description" content="اختر باقة VIP المميزة واستمتع بمزايا حصرية.">
     <meta property="og:image" content="https://pharacoin.pages.dev/Object/qa.jpg">
     <meta property="og:url" content="https://pharacoin.pages.dev/vip.html">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="المتحف الكبير">
-
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="عضويات VIP • المتحف الكبير">
     <meta name="twitter:description" content="اختر باقة VIP المميزة واستمتع بمزايا حصرية.">
     <meta name="twitter:image" content="https://pharacoin.pages.dev/Object/qa.jpg">
-
     <link rel="canonical" href="https://pharacoin.pages.dev/vip.html">
-
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
@@ -42,8 +38,6 @@
           position:relative;padding-bottom:110px;
           min-height:100vh;
         }
-
-        /* BG */
         .page-bg{
           position:fixed;inset:0;
           background:url("Object/qa.jpg") center/cover no-repeat;
@@ -54,8 +48,6 @@
           content:'';position:absolute;inset:0;
           background:linear-gradient(180deg,rgba(0,0,0,0.4),rgba(0,0,0,0.9));
         }
-
-        /* Toast Notifications */
         .toast-container{
           position:fixed;top:20px;left:50%;transform:translateX(-50%);
           z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none;
@@ -84,8 +76,6 @@
         .toast.warning{ border-color:#FFA500; box-shadow:0 0 30px #FFA500; }
         @keyframes toastIn{ from{opacity:0;transform:translateY(-20px);} to{opacity:1;transform:translateY(0);} }
         @keyframes toastOut{ from{opacity:1;} to{opacity:0;transform:translateY(-20px);} }
-
-        /* Header */
         .header{
           display:flex;justify-content:space-between;align-items:center;
           padding:16px 18px;
@@ -105,14 +95,10 @@
           padding:6px 14px;border-radius:20px;
           font-size:13px;font-weight:700;
         }
-
-        /* Title */
         h1.page-title{
           text-align:center;margin:18px 0 8px;
           font-size:20px;font-weight:800;color:gold;
         }
-
-        /* Status */
         .status-bar{
           margin:10px 16px;
           padding:10px;
@@ -128,8 +114,6 @@
           margin-bottom:10px;
           font-size:13px;
         }
-
-        /* VIP */
         .vip-container{
           margin:0 16px;
           display:flex;
@@ -166,7 +150,6 @@
           color:gold;
         }
         .price{color:#ffd700;}
-
         .features{
           margin-top:10px;
           display:none;
@@ -196,8 +179,6 @@
           background:gray;
           cursor:not-allowed;
         }
-
-        /* Success */
         .success-overlay{
           position:fixed;
           inset:0;
@@ -212,8 +193,6 @@
           display:none;
           flex-direction:column;
         }
-
-        /* Bottom Nav */
         .bottom-nav{
           position:fixed;bottom:0;left:0;right:0;
           max-width:480px;margin:0 auto;
@@ -353,9 +332,6 @@
 </div>
 
 <script>
-// ========== متغيرات تيليجرام (للإشارة فقط، لا تستخدم هنا) ==========
-// (يمكن الاحتفاظ بها لاستخدامات أخرى)
-
 // ========== Toast ==========
 function showCustomToast(message, type = 'success') {
   const container = document.getElementById('toastContainer');
@@ -381,14 +357,46 @@ let currentUser = null;
 let userDocRef = null;
 let unsubscribe = null;
 let userCoins = 0;
+let activeVIPRequest = null; // لتتبع الطلب المعلق
 
 // تنسيق الأرقام
 function formatNumber(num) {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
+// فحص الطلبات المعلقة للمستخدم الحالي
+async function checkPendingRequest(uid) {
+  const q = db.collection("vip_requests")
+    .where("userId", "==", uid)
+    .where("status", "==", "pending")
+    .limit(1);
+  const snap = await q.get();
+  if (!snap.empty) {
+    activeVIPRequest = snap.docs[0].data();
+    activeVIPRequest.id = snap.docs[0].id;
+    return true;
+  }
+  activeVIPRequest = null;
+  return false;
+}
+
+// تحديث حالة جميع أزرار "اشترك الآن"
+function updateSubscribeButtons(disable = false) {
+  document.querySelectorAll('.subscribe-btn').forEach(btn => {
+    btn.disabled = disable;
+    if (disable) {
+      btn.textContent = '⏳ طلب معلق';
+    } else {
+      const card = btn.closest('.vip-card');
+      if (card) {
+        btn.textContent = 'اشترك الآن';
+      }
+    }
+  });
+}
+
 // التحقق من تسجيل الدخول والاستماع للبيانات
-auth.onAuthStateChanged(user => {
+auth.onAuthStateChanged(async user => {
   if (!user) {
     window.location.href = "login.html";
   } else {
@@ -396,7 +404,7 @@ auth.onAuthStateChanged(user => {
     userDocRef = db.collection("users").doc(user.uid);
     
     if (unsubscribe) unsubscribe();
-    unsubscribe = userDocRef.onSnapshot((doc) => {
+    unsubscribe = userDocRef.onSnapshot(async (doc) => {
       if (doc.exists) {
         const data = doc.data();
         userCoins = data.coins || 0;
@@ -408,8 +416,18 @@ auth.onAuthStateChanged(user => {
         if (vipPlan && vipExpire && vipExpire > new Date()) {
           document.getElementById('vipStatus').style.display = 'block';
           document.getElementById('vipStatus').innerHTML = `👑 أنت مشترك في ${vipPlan}<br>ينتهي في: ${vipExpire.toLocaleDateString('ar-EG')}`;
+          updateSubscribeButtons(true);
         } else {
           document.getElementById('vipStatus').style.display = 'none';
+          // لا يوجد اشتراك نشط، تحقق من طلبات معلقة
+          const hasPending = await checkPendingRequest(user.uid);
+          if (hasPending) {
+            // عرض تنبيه بالطلب المعلق
+            showCustomToast(`لديك طلب ${activeVIPRequest.planName} قيد المراجعة`, "warning");
+            updateSubscribeButtons(true);
+          } else {
+            updateSubscribeButtons(false);
+          }
         }
       } else {
         userDocRef.set({ coins: 0 }).catch(err => console.error(err));
@@ -427,22 +445,59 @@ function toggle(card) {
   f.style.display = f.style.display === "block" ? "none" : "block";
 }
 
-// طلب اشتراك VIP (توجيه إلى الإيداع)
-function buyVIP(e, name, level, priceEGP) {
+// طلب اشتراك VIP — يرسل الطلب إلى Firestore ثم يوجه إلى الإيداع
+async function buyVIP(e, name, level, priceEGP) {
   e.stopPropagation();
   
   if (!currentUser) {
     showCustomToast("يجب تسجيل الدخول أولاً", "error");
     return;
   }
-  
-  // عرض رسالة تأكيد سريعة ثم التوجيه
-  document.getElementById("successBox").style.display = "flex";
-  setTimeout(() => {
-    document.getElementById("successBox").style.display = "none";
-    // توجيه إلى صفحة الإيداع مع بيانات VIP
-    window.location.href = `deposit.html?vip=true&plan=${encodeURIComponent(name)}&price=${priceEGP}&level=${level}`;
-  }, 800);
+
+  // منع إرسال طلب إذا كان هناك طلب معلق بالفعل
+  if (activeVIPRequest) {
+    showCustomToast("لديك بالفعل طلب VIP قيد المراجعة", "warning");
+    return;
+  }
+
+  const btn = e.target;
+  btn.disabled = true;
+  btn.textContent = '⏳ جاري الإرسال...';
+
+  try {
+    // إنشاء مستند في vip_requests (نفس اسم المجموعة في قواعد الأمان)
+    const docRef = await db.collection("vip_requests").add({
+      userId: currentUser.uid,
+      username: currentUser.displayName || currentUser.email || 'مستخدم',
+      planName: name,          // "VIP 1", "VIP 2" ...
+      planLevel: level,        // 1,2,3,4,5
+      priceEGP: priceEGP,      // السعر بالجنيه
+      priceUSD: (priceEGP / 30).toFixed(2), // تقديري للعرض فقط
+      priceCoins: priceEGP,    // يمكنك تعديل العلاقة لاحقاً (1 ج.م = 1 كوين حالياً)
+      requestedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      status: "pending"
+    });
+
+    // تحديث المتغير المحلي
+    activeVIPRequest = { id: docRef.id, planName: name, priceEGP: priceEGP };
+    updateSubscribeButtons(true);
+    
+    showCustomToast("✅ تم إرسال طلب VIP بنجاح", "success");
+
+    // عرض overlay سريع ثم التوجيه للإيداع
+    document.getElementById("successBox").style.display = "flex";
+    setTimeout(() => {
+      document.getElementById("successBox").style.display = "none";
+      // يمكن إرسال requestId كمعامل اختياري لصفحة الإيداع
+      window.location.href = `deposit.html?vip=true&plan=${encodeURIComponent(name)}&price=${priceEGP}&level=${level}&requestId=${docRef.id}`;
+    }, 800);
+
+  } catch (error) {
+    console.error("فشل إرسال طلب VIP:", error);
+    showCustomToast("❌ فشل إنشاء طلب VIP. حاول مجدداً.", "error");
+    btn.disabled = false;
+    btn.textContent = 'اشترك الآن';
+  }
 }
 
 // عرض العداد التنازلي (ميزة تزيينية)
