@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>مسابقة المحقق • نسخة عيد الأضحى • المتحف الكبير</title>
+    <meta name="description" content="انضم إلى مسابقة المحقق في نسخة عيد الأضحى واربح حتى 50,000 جنيه مصري. ألغاز شيقة، أدلة مضللة، ونظام رانك عالمي. كل عام وأنتم بخير.">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: #000;
+            color: #fff;
+            min-height: 100vh;
+            position: relative;
+            padding-bottom: 80px;
+        }
+        .bg {
+            position: fixed; inset: 0;
+            background: url("Object/qa.jpg") center/cover no-repeat;
+            filter: brightness(0.2) saturate(1.2);
+            z-index: -2;
+        }
+        .bg::after {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(ellipse at 50% 0%, rgba(255,215,0,0.15) 0%, transparent 60%),
+                        radial-gradient(ellipse at 50% 100%, rgba(139,0,0,0.2) 0%, transparent 50%);
+        }
+        .particles {
+            position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none;
+        }
+        .particle {
+            position: absolute; border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,215,0,0.8), transparent);
+            animation: particleRise linear infinite; opacity: 0;
+        }
+        @keyframes particleRise {
+            0% { opacity: 0; transform: translateY(100vh) scale(0); }
+            10% { opacity: 1; transform: scale(1); }
+            90% { opacity: 0.5; }
+            100% { opacity: 0; transform: translateY(-10vh) scale(0.5); }
+        }
+
+        .top-bar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+            border-bottom: 1px solid #ffd700; padding: 8px 16px;
+            display: flex; align-items: center; justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .nav-links { display: flex; gap: 5px; }
+        .nav-links a {
+            color: #ddd; text-decoration: none; font-size: 13px; font-weight: 600;
+            padding: 5px 10px; border-radius: 20px; transition: 0.2s;
+        }
+        .nav-links a.active { color: #ffd700; background: rgba(255,215,0,0.15); }
+        .coin-display {
+            background: rgba(0,0,0,0.6); padding: 5px 12px; border-radius: 30px;
+            border: 1px solid #ffd700; color: #ffd700; font-weight: bold; font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .news-ticker {
+            position: fixed; top: 56px; left: 0; right: 0; z-index: 99;
+            background: rgba(0,0,0,0.7); backdrop-filter: blur(5px);
+            border-bottom: 1px solid #ffd70033;
+            padding: 6px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        .ticker-content {
+            display: inline-block;
+            animation: ticker 40s linear infinite;
+            color: #ffd700;
+            font-size: 13px;
+            font-weight: 500;
+            white-space: nowrap;
+            width: max-content;
+        }
+        .ticker-content span { margin: 0 30px; display: inline-block; }
+        @keyframes ticker {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(0%); }
+        }
+
+        .new-subscribers-ticker {
+            position: fixed; top: 92px; left: 0; right: 0; z-index: 98;
+            background: rgba(20, 10, 0, 0.85); backdrop-filter: blur(6px);
+            border-bottom: 1px solid #ffd70055;
+            padding: 6px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            direction: rtl;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        .subscriber-scroll {
+            display: inline-block;
+            animation: scrollLeft 20s linear infinite;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+            display: flex;
+            gap: 30px;
+        }
+        @keyframes scrollLeft {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        .subscriber-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,215,0,0.15);
+            padding: 3px 15px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,215,0,0.4);
+        }
+        .subscriber-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: #00ff55;
+            box-shadow: 0 0 8px #00ff55;
+        }
+
+        .content {
+            padding: 140px 16px 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contest-hero {
+            background: linear-gradient(145deg, #1a1000, #0d0800);
+            border: 2px solid rgba(255,215,0,0.7);
+            border-radius: 30px;
+            padding: 30px 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 0 40px rgba(255,215,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        .contest-hero::before {
+            content: '🕌';
+            position: absolute;
+            top: -20px;
+            left: 10px;
+            font-size: 80px;
+            opacity: 0.05;
+            z-index: 0;
+        }
+        .contest-hero::after {
+            content: '🐑';
+            position: absolute;
+            bottom: -20px;
+            right: 10px;
+            font-size: 80px;
+            opacity: 0.05;
+            z-index: 0;
+        }
+        .contest-hero > * { position: relative; z-index: 1; }
+        .contest-badge {
+            display: inline-block;
+            background: #8B0000;
+            color: #ffd700;
+            padding: 5px 20px;
+            border-radius: 30px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            border: 1px solid gold;
+            animation: pulseBadge 2s infinite;
+        }
+        @keyframes pulseBadge {
+            0%, 100% { box-shadow: 0 0 5px #8B0000; }
+            50% { box-shadow: 0 0 20px #FF4500; }
+        }
+        .contest-title {
+            font-size: 36px;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(255,215,0,0.7);
+            line-height: 1.3;
+        }
+        .contest-prize {
+            font-size: 52px;
+            font-weight: 900;
+            color: #FFD700;
+            text-shadow: 0 0 30px #FF4500;
+            margin: 15px 0;
+            animation: textPulse 2s ease-in-out infinite;
+        }
+        @keyframes textPulse {
+            0%, 100% { opacity: 0.9; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.03); }
+        }
+        .contest-desc {
+            font-size: 16px;
+            color: #ccc;
+            max-width: 500px;
+            margin: 15px auto;
+            line-height: 1.6;
+        }
+        .eid-greeting {
+            color: #ffd700;
+            font-size: 20px;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+        .subscribers-count-box {
+            background: rgba(0,0,0,0.5);
+            border: 1px solid #ffd700;
+            border-radius: 30px;
+            padding: 8px 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 15px 0;
+            backdrop-filter: blur(5px);
+        }
+        .subscribers-count-box .count-number {
+            font-size: 22px;
+            font-weight: 900;
+            color: #ffd700;
+            text-shadow: 0 0 10px #ff4500;
+        }
+        .fee-box {
+            background: rgba(139,0,0,0.3);
+            border: 1px dashed gold;
+            border-radius: 40px;
+            padding: 10px 25px;
+            margin: 15px auto;
+            display: inline-block;
+            backdrop-filter: blur(5px);
+        }
+        .fee-box span { font-size: 20px; font-weight: 900; color: #FFD700; }
+        .timer-container {
+            background: rgba(0,0,0,0.5);
+            border: 1px solid #ffd700;
+            border-radius: 30px;
+            padding: 10px 25px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin: 15px 0;
+            backdrop-filter: blur(5px);
+        }
+        .timer-label { color: #fff; font-size: 14px; font-weight: 600; }
+        .timer-value {
+            font-size: 26px;
+            font-weight: 900;
+            color: #ffd700;
+            text-shadow: 0 0 10px #ff4500;
+            direction: ltr;
+            display: inline-block;
+            min-width: 85px;
+            letter-spacing: 2px;
+        }
+        .join-btn {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #000;
+            border: none;
+            padding: 16px 50px;
+            border-radius: 50px;
+            font-weight: 900;
+            font-size: 22px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 0 30px gold;
+            transition: 0.3s;
+            margin: 15px 0;
+        }
+        .join-btn:hover { transform: scale(1.05); box-shadow: 0 0 50px gold; }
+
+        .subscriber-section {
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,215,0,0.4);
+            border-radius: 25px;
+            padding: 25px;
+            margin-bottom: 30px;
+            display: none;
+        }
+        .mystery-box {
+            background: rgba(0,0,0,0.5);
+            border-radius: 20px;
+            padding: 20px;
+            margin: 15px 0;
+            border: 1px solid rgba(255,215,0,0.3);
+        }
+        .mystery-title { color: #ffd700; font-size: 20px; margin-bottom: 10px; }
+        .mystery-story { line-height: 1.6; margin-bottom: 10px; }
+        .mystery-question { color: #ffa500; font-weight: bold; font-size: 16px; }
+        .answer-input {
+            width: 100%; background: #111; border: 1px solid gold; color: #fff;
+            padding: 12px; border-radius: 10px; font-family: 'Cairo'; resize: vertical;
+            margin-top: 15px; font-size: 16px;
+        }
+        .submit-answer-btn {
+            background: gold; color: #000; border: none; padding: 12px 30px;
+            border-radius: 30px; font-weight: bold; margin-top: 10px; cursor: pointer;
+            font-family: 'Cairo'; font-size: 16px; width: 100%; transition: 0.2s;
+        }
+        .submit-answer-btn:hover { background: #ffa500; }
+        .submit-answer-btn:disabled { background: #555; color: #999; cursor: not-allowed; }
+
+        .prizes-section {
+            background: rgba(0,0,0,0.5); backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,215,0,0.4); border-radius: 25px;
+            padding: 25px; margin-bottom: 30px;
+        }
+        .section-title {
+            font-size: 24px; color: #FFD700; text-align: center;
+            margin-bottom: 20px; text-shadow: 0 0 10px #8B0000;
+            position: relative; display: inline-block; width: 100%;
+        }
+        .section-title::after {
+            content: ''; position: absolute; bottom: -8px; left: 25%;
+            width: 50%; height: 2px;
+            background: linear-gradient(90deg, transparent, gold, transparent);
+        }
+        .prize-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 20px; }
+        .prize-row {
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(255,215,0,0.05); border-radius: 15px;
+            padding: 12px 20px; border: 1px solid rgba(255,215,0,0.2); transition: 0.2s;
+        }
+        .prize-row:hover { background: rgba(255,215,0,0.1); border-color: gold; }
+        .prize-rank { font-weight: 900; color: #FFD700; font-size: 16px; min-width: 80px; text-align: right; }
+        .prize-winner { color: #ccc; font-size: 14px; flex: 1; text-align: center; margin: 0 15px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .prize-amount { font-weight: 900; color: #00ff9d; font-size: 16px; min-width: 90px; text-align: left; direction: ltr; }
+        .prize-row.gold { border-color: #FFD700; background: rgba(255,215,0,0.15); }
+        .prize-row.silver { border-color: #C0C0C0; background: rgba(192,192,192,0.1); }
+        .prize-row.bronze { border-color: #CD7F32; background: rgba(205,127,50,0.1); }
+
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: rgba(0,0,0,0.9); backdrop-filter: blur(10px);
+            border-top: 1px solid #ffd700; display: flex;
+            justify-content: space-around; padding: 8px 0; z-index: 100;
+        }
+        .nav-item {
+            color: #ccc; text-decoration: none; font-size: 13px;
+            padding: 5px 10px; border-radius: 20px;
+        }
+        .nav-item.active { color: #ffd700; background: rgba(255,215,0,0.1); }
+
+        .toast-container {
+            position: fixed; top: 70px; left: 50%; transform: translateX(-50%);
+            z-index: 2000; width: 90%; max-width: 300px;
+        }
+        .toast {
+            background: #1a1a1a; border: 1px solid #ffd700; border-radius: 30px;
+            padding: 10px; margin-bottom: 8px; text-align: center;
+            animation: fadeToast 3s forwards;
+        }
+        @keyframes fadeToast {
+            0% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; }
+        }
+
+        @media (max-width: 480px) {
+            .contest-title { font-size: 26px; }
+            .contest-prize { font-size: 36px; }
+            .prize-row { flex-wrap: wrap; text-align: center; }
+            .prize-rank, .prize-winner, .prize-amount { min-width: auto; text-align: center; flex: auto; }
+        }
+    </style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="particles" id="particles"></div>
+
+<div class="top-bar">
+    <div class="nav-links">
+        <a href="dashboard.html">🏠 الرئيسية</a>
+        <a href="museum.html">🏺 المتحف</a>
+        <a href="contest.html" class="active">🕵️ المحقق</a>
+    </div>
+    <div class="coin-display">💰 <span id="coinCount">0</span> جنيه</div>
+</div>
+
+<div class="news-ticker">
+    <div class="ticker-content" id="tickerContent">
+        <span>🎉 عيد أضحى مبارك! انضم الآن للمسابقة</span>
+        <span>🔍 mohmed mag*** حصل على المركز الثالث وفاز بـ 20,000 جنيه</span>
+        <span>🏆 aly_eld*** فاز بالمركز الأول في نسخة العيد وجائزة 50,000 جنيه</span>
+        <span>🥈 noor_ha*** المركز الثاني وربح 30,000 جنيه</span>
+        <span>🐑 salma_ab*** حل لغز الأضحية وفاز بـ 15,000 جنيه</span>
+        <span>💸 سحب 500 ج.م</span> <span>💰 إيداع 2,500 ج.م</span>
+        <span>💸 سحب 1,200 ج.م</span> <span>💰 إيداع 10,000 ج.م</span>
+        <span>🎉 عيد أضحى مبارك! انضم الآن للمسابقة</span>
+        <span>🔍 mohmed mag*** حصل على المركز الثالث وفاز بـ 20,000 جنيه</span>
+        <span>🏆 aly_eld*** فاز بالمركز الأول في نسخة العيد وجائزة 50,000 جنيه</span>
+        <span>🥈 noor_ha*** المركز الثاني وربح 30,000 جنيه</span>
+        <span>🐑 salma_ab*** حل لغز الأضحية وفاز بـ 15,000 جنيه</span>
+        <span>💸 سحب 500 ج.م</span> <span>💰 إيداع 2,500 ج.م</span>
+        <span>💸 سحب 1,200 ج.م</span> <span>💰 إيداع 10,000 ج.م</span>
+    </div>
+</div>
+
+<div class="new-subscribers-ticker" id="newSubscribersTicker">
+    <div class="subscriber-scroll" id="subscriberScroll"></div>
+</div>
+
+<div class="content">
+    <div class="contest-hero">
+        <div class="contest-badge">🕌 عيد الأضحى • مسابقة المحقق</div>
+        <h1 class="contest-title">انضم لنسخة العيد وأثبت ذكاءك</h1>
+        <div class="contest-prize">💵 50,000 جنيه مصري</div>
+        <p class="contest-desc">
+            بمناسبة عيد الأضحى المبارك، نقدم لك مسابقة المحقق بنسختها الخاصة.
+            ألغاز شيقة مستوحاة من أجواء العيد، أدلة مضللة، وجوائز قيمة!
+        </p>
+        <div class="eid-greeting">🐑 كل عام وأنتم بخير 🐑</div>
+        
+        <!-- عداد المشتركين الحي -->
+        <div class="subscribers-count-box">
+            <span>👥</span>
+            <span>عدد المشتركين:</span>
+            <span class="count-number" id="subscribersCount">123</span>
+        </div>
+
+        <div id="unsubscribedControls">
+            <div class="fee-box">
+                <span>🎫 رسوم الدخول: 1,000 جنيه (إيداع)</span>
+            </div>
+            <div class="timer-container">
+                <span class="timer-label">⏳ ينتهي الموسم الحالي خلال:</span>
+                <span class="timer-value" id="contestTimer">--:--:--</span>
+            </div>
+            <br>
+            <a href="deposit.html" class="join-btn">💰 أودع واشترك الآن</a>
+            <p style="color: #aaa; font-size: 13px; margin-top: 10px;">يجب إيداع 1000 جنيه للمشاركة في الموسم الحالي</p>
+        </div>
+        
+        <div id="subscribedControls" style="display:none;">
+            <div style="color: #00ff9d; font-size: 18px; margin: 10px 0;">✅ أنت مشترك في نسخة العيد</div>
+            <div class="timer-container">
+                <span class="timer-label">⏳ متبقي على انتهاء الموسم:</span>
+                <span class="timer-value" id="contestTimer2">--:--:--</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="subscriber-section" id="subscriberSection">
+        <div class="section-title">🕵️ لغز الموسم الحالي</div>
+        <div class="mystery-box" id="mysteryBox"></div>
+        <textarea class="answer-input" id="answerInput" rows="3" placeholder="اكتب اسم القاتل أو استنتاجك هنا..."></textarea>
+        <button class="submit-answer-btn" id="submitAnswerBtn">📤 أرسل إجابتك</button>
+        <p id="answerStatus" style="color:#00ff9d; margin-top:10px; display:none;"></p>
+    </div>
+
+    <div class="prizes-section">
+        <div class="section-title">🏆 لوحة المتصدرين والجوائز</div>
+        <div class="prize-grid" id="leaderboardContainer"></div>
+    </div>
+</div>
+
+<div class="bottom-nav">
+    <a href="dashboard.html" class="nav-item">🏠 الرئيسية</a>
+    <a href="museum.html" class="nav-item">🏺 المتحف</a>
+    <a href="contest.html" class="nav-item active">🕵️ المحقق</a>
+    <a href="profile.html" class="nav-item">👤 حسابي</a>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc, onSnapshot, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyB78JT_cbPMizvzKWBrQoQUe3-zukHrr1U",
+        authDomain: "pharacoin.firebaseapp.com",
+        projectId: "pharacoin"
+    };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    let currentUser = null;
+    let userDocRef = null;
+    let isSubscribed = false;
+    let currentSeasonId = null;
+    let userDataCache = null;
+
+    // عداد المشتركين (يبدأ من 123 ويزداد تلقائياً)
+    let totalSubscribers = 123;
+
+    function getCurrentSeasonId() {
+        const now = new Date();
+        const cycleMs = 3 * 60 * 60 * 1000;
+        const midnight = new Date(now);
+        midnight.setHours(0, 0, 0, 0);
+        const elapsed = now.getTime() - midnight.getTime();
+        const cyclesPassed = Math.floor(elapsed / cycleMs);
+        return `season_${midnight.toISOString().split('T')[0]}_${cyclesPassed}`;
+    }
+
+    // ألغاز عيد الأضحى
+    const mysteries = [
+        {
+            title: "جريمة في الحظيرة",
+            story: "قبل صلاة العيد، اختفت الأضحية من حظيرة الحاج محمود. هناك ثلاثة مشتبه بهم: الجار الذي كان يريد شراءها، العامل الذي كان يطعمها، وابن الحاج الذي تأخر في النوم. عُثر على حبل مقطوع وآثار أقدام صغيرة.",
+            question: "من أخذ الأضحية في رأيك؟"
+        },
+        {
+            title: "لغز الخروف الذهبي",
+            story: "خروف مزين بقلادة ذهبية اختفى من موكب العيد. الشاهدة قالت إنها رأت شخصاً يركض نحو السوق. الدليل: قطعة قماش حمراء وورقة مكتوب عليها 'الذهب لي'. ثلاثة أشخاص شوهدوا قرب الموكب: بائع بهارات، حلاّق، ومصور.",
+            question: "من أخذ الخروف الذهبي؟"
+        },
+        {
+            title: "الوصية الغامضة",
+            story: "توفي عم ثري وترك وصية: 'أعطوا أضحيتي لمن يحل اللغز'. الورثة الثلاثة اختلفوا على حل اللغز. كتب في الوصية: 'في بطن الأضحية سر'. عند ذبح الأضحية، وجدوا مفتاحاً ورسالة مشفرة. أحد الورثة اعترض على الذبح.",
+            question: "من كان يعرف السر قبل الذبح؟"
+        }
+    ];
+
+    function getCurrentMystery() {
+        let hash = 0;
+        for (let i = 0; i < currentSeasonId.length; i++) {
+            hash = ((hash << 5) - hash) + currentSeasonId.charCodeAt(i);
+            hash |= 0;
+        }
+        const index = Math.abs(hash) % mysteries.length;
+        return mysteries[index];
+    }
+
+    const namePrefixes = ["محمد", "أحمد", "علي", "نور", "سلمى", "ياسمين", "كريم", "هبة", "عمرو", "دينا", "محمود", "منى", "خالد", "شيماء", "طارق", "رانيا"];
+    const nameSuffixes = ["eld***", "mag***", "ha***", "ab***", "sa***", "wa***", "el***", "fa***", "ga***", "mo***"];
+
+    function generateSubscriberName() {
+        const prefix = namePrefixes[Math.floor(Math.random() * namePrefixes.length)];
+        const suffix = nameSuffixes[Math.floor(Math.random() * nameSuffixes.length)];
+        return prefix + " " + suffix;
+    }
+
+    // تحديث شريط المشتركين الجدد وعداد المشتركين
+    function updateNewSubscribers() {
+        const scrollContainer = document.getElementById('subscriberScroll');
+        if (!scrollContainer) return;
+        const subscribers = [];
+        for (let i = 0; i < 4; i++) {
+            subscribers.push(generateSubscriberName());
+        }
+        const itemsHTML = subscribers.map(name => `
+            <span class="subscriber-item">
+                <span class="subscriber-dot"></span>
+                <span>🐑 ${name} انضم لنسخة العيد!</span>
+            </span>
+        `).join('');
+        scrollContainer.innerHTML = itemsHTML + itemsHTML;
+
+        // زيادة عداد المشتركين بمقدار عشوائي (1 إلى 3)
+        const increase = Math.floor(Math.random() * 3) + 1;
+        totalSubscribers += increase;
+        document.getElementById('subscribersCount').innerText = totalSubscribers.toLocaleString();
+    }
+
+    setInterval(updateNewSubscribers, 15000);
+    updateNewSubscribers(); // تشغيل فوري
+
+    function generateLeaderboardData() {
+        const winners = [];
+        const usedNames = new Set();
+        for (let i = 0; i < 100; i++) {
+            let name;
+            do { name = generateSubscriberName(); } while (usedNames.has(name));
+            usedNames.add(name);
+            let prize;
+            if (i === 0) prize = 50000;
+            else if (i === 1) prize = 30000;
+            else if (i === 2) prize = 20000;
+            else if (i >= 3 && i <= 9) prize = 10000;
+            else prize = 5000;
+            winners.push({ rank: i + 1, name, prize });
+        }
+        return winners;
+    }
+
+    function renderLeaderboard(winners) {
+        const container = document.getElementById('leaderboardContainer');
+        container.innerHTML = '';
+        winners.slice(0, 10).forEach(w => {
+            const row = document.createElement('div');
+            row.className = 'prize-row';
+            if (w.rank === 1) row.classList.add('gold');
+            else if (w.rank === 2) row.classList.add('silver');
+            else if (w.rank === 3) row.classList.add('bronze');
+            let medalEmoji = '';
+            if (w.rank === 1) medalEmoji = '🥇';
+            else if (w.rank === 2) medalEmoji = '🥈';
+            else if (w.rank === 3) medalEmoji = '🥉';
+            else medalEmoji = '🏅';
+            row.innerHTML = `
+                <span class="prize-rank">${medalEmoji} #${w.rank}</span>
+                <span class="prize-winner">${w.name}</span>
+                <span class="prize-amount">${w.prize.toLocaleString()} ج.م</span>
+            `;
+            container.appendChild(row);
+        });
+        const summaryRow = document.createElement('div');
+        summaryRow.className = 'prize-row';
+        summaryRow.innerHTML = `
+            <span class="prize-rank">🏅 #11 - #100</span>
+            <span class="prize-winner">90 فائز</span>
+            <span class="prize-amount">5,000 ج.م لكل منهم</span>
+        `;
+        container.appendChild(summaryRow);
+    }
+
+    function scheduleLeaderboardUpdate() {
+        renderLeaderboard(generateLeaderboardData());
+        const now = new Date();
+        const cycleMs = 3 * 60 * 60 * 1000;
+        const midnight = new Date(now);
+        midnight.setHours(0, 0, 0, 0);
+        const nextUpdate = new Date(midnight.getTime() + (Math.floor((now - midnight) / cycleMs) + 1) * cycleMs);
+        const timeUntilNext = nextUpdate.getTime() - now.getTime();
+        setTimeout(() => {
+            renderLeaderboard(generateLeaderboardData());
+            setInterval(() => renderLeaderboard(generateLeaderboardData()), 3 * 60 * 60 * 1000);
+        }, timeUntilNext);
+    }
+
+    function startContestTimer(elementId) {
+        const timerElement = document.getElementById(elementId);
+        const cycleDuration = 3 * 60 * 60;
+        function updateTimer() {
+            const now = new Date();
+            const secondsSinceMidnight = (now.getHours() * 3600) + (now.getMinutes() * 60) + now.getSeconds();
+            const elapsedInCycle = secondsSinceMidnight % cycleDuration;
+            const remainingSeconds = cycleDuration - elapsedInCycle;
+            const hours = Math.floor(remainingSeconds / 3600);
+            const minutes = Math.floor((remainingSeconds % 3600) / 60);
+            const seconds = remainingSeconds % 60;
+            timerElement.textContent = 
+                String(hours).padStart(2, '0') + ':' + 
+                String(minutes).padStart(2, '0') + ':' + 
+                String(seconds).padStart(2, '0');
+        }
+        updateTimer();
+        return setInterval(updateTimer, 1000);
+    }
+
+    async function checkSubscriptionAndSetup(userData) {
+        userDataCache = userData;
+        currentSeasonId = getCurrentSeasonId();
+        isSubscribed = userData.contestParticipant && userData.contestSeason === currentSeasonId;
+        
+        if (isSubscribed) {
+            document.getElementById('unsubscribedControls').style.display = 'none';
+            document.getElementById('subscribedControls').style.display = 'block';
+            document.getElementById('subscriberSection').style.display = 'block';
+            startContestTimer('contestTimer2');
+            
+            const mystery = getCurrentMystery();
+            document.getElementById('mysteryBox').innerHTML = `
+                <div class="mystery-title">🔍 ${mystery.title}</div>
+                <div class="mystery-story">${mystery.story}</div>
+                <div class="mystery-question">❓ ${mystery.question}</div>
+            `;
+            
+            const previousAnswer = userData.contestAnswers?.find(a => a.seasonId === currentSeasonId);
+            if (previousAnswer) {
+                document.getElementById('answerInput').disabled = true;
+                document.getElementById('submitAnswerBtn').disabled = true;
+                document.getElementById('answerStatus').style.display = 'block';
+                document.getElementById('answerStatus').textContent = '✅ تم تسجيل إجابتك مسبقاً! انتظر انتهاء الموسم.';
+            }
+        } else {
+            document.getElementById('unsubscribedControls').style.display = 'block';
+            document.getElementById('subscribedControls').style.display = 'none';
+            document.getElementById('subscriberSection').style.display = 'none';
+            startContestTimer('contestTimer');
+        }
+    }
+
+    async function submitAnswer() {
+        if (!isSubscribed) {
+            showToast('يجب الاشتراك في المسابقة أولاً!');
+            return;
+        }
+        const answer = document.getElementById('answerInput').value.trim();
+        if (!answer) {
+            showToast('الرجاء كتابة إجابتك');
+            return;
+        }
+        try {
+            await updateDoc(userDocRef, {
+                contestAnswers: arrayUnion({
+                    seasonId: currentSeasonId,
+                    answer: answer,
+                    timestamp: new Date(),
+                    score: null
+                })
+            });
+            document.getElementById('answerInput').disabled = true;
+            document.getElementById('submitAnswerBtn').disabled = true;
+            document.getElementById('answerStatus').style.display = 'block';
+            document.getElementById('answerStatus').textContent = '✅ تم تسجيل إجابتك بنجاح! سيتم تقييمها بعد انتهاء الموسم.';
+            showToast('📤 إجابة موفقة!');
+        } catch (error) {
+            showToast('حدث خطأ، حاول مرة أخرى');
+        }
+    }
+
+    function updateCoinDisplay(coins) {
+        document.getElementById('coinCount').innerText = (coins || 0).toLocaleString();
+    }
+
+    onAuthStateChanged(auth, async (user) => {
+        if (!user) {
+            window.location.href = 'login.html';
+            return;
+        }
+        currentUser = user;
+        userDocRef = doc(db, "users", user.uid);
+        
+        const snap = await getDoc(userDocRef);
+        if (!snap.exists()) {
+            await setDoc(userDocRef, { 
+                coins: 500, 
+                xp: 0, 
+                contestParticipant: false,
+                contestSeason: "",
+                contestAnswers: []
+            });
+        }
+        
+        onSnapshot(userDocRef, (docSnap) => {
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                updateCoinDisplay(data.coins);
+                const newSeasonId = getCurrentSeasonId();
+                if (newSeasonId !== currentSeasonId || !userDataCache) {
+                    checkSubscriptionAndSetup(data);
+                }
+                userDataCache = data;
+            }
+        });
+    });
+
+    document.getElementById('submitAnswerBtn').addEventListener('click', submitAnswer);
+
+    function initParticles() {
+        const container = document.getElementById('particles');
+        for (let i = 0; i < 25; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.animationDuration = (8 + Math.random() * 12) + 's';
+            p.style.animationDelay = Math.random() * 5 + 's';
+            p.style.width = (2 + Math.random() * 4) + 'px';
+            p.style.height = p.style.width;
+            container.appendChild(p);
+        }
+    }
+
+    initParticles();
+    scheduleLeaderboardUpdate();
+
+    window.showToast = (msg) => {
+        const t = document.createElement('div');
+        t.className = 'toast';
+        t.innerHTML = msg;
+        document.getElementById('toastContainer').appendChild(t);
+        setTimeout(() => t.remove(), 3000);
+    };
+</script>
+</body>
+</html>
