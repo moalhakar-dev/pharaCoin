@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>لوحة التحكم • المتحف الكبير</title>
-    <meta name="description" content="تابع رصيدك، مستوى خبرتك، واستكشف التماثيل الأسطورية في المتحف الكبير. وانضم لمسابقة المحقق لتربح حتى 50,000 جنيه.">
+    <meta name="description" content="تابع رصيدك، مستوى خبرتك، واستكشف التماثيل الأسطورية في المتحف الكبير.">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -61,7 +61,7 @@
             white-space: nowrap;
         }
 
-        /* شريط الأخبار المتحرك - حل المشكلة: يبدأ ظاهراً من أقصى اليمين ويتحرك لليسار بسلاسة */
+        /* شريط الأخبار المتحرك */
         .news-ticker {
             position: fixed; top: 56px; left: 0; right: 0; z-index: 99;
             background: rgba(0,0,0,0.7); backdrop-filter: blur(5px);
@@ -69,16 +69,15 @@
             padding: 6px 0;
             overflow: hidden;
             white-space: nowrap;
-            direction: ltr; /* نستخدم ltr للحركة الأفقية السلسة */
+            direction: ltr;
         }
         .ticker-content {
             display: inline-block;
             white-space: nowrap;
             animation: ticker 40s linear infinite;
             will-change: transform;
-            padding-right: 100%; /* يبدأ النص من أقصى اليمين خارج الشاشة مباشرةً ثم يدخل */
+            padding-right: 100%;
         }
-        /* حركة من اليمين إلى اليسار: تبدأ من 0% (مكان طبيعي مع padding-right) وتنتهي عند -50% */
         @keyframes ticker {
             0% { transform: translateX(0); }
             100% { transform: translateX(-50%); }
@@ -126,105 +125,11 @@
             background: rgba(0,0,0,0.5); backdrop-filter: blur(5px);
             border: 1px solid #ffd70033; border-radius: 20px;
             padding: 15px; margin-bottom: 25px;
+            cursor: pointer;
         }
         .level-header { display: flex; justify-content: space-between; margin-bottom: 8px; }
         .xp-bar { height: 8px; background: #333; border-radius: 10px; overflow: hidden; }
         .xp-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #ffd700, #ffa500); }
-
-        /* قسم مسابقة المحقق مع التايمر */
-        .detective-contest-card {
-            background: linear-gradient(145deg, #1a1000, #0d0800);
-            border: 2px solid rgba(255,215,0,0.6);
-            border-radius: 25px;
-            padding: 20px;
-            margin-bottom: 25px;
-            text-align: center;
-            box-shadow: 0 0 30px rgba(255,215,0,0.15);
-            position: relative;
-            overflow: hidden;
-        }
-        .detective-contest-card::before {
-            content: '🔍';
-            position: absolute;
-            top: -20px;
-            left: -10px;
-            font-size: 60px;
-            opacity: 0.1;
-            transform: rotate(-15deg);
-        }
-        .contest-badge {
-            background: #8B0000;
-            color: #ffd700;
-            padding: 3px 15px;
-            border-radius: 20px;
-            font-weight: 800;
-            font-size: 14px;
-            display: inline-block;
-            margin-bottom: 10px;
-            border: 1px solid gold;
-        }
-        .contest-title-small {
-            font-size: 20px;
-            color: #ffd700;
-            font-weight: 900;
-            margin-bottom: 5px;
-        }
-        .contest-prize-small {
-            font-size: 28px;
-            font-weight: 900;
-            color: #fff;
-            text-shadow: 0 0 15px #ff4500;
-            margin: 10px 0;
-        }
-        .contest-desc-small {
-            font-size: 14px;
-            color: #ccc;
-            margin-bottom: 15px;
-            line-height: 1.5;
-        }
-
-        /* عداد الوقت */
-        .timer-container {
-            background: rgba(0,0,0,0.5);
-            border: 1px solid #ffd700;
-            border-radius: 30px;
-            padding: 8px 20px;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            margin: 10px 0 15px;
-            backdrop-filter: blur(5px);
-        }
-        .timer-label {
-            color: #fff;
-            font-size: 14px;
-            font-weight: 600;
-        }
-        .timer-value {
-            font-size: 22px;
-            font-weight: 900;
-            color: #ffd700;
-            text-shadow: 0 0 10px #ff4500;
-            direction: ltr;
-            display: inline-block;
-            min-width: 70px;
-        }
-
-        .contest-join-btn {
-            background: linear-gradient(45deg, #ffd700, #ffa500);
-            color: #000;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 30px;
-            font-weight: 900;
-            font-size: 16px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            box-shadow: 0 0 15px gold;
-            transition: 0.2s;
-        }
-        .contest-join-btn:hover { transform: scale(1.05); }
 
         /* التماثيل (4) */
         .statues-title { font-size: 20px; color: #ffd700; text-align: center; margin: 20px 0 15px; }
@@ -323,11 +228,9 @@
     <div class="coin-display">💰 <span id="coinCount">0</span> جنيه</div>
 </div>
 
-<!-- شريط الأخبار المتحرك - يعمل بشكل فوري ومرئي -->
+<!-- شريط الأخبار المتحرك -->
 <div class="news-ticker">
-    <div class="ticker-content" id="tickerContent">
-        <!-- سيتم تعبئته بواسطة JS لتكرار النصوص بشكل أفضل، لكن نضع محتوى ثابتاً أيضاً -->
-    </div>
+    <div class="ticker-content" id="tickerContent"></div>
 </div>
 
 <div class="content">
@@ -364,22 +267,6 @@
             <div class="xp-fill" id="xpFill" style="width:0%"></div>
         </div>
         <div style="text-align:center; margin-top:8px; font-size:12px; color:#ffaa00;">اضغط للتفاصيل</div>
-    </div>
-
-    <!-- قسم مسابقة المحقق مع تايمر متجدد كل 3 ساعات -->
-    <div class="detective-contest-card">
-        <div class="contest-badge">🕵️ مسابقة المحقق</div>
-        <div class="contest-title-small">انضم الآن وأثبت ذكاءك</div>
-        <div class="contest-prize-small">💵 50,000 جنيه مصري</div>
-        <div class="contest-desc-small">
-            لغز جديد كل يوم، أدلة مضللة، ورانك عالمي. من يحل اللغز أولاً يفوز بالجائزة الكبرى!
-        </div>
-        <!-- عداد التنازلي -->
-        <div class="timer-container">
-            <span class="timer-label">⏳ ينتهي الموسم الحالي خلال:</span>
-            <span class="timer-value" id="contestTimer">--:--:--</span>
-        </div>
-        <a href="contest.html" class="contest-join-btn">🔍 انضم إلى الموسم الآن</a>
     </div>
 
     <!-- التماثيل الأربعة -->
@@ -507,33 +394,6 @@
         });
     });
 
-    // عداد تنازلي يتجدد كل 3 ساعات
-    function startContestTimer() {
-        const timerElement = document.getElementById('contestTimer');
-        const cycleDuration = 3 * 60 * 60; // 3 ساعات بالثواني
-
-        function updateTimer() {
-            const now = new Date();
-            const secondsSinceMidnight = (now.getHours() * 3600) + (now.getMinutes() * 60) + now.getSeconds();
-            const elapsedInCycle = secondsSinceMidnight % cycleDuration;
-            const remainingSeconds = cycleDuration - elapsedInCycle;
-
-            const hours = Math.floor(remainingSeconds / 3600);
-            const minutes = Math.floor((remainingSeconds % 3600) / 60);
-            const seconds = remainingSeconds % 60;
-
-            timerElement.textContent = 
-                String(hours).padStart(2, '0') + ':' + 
-                String(minutes).padStart(2, '0') + ':' + 
-                String(seconds).padStart(2, '0');
-        }
-
-        updateTimer();
-        setInterval(updateTimer, 1000);
-    }
-
-    startContestTimer();
-
     // جسيمات
     function initParticles() {
         const container = document.getElementById('particles');
@@ -559,12 +419,11 @@
         setTimeout(() => t.remove(), 3000);
     };
 
-    // ============= تحسين شريط الأخبار: ضمان ظهوره فوراً وبحركة سلسة =============
+    // شريط الأخبار
     function initNewsTicker() {
         const tickerContainer = document.getElementById('tickerContent');
         if (!tickerContainer) return;
         
-        // المحتوى الأساسي للأخبار (نكرره عدة مرات لضمان الاستمرارية)
         const newsItems = [
             "🔍 mohmed mag*** حصل على المركز الثالث في المحقق وفاز بـ 20,000 جنيه",
             "🏆 aly_eld*** فاز بالمركز الأول في المحقق وجائزة 50,000 جنيه",
@@ -577,7 +436,6 @@
             "🏆 رجل المستحيل فاز بجائزة المحقق الكبرى 50,000 جنيه"
         ];
         
-        // نكرر القائمة 5 مرات لضمان طول كافٍ للحركة المتواصلة
         let fullText = '';
         for (let i = 0; i < 5; i++) {
             newsItems.forEach(item => {
