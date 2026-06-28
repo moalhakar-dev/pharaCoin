@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>أسطورة الكنز 4000$ • المتحف الكبير</title>
+    <meta name="description" content="حدث أسطورة الكنز: اربح حصتك من 4000 دولار بدعوة 3 أصدقاء والمشاركة في الألعاب. انضم الآن!">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: #000;
+            color: #fff;
+            min-height: 100vh;
+            position: relative;
+            padding-bottom: 80px;
+        }
+        .bg {
+            position: fixed; inset: 0;
+            background: url("Object/qa.jpg") center/cover no-repeat;
+            filter: brightness(0.25) saturate(1.2);
+            z-index: -2;
+        }
+        .bg::after {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(ellipse at 50% 0%, rgba(255,215,0,0.1) 0%, transparent 60%);
+        }
+        .particles {
+            position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none;
+        }
+        .particle {
+            position: absolute; border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,215,0,0.8), transparent);
+            animation: particleRise linear infinite; opacity: 0;
+        }
+        @keyframes particleRise {
+            0% { opacity: 0; transform: translateY(100vh) scale(0); }
+            10% { opacity: 1; transform: scale(1); }
+            90% { opacity: 0.5; }
+            100% { opacity: 0; transform: translateY(-10vh) scale(0.5); }
+        }
+
+        /* شريط علوي صغير */
+        .top-bar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+            border-bottom: 1px solid #ffd700;
+            padding: 4px 12px;
+            display: flex; align-items: center; justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .nav-links { display: flex; gap: 3px; }
+        .nav-links a {
+            color: #ddd; text-decoration: none; font-size: 11px; font-weight: 600;
+            padding: 3px 8px; border-radius: 15px; transition: 0.2s;
+        }
+        .nav-links a.active { color: #ffd700; background: rgba(255,215,0,0.15); }
+        .coin-display {
+            background: rgba(0,0,0,0.6); padding: 3px 10px; border-radius: 20px;
+            border: 1px solid #ffd700; color: #ffd700; font-weight: bold; font-size: 12px;
+            white-space: nowrap;
+        }
+
+        /* شريط الأخبار المتحرك (إنجليزي) */
+        .news-ticker {
+            position: fixed; top: 32px; left: 0; right: 0; z-index: 99;
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
+            border-bottom: 1px solid gold;
+            padding: 6px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            direction: ltr;
+            font-size: 14px;
+            font-weight: 600;
+            color: #FFD700;
+        }
+        .ticker-content {
+            display: inline-block;
+            white-space: nowrap;
+            animation: ticker 60s linear infinite;
+            will-change: transform;
+            padding-right: 100%;
+        }
+        @keyframes ticker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .content {
+            padding: 110px 16px 20px; /* مساحة للشريطين العلويين */
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .event-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .event-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, #ffd700, #ff8c00);
+            color: #000;
+            padding: 8px 30px;
+            border-radius: 30px;
+            font-weight: 900;
+            font-size: 20px;
+            margin-bottom: 10px;
+            box-shadow: 0 0 25px gold;
+            animation: glowPulse 2s infinite;
+        }
+        @keyframes glowPulse {
+            0% { box-shadow: 0 0 10px gold; }
+            50% { box-shadow: 0 0 30px gold, 0 0 60px #ff4500; }
+            100% { box-shadow: 0 0 10px gold; }
+        }
+        .event-title {
+            font-size: 36px;
+            font-weight: 900;
+            background: linear-gradient(90deg, #FFD700, #FF4500, #FFD700);
+            background-size: 200%;
+            -webkit-background-clip: text;
+            color: transparent;
+            animation: shine 3s linear infinite;
+            margin: 5px 0;
+        }
+        @keyframes shine { 0% { background-position: 0%; } 100% { background-position: 200%; } }
+        .prize-text {
+            font-size: 24px;
+            color: #ffd700;
+            text-shadow: 0 0 20px red;
+        }
+
+        .timer-card {
+            background: rgba(0,0,0,0.5);
+            border: 1px solid #ffd70055;
+            border-radius: 20px;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+            backdrop-filter: blur(5px);
+        }
+        .timer-label { font-size: 16px; color: #ccc; }
+        .countdown {
+            font-size: 32px;
+            font-weight: 900;
+            color: #ffd700;
+            text-shadow: 0 0 15px red;
+            direction: ltr;
+            display: inline-block;
+        }
+
+        .progress-section {
+            background: rgba(0,0,0,0.5);
+            border: 1px solid #ffd70055;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(5px);
+        }
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .progress-bar {
+            height: 10px;
+            background: #333;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ffd700, #ff4500);
+            transition: width 0.5s;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid #ffd70033;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 10px;
+            backdrop-filter: blur(5px);
+        }
+        .task-info { flex: 1; }
+        .task-name { font-weight: 700; color: #ffd700; font-size: 18px; }
+        .task-desc { font-size: 12px; color: #aaa; }
+        .referral-count {
+            background: #ffd700;
+            color: #000;
+            font-weight: bold;
+            padding: 2px 10px;
+            border-radius: 15px;
+            margin-right: 10px;
+            font-size: 14px;
+        }
+        .task-btn {
+            background: linear-gradient(45deg, #ffd700, #ffa500);
+            border: none;
+            color: #000;
+            font-weight: 900;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: 'Cairo';
+            transition: 0.2s;
+            box-shadow: 0 0 10px gold;
+        }
+
+        /* قسم الألعاب */
+        .games-section {
+            margin-bottom: 20px;
+        }
+        .games-title {
+            font-size: 20px;
+            color: #ffd700;
+            text-align: center;
+            margin-bottom: 15px;
+            font-weight: 800;
+        }
+        .games-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .game-card {
+            background: linear-gradient(145deg, #1a1200, #0d0800);
+            border: 2px solid rgba(255,215,0,0.5);
+            border-radius: 20px;
+            padding: 15px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .game-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+        .game-name {
+            font-weight: 900;
+            color: #FFD700;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        .game-desc {
+            font-size: 12px;
+            color: #ccc;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+        .game-btn {
+            background: linear-gradient(45deg, #ffd700, #ffa500);
+            color: #000;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 0 10px gold;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .btn {
+            flex: 1;
+            padding: 14px;
+            border-radius: 40px;
+            font-weight: 800;
+            text-align: center;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+        .btn-gold {
+            background: linear-gradient(45deg, #ffd700, #ffa500);
+            color: #000;
+            box-shadow: 0 0 15px gold;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid gold;
+            color: gold;
+        }
+
+        .toast-container {
+            position: fixed; top: 70px; left: 50%; transform: translateX(-50%);
+            z-index: 2000; width: 90%; max-width: 300px;
+        }
+        .toast {
+            background: #1a1a1a; border: 1px solid #ffd700; border-radius: 30px;
+            padding: 10px; margin-bottom: 8px; text-align: center;
+            animation: fadeToast 3s forwards;
+        }
+        @keyframes fadeToast {
+            0% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="particles" id="particles"></div>
+
+<!-- شريط التنقل العلوي -->
+<div class="top-bar">
+    <div class="nav-links">
+        <a href="dashboard.html">🏠</a>
+        <a href="museum.html">🏺</a>
+        <a href="statue1.html">⚒️</a>
+        <a href="event-4000.html" class="active">🔥</a>
+    </div>
+    <div class="coin-display">💰 <span id="coinCount">0</span></div>
+</div>
+
+<!-- شريط الإشعارات المتحرك (إنجليزي) -->
+<div class="news-ticker">
+    <div class="ticker-content" id="tickerContent"></div>
+</div>
+
+<div class="content">
+    <div class="event-header">
+        <div class="event-badge">🔥 حدث محدود 🔥</div>
+        <div class="event-title">أسطورة الكنز 4000$</div>
+        <div class="prize-text">💵 جائزة 4000 دولار أمريكي 💵</div>
+    </div>
+
+    <div class="timer-card">
+        <div class="timer-label">⏳ الوقت المتبقي لنهاية الحدث</div>
+        <div class="countdown" id="countdown">-- : -- : --</div>
+    </div>
+
+    <!-- الألعاب الجديدة -->
+    <div class="games-section">
+        <div class="games-title">🎮 الألعاب التنافسية</div>
+        <div class="games-grid">
+            <div class="game-card">
+                <div class="game-icon">⛏️</div>
+                <div class="game-name">الحفار الفرعوني</div>
+                <div class="game-desc">انقر على الأحجار لاكتشاف الكنوز وتجنب الأفاعي. اجمع النجوم واربح الجائزة!</div>
+                <a href="hafar.html" class="game-btn">ابدأ اللعب</a>
+            </div>
+            <div class="game-card">
+                <div class="game-icon">🧠</div>
+                <div class="game-name">ذاكرة الفراعنة</div>
+                <div class="game-desc">طابق الرموز الفرعونية قبل نفاد الوقت. اختبر ذاكرتك واجمع النجوم للفوز.</div>
+                <a href="memory-game.html" class="game-btn">ابدأ اللعب</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- نظام الإحالات الحالي -->
+    <div class="progress-section">
+        <div class="progress-header">
+            <span>📊 نقاطك: <span id="userPoints">0</span></span>
+            <span>الهدف: 300 نقطة</span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width:0%"></div>
+        </div>
+        <p style="text-align:center; margin-top:10px; font-size:13px; color:#ffaa00;">كل 100 نقطة = إحالة واحدة ناجحة</p>
+    </div>
+
+    <div class="task-item">
+        <div class="task-info">
+            <div class="task-name">👥 دعوة 3 أصدقاء</div>
+            <div class="task-desc">ادعُ 3 أصدقاء للانضمام واحصل على 300 نقطة</div>
+        </div>
+        <span class="referral-count" id="referralCount">0/3</span>
+        <button class="task-btn" id="inviteBtn" onclick="window.location.href='profile.html'">📤 دعوة</button>
+    </div>
+
+    <div class="action-buttons">
+        <a href="dashboard.html" class="btn btn-outline">🔙 لوحة التحكم</a>
+        <button class="btn btn-gold" onclick="claimReward()" id="claimBtn" disabled>🎁 استلم حصتك</button>
+    </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyB78JT_cbPMizvzKWBrQoQUe3-zukHrr1U",
+        authDomain: "pharacoin.firebaseapp.com",
+        projectId: "pharacoin"
+    };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    let userDocRef = null;
+    let userData = { coins: 0, referralCount: 0, eventPoints: 0 };
+
+    function updateUI() {
+        const refs = userData.referralCount || 0;
+        const points = Math.min(refs * 100, 300);
+        document.getElementById('referralCount').innerText = `${Math.min(refs, 3)}/3`;
+        document.getElementById('userPoints').innerText = points;
+        document.getElementById('progressFill').style.width = Math.min(points / 300 * 100, 100) + '%';
+        document.getElementById('claimBtn').disabled = points < 300;
+
+        if (userData.eventPoints !== points) {
+            updateDoc(userDocRef, { eventPoints: points });
+        }
+    }
+
+    window.claimReward = () => {
+        if ((userData.referralCount || 0) >= 3) {
+            showToast("🎊 أنت مؤهل للفوز! سيتم توزيع الجوائز بعد انتهاء الحدث.");
+        } else {
+            showToast("❌ تحتاج إلى 3 إحالات على الأقل للتأهل.");
+        }
+    };
+
+    function showToast(msg) {
+        const t = document.createElement('div');
+        t.className = 'toast';
+        t.innerHTML = msg;
+        document.getElementById('toastContainer').appendChild(t);
+        setTimeout(() => t.remove(), 3000);
+    }
+
+    // عداد تنازلي
+    function startCountdown() {
+        const endDate = new Date();
+        endDate.setDate(endDate.getDate() + 7);
+        function update() {
+            const now = new Date();
+            const diff = endDate - now;
+            if (diff <= 0) {
+                document.getElementById('countdown').innerText = "انتهى الحدث";
+                return;
+            }
+            const h = Math.floor(diff / 3600000);
+            const m = Math.floor((diff % 3600000) / 60000);
+            const s = Math.floor((diff % 60000) / 1000);
+            document.getElementById('countdown').innerText = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+        }
+        update();
+        setInterval(update, 1000);
+    }
+
+    // شريط الإشعارات
+    function generateEnglishUsers() {
+        const names = [
+            "Ahmed Ali", "Mona Mahmoud", "Karim Hassan", "Noura Samy", "Mohamed Fawzy", "Aya Gamal", "Omar Khaled", "Salma Adel",
+            "Youssef Ibrahim", "Hoda Mohamed", "Mostafa Emad", "Rania Hazem", "Ehab Sherif", "Dina Hani", "Khaled Nabil",
+            "Marwa Ashraf", "Seif El-Din", "Lina Atef", "Hossam Kamel", "Basma Walid", "Ashraf Said", "Naglaa Fathy",
+            "Tarek Hussein", "Abeer Magdy", "Ziad Yasser", "Ghada Refaat", "Islam Galal", "Shaimaa Sabry", "Mohamed Abd", "Nourhan Nasser",
+            "Ayman Salah", "Mirna Alaa", "Hisham Gaber", "Sahar Sameh", "Walid Mostafa", "Nihal Hisham", "Amr Darwish", "Hend Raafat",
+            "Adham Karim", "Zeinab Maher", "Basem Youssef", "Heba Azmy", "Sherif Mokhtar", "Nadine Adel", "Moataz Lotfy", "Habiba Ehab",
+            "Iyad Wael", "Jana Mohamed", "Magdy Ramzy", "Sally Ahmed", "Nader Fouad", "Rania Sameh", "Fadi Nabil", "Marwan Hani",
+            "Hibatullah", "Yahia Omar", "Salma Hazem", "Ahmed Maher", "Doaa Selim", "Mahmoud Tarek", "Nour Yassin", "Karim Abed",
+            "Asmaa Alaa", "Khaled Amin", "Rawan Emad", "Akram Ezzat", "Lama Gamal", "Tamer Farag", "Inas Shawky", "Mohab Zaki",
+            "Saja Aref", "Fares Eid", "Mira Said", "Badr Hani", "Yaqeen Ahmed", "Jawad Hussein", "Laila Morad", "Ghassan Naim",
+            "Nagwa Kamal", "Loay Shaaban", "Raghd Hisham", "Ehab Ghanem", "Alaa Hamdy", "Youssef Awad", "Hagar Fathy", "Bilal Nagy",
+            "Salma Raafat", "Osama Sayed", "Jana Khalil", "Ramy Saleh", "Nuran Asem", "Moamen Adel", "Haneen Galal"
+        ];
+        const cities = [
+            "Cairo", "Alexandria", "Giza", "Mansoura", "Tanta", "Assiut", "Hurghada", "Port Said",
+            "Ismailia", "Fayoum", "Benha", "Zagazig", "Shubra", "Qena", "Luxor", "Aswan"
+        ];
+        const users = [];
+        for (let i = 0; i < 100; i++) {
+            const name = names[i % names.length];
+            const city = cities[i % cities.length];
+            const isDollar = i % 2 === 0;
+            const amount = isDollar ? "4,000" : "200,000";
+            const currency = isDollar ? "via Binance" : "L.E via Vodafone Cash";
+            users.push(`👤 ${name} (${city}) withdrew $${amount} ${currency}`);
+        }
+        return users;
+    }
+
+    const notifications = generateEnglishUsers();
+    let currentIndex = 0;
+    const tickerContent = document.getElementById('tickerContent');
+    function updateTicker() {
+        tickerContent.style.animation = 'none';
+        tickerContent.offsetHeight;
+        tickerContent.innerHTML = notifications[currentIndex];
+        tickerContent.style.animation = 'ticker 60s linear infinite';
+        currentIndex = (currentIndex + 1) % notifications.length;
+    }
+    setInterval(updateTicker, 300000); // كل 5 دقائق
+    updateTicker();
+
+    onAuthStateChanged(auth, async (user) => {
+        if (!user) {
+            window.location.href = 'login.html';
+            return;
+        }
+        userDocRef = doc(db, "users", user.uid);
+        const snap = await getDoc(userDocRef);
+        if (!snap.exists()) {
+            await setDoc(userDocRef, { coins: 500, referralCount: 0, eventPoints: 0 });
+        }
+        onSnapshot(userDocRef, (doc) => {
+            if (doc.exists()) {
+                const data = doc.data();
+                userData = {
+                    coins: data.coins || 0,
+                    referralCount: data.referralCount || 0,
+                    eventPoints: data.eventPoints || 0
+                };
+                document.getElementById('coinCount').innerText = userData.coins.toLocaleString();
+                updateUI();
+            }
+        });
+    });
+
+    function initParticles() {
+        const container = document.getElementById('particles');
+        for (let i = 0; i < 25; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.animationDuration = (8 + Math.random() * 12) + 's';
+            p.style.animationDelay = Math.random() * 5 + 's';
+            p.style.width = (2 + Math.random() * 4) + 'px';
+            p.style.height = p.style.width;
+            container.appendChild(p);
+        }
+    }
+    initParticles();
+    startCountdown();
+</script>
+</body>
+</html>

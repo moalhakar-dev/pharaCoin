@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>ذاكرة الفراعنة • أسطورة الكنز 4000$</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: #000;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+        .bg {
+            position: fixed; inset: 0;
+            background: url("Object/qa.jpg") center/cover no-repeat;
+            filter: brightness(0.25) saturate(1.2);
+            z-index: -2;
+        }
+        .bg::after {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(ellipse at 50% 0%, rgba(255,215,0,0.08) 0%, transparent 60%);
+        }
+        .particles {
+            position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none;
+        }
+        .particle {
+            position: absolute; border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,215,0,0.8), transparent);
+            animation: particleRise linear infinite; opacity: 0;
+        }
+        @keyframes particleRise {
+            0% { opacity: 0; transform: translateY(100vh) scale(0); }
+            10% { opacity: 1; transform: scale(1); }
+            90% { opacity: 0.5; }
+            100% { opacity: 0; transform: translateY(-10vh) scale(0.5); }
+        }
+
+        .news-ticker {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 99;
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
+            border-bottom: 1px solid gold;
+            padding: 6px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            direction: ltr;
+            font-size: 14px;
+            font-weight: 600;
+            color: #FFD700;
+        }
+        .ticker-content {
+            display: inline-block;
+            white-space: nowrap;
+            animation: ticker 60s linear infinite;
+            will-change: transform;
+            padding-right: 100%;
+        }
+        @keyframes ticker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .game-container {
+            position: relative;
+            margin-top: 45px;
+            width: 100%;
+            max-width: 420px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .game-header {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .game-title {
+            font-size: 32px;
+            font-weight: 900;
+            background: linear-gradient(180deg, #FFD700 0%, #FFA500 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 10px #ff4500);
+            margin-bottom: 3px;
+        }
+        .subtitle {
+            color: #aaa;
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+        .event-badge {
+            display: inline-block;
+            background: rgba(255,215,0,0.15);
+            border: 1px solid gold;
+            border-radius: 20px;
+            padding: 3px 14px;
+            color: gold;
+            font-size: 13px;
+            font-weight: bold;
+            text-decoration: none;
+            margin-bottom: 10px;
+        }
+
+        .progress-card {
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(8px);
+            border: 2px solid rgba(255,215,0,0.5);
+            border-radius: 30px;
+            padding: 15px;
+            margin-bottom: 20px;
+            width: 100%;
+            text-align: center;
+        }
+        .stars-label { font-size: 16px; color: #ddd; }
+        .stars-count {
+            font-size: 36px;
+            font-weight: 900;
+            color: #FFD700;
+            text-shadow: 0 0 15px #ff4500;
+        }
+        .progress-bar {
+            height: 10px;
+            background: #222;
+            border-radius: 10px;
+            margin: 12px 0 8px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #FFD700, #FF4500);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+        .stars-target { font-size: 13px; color: #aaa; }
+
+        .timer {
+            font-size: 22px;
+            font-weight: 800;
+            color: #ff4500;
+            margin-bottom: 12px;
+            text-shadow: 0 0 10px red;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 80px);
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        .card {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(145deg, #2c1a0a, #110a00);
+            border: 2px solid #B8860B;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 34px;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 0 8px rgba(255,215,0,0.3);
+            user-select: none;
+            color: transparent;
+        }
+        .card.flipped, .card.matched {
+            background: #1a1000;
+            border-color: #FFD700;
+            box-shadow: 0 0 15px gold;
+            color: #FFD700;
+        }
+        .card:not(.matched):hover {
+            border-color: #FFD700;
+            box-shadow: 0 0 20px gold;
+            transform: scale(1.05);
+        }
+
+        .round-stats {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        .round-stat {
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,215,0,0.3);
+            border-radius: 15px;
+            padding: 6px 16px;
+            text-align: center;
+            min-width: 75px;
+        }
+        .round-stat .value { font-size: 20px; font-weight: 900; color: #FFD700; }
+        .round-stat .label { font-size: 11px; color: #aaa; }
+
+        .message {
+            font-size: 16px;
+            margin: 10px 0;
+            min-height: 28px;
+            font-weight: bold;
+            color: #FFD700;
+            text-align: center;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 5px;
+        }
+        .btn {
+            padding: 12px 22px;
+            border: none;
+            border-radius: 40px;
+            font-family: 'Cairo';
+            font-weight: 800;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-primary {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #000;
+            box-shadow: 0 0 20px rgba(255,215,0,0.5);
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 30px gold; }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; transform: none; }
+        .btn-glow {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #000;
+            box-shadow: 0 0 25px gold, 0 0 50px #FF4500;
+            animation: depositGlow 1.5s infinite alternate;
+            font-size: 16px;
+            padding: 14px 28px;
+        }
+        @keyframes depositGlow {
+            from { box-shadow: 0 0 20px gold, 0 0 40px #FF4500; }
+            to { box-shadow: 0 0 35px gold, 0 0 70px #FF4500; }
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid gold;
+            color: gold;
+        }
+        .btn-outline:hover { background: rgba(255,215,0,0.1); }
+
+        .toast {
+            position: fixed;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #111;
+            border: 1px solid gold;
+            border-radius: 30px;
+            padding: 12px 25px;
+            color: gold;
+            font-weight: bold;
+            z-index: 999;
+            animation: fadeToast 2.5s forwards;
+            max-width: 90%;
+            width: max-content;
+            white-space: normal;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+        }
+        @keyframes fadeToast {
+            0% { opacity: 1; } 70% { opacity: 1; } 100% { opacity: 0; }
+        }
+        .penalty-toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255,0,0,0.9);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            z-index: 999;
+            animation: fadeToast 1.5s forwards;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="particles" id="particles"></div>
+
+<div class="news-ticker">
+    <div class="ticker-content" id="tickerContent"></div>
+</div>
+
+<div class="game-container">
+    <div class="game-header">
+        <div class="game-title">🧠 ذاكرة الفراعنة</div>
+        <div class="subtitle">طابق الرموز قبل نفاد الوقت</div>
+        <a href="event-4000.html" class="event-badge">🔥 أسطورة الكنز 4000$</a>
+    </div>
+
+    <div class="progress-card">
+        <div class="stars-label">⭐ النجوم المجمعة</div>
+        <div class="stars-count"><span id="totalStarsDisplay">0</span> / 100</div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width:0%"></div>
+        </div>
+        <div class="stars-target" id="goalMessage">اجمع 100 نجمة لفتح الجائزة الكبرى</div>
+    </div>
+
+    <div class="timer" id="timerDisplay">⏳ 01:00</div>
+
+    <div class="grid" id="grid"></div>
+
+    <div class="round-stats">
+        <div class="round-stat">
+            <div class="value" id="matchesCount">0/8</div>
+            <div class="label">🧩 التطابقات</div>
+        </div>
+        <div class="round-stat">
+            <div class="value" id="sessionStars">0</div>
+            <div class="label">🌟 جولة</div>
+        </div>
+    </div>
+
+    <div class="message" id="message"></div>
+
+    <div class="actions">
+        <button class="btn btn-primary" id="restartBtn">🔄 جاري التحميل...</button>
+        <button class="btn btn-primary" id="claimBtn" disabled>🎁 فتح الجائزة</button>
+        <a href="event-4000.html" class="btn btn-outline">🔥 الحدث</a>
+        <a href="dashboard.html" class="btn btn-outline">🏠 الرئيسية</a>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc, updateDoc, increment, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyB78JT_cbPMizvzKWBrQoQUe3-zukHrr1U",
+        authDomain: "pharacoin.firebaseapp.com",
+        projectId: "pharacoin"
+    };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    let audioCtx;
+    function initAudio() {
+        if (!audioCtx) audioCtx = new AudioContext();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+    }
+    function playTone(freq, dur, type = 'sine', vol = 0.1) {
+        if (!audioCtx) return;
+        const o = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        o.connect(g); g.connect(audioCtx.destination);
+        o.type = type; o.frequency.value = freq;
+        g.gain.setValueAtTime(vol, audioCtx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+        o.start(); o.stop(audioCtx.currentTime + dur);
+    }
+    function playFlipSound() { playTone(600, 0.1, 'sine', 0.08); }
+    function playMatchSound() {
+        playTone(523, 0.15, 'sine', 0.12);
+        setTimeout(() => playTone(659, 0.15, 'sine', 0.12), 100);
+        setTimeout(() => playTone(784, 0.2, 'sine', 0.12), 200);
+    }
+    function playMismatchSound() { playTone(200, 0.3, 'triangle', 0.15); }
+    function playWinSound() {
+        [523, 659, 784, 1047].forEach((f, i) => setTimeout(() => playTone(f, 0.2, 'sine', 0.1), i * 150));
+    }
+    function playLoseSound() {
+        [400, 350, 300, 200].forEach((f, i) => setTimeout(() => playTone(f, 0.25, 'triangle', 0.1), i * 200));
+    }
+
+    const ATTEMPT_FEE = 200;
+    const STARS_PER_MATCH = 2;
+    const REQUIRED_STARS = 100;
+    const REQUIRED_ATTEMPTS = 5;
+    const GAME_TIME = 60;
+    const PENALTY_TIME = 3;
+
+    let currentUser = null;
+    let userDocRef = null;
+    let userBalance = 0;
+    let totalStars = 0;
+    let paidAttempts = 0;
+    let firstAttempt = true;
+    let totalDeposits = 0;
+
+    let gameActive = false;
+    let sessionStars = 0;
+    let matches = 0;
+    let flipped = [];
+    let lock = false;
+    let timerInterval = null;
+    let timeLeft = GAME_TIME;
+
+    const totalStarsDisplay = document.getElementById('totalStarsDisplay');
+    const progressFill = document.getElementById('progressFill');
+    const goalMessage = document.getElementById('goalMessage');
+    const timerDisplay = document.getElementById('timerDisplay');
+    const matchesCount = document.getElementById('matchesCount');
+    const sessionStarsEl = document.getElementById('sessionStars');
+    const gridEl = document.getElementById('grid');
+    const messageEl = document.getElementById('message');
+    const restartBtn = document.getElementById('restartBtn');
+    const claimBtn = document.getElementById('claimBtn');
+    const tickerContent = document.getElementById('tickerContent');
+
+    const symbols = ['☥','𓂀','𓆣','𓁹','𓃀','𓅓','𓊽','𓋹'];
+
+    function shuffleBoard() {
+        const cards = [...symbols, ...symbols].sort(() => Math.random() - 0.5);
+        gridEl.innerHTML = '';
+        cards.forEach((sym, i) => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.dataset.index = i;
+            card.dataset.symbol = sym;
+            card.addEventListener('click', () => flipCard(card));
+            gridEl.appendChild(card);
+        });
+    }
+
+    function flipCard(card) {
+        if (!gameActive || lock || card.classList.contains('flipped') || card.classList.contains('matched')) return;
+        initAudio();
+        playFlipSound();
+        card.classList.add('flipped');
+        card.textContent = card.dataset.symbol;
+        flipped.push(card);
+        if (flipped.length === 2) {
+            lock = true;
+            const [a, b] = flipped;
+            if (a.dataset.symbol === b.dataset.symbol) {
+                a.classList.add('matched');
+                b.classList.add('matched');
+                matches++;
+                sessionStars += STARS_PER_MATCH;
+                updateUI();
+                playMatchSound();
+                flipped = [];
+                lock = false;
+                if (matches === 8) {
+                    endRound(true);
+                }
+            } else {
+                playMismatchSound();
+                timeLeft = Math.max(0, timeLeft - PENALTY_TIME);
+                updateTimerDisplay();
+                showPenaltyToast(`❌ خطأ! -${PENALTY_TIME} ثوانٍ`);
+                if (timeLeft <= 0) {
+                    endRound(false);
+                    return;
+                }
+                setTimeout(() => {
+                    a.classList.remove('flipped');
+                    b.classList.remove('flipped');
+                    a.textContent = '';
+                    b.textContent = '';
+                    flipped = [];
+                    lock = false;
+                }, 300);
+            }
+        }
+    }
+
+    function startTimer() {
+        timeLeft = GAME_TIME;
+        updateTimerDisplay();
+        if (timerInterval) clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            updateTimerDisplay();
+            if (timeLeft <= 0) {
+                endRound(false);
+            }
+        }, 1000);
+    }
+
+    function updateTimerDisplay() {
+        const mins = Math.floor(timeLeft / 60);
+        const secs = timeLeft % 60;
+        timerDisplay.textContent = `⏳ ${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
+        timerDisplay.style.color = timeLeft <= 10 ? '#ff0000' : '#ff4500';
+    }
+
+    function endRound(won) {
+        if (!gameActive) return;
+        gameActive = false;
+        clearInterval(timerInterval);
+        
+        // إذا كانت هذه أول محاولة مجانية، نعلم أنها انتهت
+        if (firstAttempt) {
+            localStorage.setItem('firstAttemptUsed', 'true');
+            firstAttempt = false;
+        }
+
+        if (won) {
+            messageEl.textContent = `🎉 رائع! أكملت اللعبة وربحت ${sessionStars} نجمة.`;
+            playWinSound();
+            updateDoc(userDocRef, { totalStars: increment(sessionStars) }).then(() => {
+                totalStars += sessionStars;
+                updateUI();
+            });
+        } else {
+            messageEl.textContent = '⏰ انتهت الجولة! يجب الإيداع للمحاولة التالية.';
+            playLoseSound();
+            document.querySelectorAll('.card').forEach(c => {
+                c.classList.add('flipped');
+                c.textContent = c.dataset.symbol;
+            });
+            disableNewAttemptAfterLoss();
+            showToast('💪 لا تيأس! يمكنك المحاولة مرة أخرى بعد الإيداع.');
+        }
+        updateButtonState();
+    }
+
+    function disableNewAttemptAfterLoss() {
+        localStorage.setItem('lastDeposits', totalDeposits);
+        localStorage.setItem('gameLost', 'true');
+    }
+
+    function checkDepositIncrease() {
+        const lastDeposits = parseFloat(localStorage.getItem('lastDeposits') || '0');
+        return (totalDeposits - lastDeposits) >= ATTEMPT_FEE;
+    }
+
+    function updateButtonState() {
+        const freeUsed = localStorage.getItem('firstAttemptUsed') === 'true';
+        const lost = localStorage.getItem('gameLost') === 'true';
+        
+        if (!freeUsed) {
+            // لم يلعب المحاولة المجانية بعد
+            restartBtn.textContent = '🎮 ابدأ اللعبة مجاناً';
+            restartBtn.className = 'btn btn-primary';
+            restartBtn.onclick = startFirstAttempt;
+            restartBtn.disabled = false;
+        } else if (lost && !checkDepositIncrease()) {
+            // خسر ولم يودع بعد
+            restartBtn.textContent = '💳 إيداع للمتابعة (200 جنيه)';
+            restartBtn.className = 'btn btn-glow';
+            restartBtn.onclick = () => window.location.href = 'deposit.html';
+            restartBtn.disabled = false;
+        } else {
+            // يمكنه اللعب بمقابل
+            restartBtn.textContent = '🔄 محاولة جديدة (200 جنيه)';
+            restartBtn.className = 'btn btn-primary';
+            restartBtn.onclick = handleNewAttempt;
+            restartBtn.disabled = false;
+        }
+    }
+
+    function startFirstAttempt() {
+        firstAttempt = true; // هذه المحاولة مجانية
+        startRound();
+    }
+
+    function updateUI() {
+        totalStarsDisplay.textContent = totalStars;
+        progressFill.style.width = Math.min((totalStars / REQUIRED_STARS) * 100, 100) + '%';
+        matchesCount.textContent = matches + '/8';
+        sessionStarsEl.textContent = sessionStars;
+
+        if (totalStars >= REQUIRED_STARS && paidAttempts >= REQUIRED_ATTEMPTS) {
+            goalMessage.textContent = '🏆 أنت مؤهل للجائزة! اضغط "فتح الجائزة"';
+            goalMessage.style.color = '#FFD700';
+        } else if (totalStars >= REQUIRED_STARS) {
+            goalMessage.textContent = '⭐ لديك نجوم كافية! تابع اللعب لاستيفاء الشروط';
+            goalMessage.style.color = '#FFA500';
+        } else {
+            goalMessage.textContent = `تبقى ${REQUIRED_STARS - totalStars} نجمة للوصول للهدف`;
+            goalMessage.style.color = '#aaa';
+        }
+
+        claimBtn.disabled = !(totalStars >= REQUIRED_STARS && paidAttempts >= REQUIRED_ATTEMPTS);
+
+        // تحديث الزر إذا تغيرت الظروف (مثلاً تم الإيداع)
+        updateButtonState();
+    }
+
+    async function handleNewAttempt() {
+        if (!currentUser) return showToast('يجب تسجيل الدخول أولاً');
+
+        if (localStorage.getItem('gameLost') === 'true' && !checkDepositIncrease()) {
+            showToast('يجب إيداع 200 جنيه على الأقل للمتابعة');
+            window.location.href = 'deposit.html';
+            return;
+        }
+
+        if (userBalance < ATTEMPT_FEE) {
+            showToast('⚠️ رصيدك غير كافٍ. سيتم توجيهك إلى صفحة الإيداع.');
+            setTimeout(() => window.location.href = 'deposit.html', 1500);
+            return;
+        }
+        try {
+            await updateDoc(userDocRef, {
+                coins: increment(-ATTEMPT_FEE),
+                paidAttempts: increment(1)
+            });
+            userBalance -= ATTEMPT_FEE;
+            paidAttempts++;
+            showToast('🔄 بدأت محاولة جديدة! تم خصم 200 جنيه.');
+            startRound();
+        } catch (e) {
+            showToast('❌ حدث خطأ، حاول لاحقاً');
+        }
+    }
+
+    function startRound() {
+        if (gameActive) {
+            clearInterval(timerInterval);
+            gameActive = false;
+        }
+        matches = 0;
+        sessionStars = 0;
+        flipped = [];
+        lock = false;
+        gameActive = true;
+        messageEl.textContent = '';
+        updateUI();
+        shuffleBoard();
+        startTimer();
+        initAudio();
+    }
+
+    async function claimReward() {
+        if (totalStars < REQUIRED_STARS || paidAttempts < REQUIRED_ATTEMPTS) return;
+        try {
+            await updateDoc(userDocRef, { coins: increment(10000), totalStars: 0 });
+            userBalance += 10000;
+            totalStars = 0;
+            updateUI();
+            showToast('🎁 مبروك! تمت إضافة 10,000 جنيه إلى حسابك.');
+            setTimeout(() => window.location.href = 'event-4000.html', 2000);
+        } catch (e) {
+            showToast('❌ فشلت العملية');
+        }
+    }
+
+    function showToast(msg) {
+        const t = document.createElement('div');
+        t.className = 'toast';
+        t.textContent = msg;
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 2500);
+    }
+
+    function showPenaltyToast(msg) {
+        const t = document.createElement('div');
+        t.className = 'penalty-toast';
+        t.textContent = msg;
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 1500);
+    }
+
+    function generateEnglishUsers() {
+        const names = [
+            "Ahmed Ali", "Mona Mahmoud", "Karim Hassan", "Noura Samy", "Mohamed Fawzy", "Aya Gamal", "Omar Khaled", "Salma Adel",
+            "Youssef Ibrahim", "Hoda Mohamed", "Mostafa Emad", "Rania Hazem", "Ehab Sherif", "Dina Hani", "Khaled Nabil",
+            "Marwa Ashraf", "Seif El-Din", "Lina Atef", "Hossam Kamel", "Basma Walid", "Ashraf Said", "Naglaa Fathy",
+            "Tarek Hussein", "Abeer Magdy", "Ziad Yasser", "Ghada Refaat", "Islam Galal", "Shaimaa Sabry", "Mohamed Abd", "Nourhan Nasser",
+            "Ayman Salah", "Mirna Alaa", "Hisham Gaber", "Sahar Sameh", "Walid Mostafa", "Nihal Hisham", "Amr Darwish", "Hend Raafat",
+            "Adham Karim", "Zeinab Maher", "Basem Youssef", "Heba Azmy", "Sherif Mokhtar", "Nadine Adel", "Moataz Lotfy", "Habiba Ehab",
+            "Iyad Wael", "Jana Mohamed", "Magdy Ramzy", "Sally Ahmed", "Nader Fouad", "Rania Sameh", "Fadi Nabil", "Marwan Hani",
+            "Hibatullah", "Yahia Omar", "Salma Hazem", "Ahmed Maher", "Doaa Selim", "Mahmoud Tarek", "Nour Yassin", "Karim Abed",
+            "Asmaa Alaa", "Khaled Amin", "Rawan Emad", "Akram Ezzat", "Lama Gamal", "Tamer Farag", "Inas Shawky", "Mohab Zaki",
+            "Saja Aref", "Fares Eid", "Mira Said", "Badr Hani", "Yaqeen Ahmed", "Jawad Hussein", "Laila Morad", "Ghassan Naim",
+            "Nagwa Kamal", "Loay Shaaban", "Raghd Hisham", "Ehab Ghanem", "Alaa Hamdy", "Youssef Awad", "Hagar Fathy", "Bilal Nagy",
+            "Salma Raafat", "Osama Sayed", "Jana Khalil", "Ramy Saleh", "Nuran Asem", "Moamen Adel", "Haneen Galal"
+        ];
+        const cities = [
+            "Cairo", "Alexandria", "Giza", "Mansoura", "Tanta", "Assiut", "Hurghada", "Port Said",
+            "Ismailia", "Fayoum", "Benha", "Zagazig", "Shubra", "Qena", "Luxor", "Aswan"
+        ];
+        const users = [];
+        for (let i = 0; i < 100; i++) {
+            const name = names[i % names.length];
+            const city = cities[i % cities.length];
+            const isDollar = i % 2 === 0;
+            const amount = isDollar ? "4,000" : "200,000";
+            const currency = isDollar ? "via Binance" : "L.E via Vodafone Cash";
+            users.push(`👤 ${name} (${city}) withdrew $${amount} ${currency}`);
+        }
+        return users;
+    }
+
+    const notifications = generateEnglishUsers();
+    let currentNotificationIndex = 0;
+
+    function updateNotification() {
+        tickerContent.style.animation = 'none';
+        tickerContent.offsetHeight;
+        tickerContent.innerHTML = notifications[currentNotificationIndex];
+        tickerContent.style.animation = 'ticker 60s linear infinite';
+        currentNotificationIndex = (currentNotificationIndex + 1) % notifications.length;
+    }
+
+    setInterval(updateNotification, 300000);
+    updateNotification();
+
+    onAuthStateChanged(auth, async (user) => {
+        if (!user) { window.location.href = 'login.html'; return; }
+        currentUser = user;
+        userDocRef = doc(db, "users", user.uid);
+        const snap = await getDoc(userDocRef);
+        if (!snap.exists()) {
+            await setDoc(userDocRef, { coins: 500, totalStars: 0, paidAttempts: 0, totalDeposits: 0 });
+            userBalance = 500; totalStars = 0; paidAttempts = 0; totalDeposits = 0;
+        } else {
+            const d = snap.data();
+            userBalance = d.coins || 0;
+            totalStars = d.totalStars || 0;
+            paidAttempts = d.paidAttempts || 0;
+            totalDeposits = d.totalDeposits || 0;
+        }
+        onSnapshot(userDocRef, (docSnap) => {
+            if (docSnap.exists()) {
+                const d = docSnap.data();
+                userBalance = d.coins || 0;
+                totalStars = d.totalStars || 0;
+                paidAttempts = d.paidAttempts || 0;
+                totalDeposits = d.totalDeposits || 0;
+                updateUI();
+            }
+        });
+        updateUI();
+        updateButtonState();
+        // لا نبدأ تلقائياً
+    });
+
+    restartBtn.addEventListener('click', handleNewAttempt); // سيتم استبدال الأحداث عبر updateButtonState
+    claimBtn.addEventListener('click', claimReward);
+
+    (function initParticles() {
+        const container = document.getElementById('particles');
+        for (let i = 0; i < 20; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.animationDuration = (8 + Math.random() * 12) + 's';
+            p.style.animationDelay = Math.random() * 5 + 's';
+            p.style.width = (2 + Math.random() * 4) + 'px';
+            p.style.height = p.style.width;
+            container.appendChild(p);
+        }
+    })();
+</script>
+</body>
+</html>

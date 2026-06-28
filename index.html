@@ -464,108 +464,6 @@
             color: #FFD700;
         }
 
-        /* ========== قسم كأس العالم (المسابقة الجديدة) ========== */
-        .worldcup-contest {
-            background: linear-gradient(145deg, rgba(10, 5, 0, 0.9), rgba(20, 10, 0, 0.9));
-            backdrop-filter: blur(15px);
-            border: 2px solid rgba(255, 215, 0, 0.6);
-            border-radius: 40px;
-            padding: 35px 25px;
-            margin: 40px 0;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 0 50px rgba(255, 215, 0, 0.2), 0 20px 40px rgba(0,0,0,0.8);
-            text-align: center;
-            background-image: url('com.jpg');
-            background-size: cover;
-            background-position: center;
-        }
-        .worldcup-contest::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.7); /* تعتيم للخلفية لجعل النص واضح */
-            border-radius: inherit;
-            z-index: 0;
-        }
-        .worldcup-contest .contest-content {
-            position: relative;
-            z-index: 2;
-        }
-        .worldcup-contest .contest-badge {
-            display: inline-block;
-            background: #1a4d2a;
-            color: #FFD700;
-            padding: 5px 20px;
-            border-radius: 30px;
-            font-weight: 800;
-            letter-spacing: 2px;
-            margin-bottom: 15px;
-            border: 1px solid gold;
-            animation: pulseStatus 2s infinite;
-        }
-        @keyframes pulseStatus {
-            0%, 100% { box-shadow: 0 0 5px #1a4d2a; }
-            50% { box-shadow: 0 0 20px #00aa55; }
-        }
-        .worldcup-contest .contest-title {
-            font-size: 36px;
-            font-weight: 900;
-            color: #fff;
-            margin-bottom: 10px;
-            text-shadow: 0 0 20px rgba(0, 200, 0, 0.7);
-        }
-        .worldcup-contest .contest-prize {
-            font-size: 48px;
-            font-weight: 900;
-            color: #FFD700;
-            text-shadow: 0 0 30px #FF4500;
-            margin: 15px 0;
-            animation: textPulse 2s ease-in-out infinite;
-        }
-        .worldcup-contest .contest-desc {
-            font-size: 18px;
-            color: #f0f0f0;
-            max-width: 700px;
-            margin: 15px auto;
-            line-height: 1.6;
-            text-shadow: 0 1px 2px black;
-        }
-        .worldcup-contest .contest-features {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            flex-wrap: wrap;
-            margin: 25px 0;
-        }
-        .worldcup-contest .contest-feat {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(0, 0, 0, 0.6);
-            padding: 10px 20px;
-            border-radius: 30px;
-            border: 1px solid rgba(255, 215, 0, 0.5);
-            backdrop-filter: blur(4px);
-        }
-        .worldcup-contest .contest-cta {
-            background: linear-gradient(45deg, #FFD700, #FFA500);
-            border: none;
-            color: #000;
-            font-weight: 900;
-            padding: 16px 50px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-family: 'Cairo';
-            font-size: 22px;
-            transition: 0.3s;
-            box-shadow: 0 0 30px gold;
-            margin-top: 15px;
-            text-decoration: none;
-            display: inline-block;
-        }
-        .worldcup-contest .contest-cta:hover { transform: scale(1.05); box-shadow: 0 0 50px gold; }
-
         /* الإحصائيات */
         .stats-grid {
             display: grid;
@@ -689,13 +587,6 @@
             gap: 12px;
         }
 
-        .referral-level {
-            background: #0a0500;
-            border-radius: 16px;
-            padding: 15px;
-            margin-top: 15px;
-        }
-
         .footer-links {
             display: flex;
             flex-wrap: wrap;
@@ -784,8 +675,6 @@
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
             .two-columns { grid-template-columns: 1fr; }
             .main-title { font-size: 36px; }
-            .contest-title { font-size: 28px; }
-            .contest-prize { font-size: 36px; }
         }
         @media (max-width: 480px) {
             .stats-grid { grid-template-columns: 1fr; }
@@ -837,7 +726,7 @@
 <!-- ======== MAIN PAGE ======== -->
 <div class="bg"></div>
 <div class="particles" id="particles"></div>
-<div id="toast-message"></div> <!-- عنصر الإشعار -->
+<div id="toast-message"></div>
 
 <main class="overlay">
     <div class="container">
@@ -855,7 +744,7 @@
         </div>
         <div id="templeStatus">⚡ المتحف ممتلئ الآن</div>
 
-        <!-- ========== HERO SECTION (مدخل احترافي) ========== -->
+        <!-- ========== HERO SECTION ========== -->
         <div class="hero-section">
             <h1 class="main-title">كنوز الفراعنة<br><span style="font-size: 0.6em; display: block; color: #FFD700;">المتحف الكبير • استخراج الكنوز</span></h1>
             <div class="subtitle">⛏️ ابدأ رحلتك الآن واربح بالجنيه المصري</div>
@@ -875,36 +764,14 @@
                 <a href="login.html" class="cta-btn secondary">𓂀 تسجيل الدخول</a>
             </div>
 
-            <!-- مكافأة الترحيب -->
+            <!-- مكافأة الترحيب (تم تعديل النص) -->
             <div class="welcome-bonus">
                 <span>🎁 ابدأ بمكافأة 1000 جنيه فوراً</span>
-                <p style="font-size: 14px; color: #ccc;">بدون استثمار • سحب من 50 جنيه</p>
+                <p style="font-size: 14px; color: #ccc;">بدون استثمار • سحب من 5000 جنيه</p>
             </div>
         </div>
 
-        <!-- ========== قسم كأس العالم (مسابقة جديدة) ========== -->
-        <div class="worldcup-contest">
-            <div class="contest-content">
-                <div class="contest-badge">🏆 كأس العالم 2026 🏆</div>
-                <div class="contest-title">مسابقة كأس العالم الكبرى</div>
-                <div class="contest-prize">💵 جوائز تصل إلى 100,000 جنيه مصري 💵</div>
-                <div class="contest-desc">
-                    توقع نتائج المباريات، حل تحديات يومية عن كأس العالم، وتنافس مع آلاف المشتركين.
-                    كل يوم أسئلة وجوائز تراكمية. الفائز بالمركز الأول يحصل على 50,000 جنيه إضافية!
-                    اشترك الآن مجاناً في الموقع وابدأ التحدي.
-                </div>
-                <div class="contest-features">
-                    <div class="contest-feat">⚽ توقعات يومية</div>
-                    <div class="contest-feat">🏅 لوحة متصدرين</div>
-                    <div class="contest-feat">🎁 جوائز فورية</div>
-                    <div class="contest-feat">🌍 مشاركة عالمية</div>
-                </div>
-                <p style="color: #FFD700; margin: 15px 0; font-weight: bold;">🔓 الاشتراك مجاني لمستخدمي المتحف الكبير – سجل الآن وشارك!</p>
-                <a href="register.html" class="contest-cta">⚡ سجل مجاناً واختر توقعاتك ⚡</a>
-            </div>
-        </div>
-
-        <!-- إحصائيات المنصة (بأعداد كبيرة تتجاوز 200 ألف) -->
+        <!-- إحصائيات المنصة -->
         <div class="stats-grid">
             <div class="stat-card"><div class="stat-number" id="activeMiners">247,892</div><div class="stat-label">عمال التعدين النشطون</div></div>
             <div class="stat-card"><div class="stat-number" id="totalTools">456,304</div><div class="stat-label">إجمالي الأدوات النشطة</div></div>
@@ -920,7 +787,7 @@
             <div class="step"><div class="step-icon">𓋹</div><h3>3. اقتناء الأدوات</h3><p>أدوات تولد جنيهات كل ثانية</p></div>
         </div>
 
-        <!-- أدوات التعدين (بطاقة Copper Fang) -->
+        <!-- أدوات التعدين -->
         <div class="section-title">⛏️ أدوات التعدين ⛏️</div>
         <div class="tool-card">
             <div class="tool-name">𓃀 صولجان الفرعون</div>
@@ -942,7 +809,7 @@
                     <li>✅ 1 - 5 جنيه لكل نقرة إحالة</li>
                     <li>✅ لا يتطلب استثمار</li>
                     <li>✅ مكافآت رفع المستوى</li>
-                    <li>✅ سحب نقدي من 50 جنيه</li>
+                    <li>✅ سحب نقدي من 5000 جنيه</li>
                 </ul>
             </div>
             <div class="info-panel">
@@ -955,25 +822,13 @@
             </div>
         </div>
 
-        <!-- شبكة الإحالة -->
-        <div class="section-title">🔄 شبكة الإحالة</div>
-        <div class="info-panel" style="text-align:center">
-            <p style="font-size:20px">معدل التحويل: <span class="highlight">1 جنيه = 1000 نقطة</span></p>
-            <div class="referral-level">
-                <p>✔ نظام إحالة من 5 مستويات مع دفعات متزايدة</p>
-                <p>✔ اربح من كل إعلان يشاهده المُحالون</p>
-                <p>✔ عمولة إضافية على إيداعات الإحالة</p>
-            </div>
-            <button class="collect-btn" style="margin-top:20px">دعوة الأصدقاء</button>
-        </div>
-
         <!-- مركز التحكم -->
         <div style="margin: 50px 0 20px; background: rgba(0,0,0,0.3); border-radius: 30px; padding: 30px;">
             <h2 style="color: gold; font-size: 28px;">📊 مركز التحكم في التعدين</h2>
             <p style="max-width: 700px; margin: 20px auto;">تتبع الأرباح، راقب الأدوات، وشاهد نمو أرباحك بالجنيه المصري في الوقت الفعلي. واجهة سلسة تشبه الألعاب.</p>
         </div>
 
-        <!-- أيقونات التنقل القديمة (محفوظة) -->
+        <!-- أيقونات التنقل -->
         <div class="page-icons">
             <div class="icon-box" onclick="toggleLabel(this)" ondblclick="openPage('faq.html')"><div class="circle">☥</div><div class="icon-label">الأسئلة</div></div>
             <div class="icon-box" onclick="toggleLabel(this)" ondblclick="openPage('how.html')"><div class="circle">𓂀</div><div class="icon-label">كيف تعمل</div></div>
@@ -1032,7 +887,6 @@
             }, 3000);
         }
 
-        // نظام الإشعارات (Toast)
         const toast = document.getElementById('toast-message');
         function showToast(text, duration = 2500) {
             toast.textContent = text;
@@ -1043,7 +897,7 @@
             }, duration);
         }
 
-        document.querySelectorAll('.cta-btn, .collect-btn, .contest-cta').forEach(btn => {
+        document.querySelectorAll('.cta-btn, .collect-btn').forEach(btn => {
             btn.addEventListener('click', function(e) {
                 if (!e.target.closest('a')) {
                     if (e.target.id === 'collectBtn') {
@@ -1057,7 +911,6 @@
             });
         });
 
-        // القيم الأولية للمستخدمين النشطين (أكثر من 200 ألف)
         let online = 231456;
         let offline = 45231;
         function updateDisplay() {
@@ -1108,7 +961,6 @@
         window.addEventListener("load", () => { setTimeout(openGate, 1200); });
         if (!localStorage.getItem("coins")) localStorage.setItem("coins", "500");
 
-        // ربط زر الجمع بالإشعار (احتياط)
         document.getElementById('collectBtn').addEventListener('click', (e) => {
             e.preventDefault();
             const currentRate = document.getElementById('miningRate').innerText;

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>لوحة التحكم • المتحف الكبير</title>
-    <meta name="description" content="تابع رصيدك، مستوى خبرتك، واستكشف التماثيل الأسطورية في المتحف الكبير. وانضم لمسابقة كأس العالم 2026 لتربح حتى 100,000 جنيه.">
+    <meta name="description" content="تابع رصيدك، مستوى خبرتك، المسابقة الكبرى، واستكشف التماثيل الأسطورية في المتحف الكبير.">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -78,7 +78,7 @@
         }
         @keyframes ticker {
             0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+            100% { transform: translateX(-100%); }
         }
 
         .content {
@@ -119,97 +119,76 @@
             background: rgba(0,0,0,0.5); backdrop-filter: blur(5px);
             border: 1px solid #ffd70033; border-radius: 20px;
             padding: 15px; margin-bottom: 25px;
+            cursor: pointer;
         }
         .level-header { display: flex; justify-content: space-between; margin-bottom: 8px; }
         .xp-bar { height: 8px; background: #333; border-radius: 10px; overflow: hidden; }
         .xp-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #ffd700, #ffa500); }
 
-        .worldcup-contest-card {
-            background: linear-gradient(145deg, #0a1a0a, #051005);
+        /* بطاقة المسابقة الرئيسية */
+        .event-card {
+            background: linear-gradient(145deg, #1a1000, #0d0500);
             border: 2px solid rgba(255,215,0,0.7);
             border-radius: 25px;
             padding: 20px;
             margin-bottom: 25px;
             text-align: center;
-            box-shadow: 0 0 30px rgba(255,215,0,0.2);
-            position: relative;
-            overflow: hidden;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(255,215,0,0.3);
+            transition: 0.3s;
+            display: block;
+            text-decoration: none;
+            color: inherit;
         }
-        .worldcup-contest-card::before {
-            content: '⚽';
-            position: absolute;
-            top: -20px;
-            left: -10px;
-            font-size: 70px;
-            opacity: 0.1;
-            transform: rotate(-15deg);
+        .event-card:hover {
+            border-color: #ffd700;
+            box-shadow: 0 0 30px gold;
+            transform: translateY(-3px);
         }
-        .contest-badge {
-            background: #1a4d2a;
-            color: #ffd700;
-            padding: 3px 15px;
-            border-radius: 20px;
-            font-weight: 800;
-            font-size: 14px;
-            display: inline-block;
+        .event-icon {
+            font-size: 50px;
             margin-bottom: 10px;
-            border: 1px solid gold;
         }
-        .contest-title-small {
-            font-size: 20px;
-            color: #ffd700;
+        .event-name {
+            font-size: 24px;
             font-weight: 900;
+            color: #FFD700;
+            text-shadow: 0 0 10px #ff4500;
             margin-bottom: 5px;
         }
-        .contest-prize-small {
-            font-size: 28px;
-            font-weight: 900;
-            color: #fff;
-            text-shadow: 0 0 15px #ff4500;
-            margin: 10px 0;
-        }
-        .contest-desc-small {
+        .event-short-desc {
             font-size: 14px;
             color: #ccc;
+        }
+
+        .contest-section {
+            margin-bottom: 25px;
+        }
+        .section-header {
+            display: flex; justify-content: space-between; align-items: center;
             margin-bottom: 15px;
-            line-height: 1.5;
         }
-        .timer-container {
-            background: rgba(0,0,0,0.5);
-            border: 1px solid #ffd700;
-            border-radius: 30px;
-            padding: 8px 20px;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            margin: 10px 0 15px;
-            backdrop-filter: blur(5px);
+        .section-title {
+            font-size: 20px; font-weight: 800; color: #ffd700;
         }
-        .timer-label { color: #fff; font-size: 14px; font-weight: 600; }
-        .timer-value {
-            font-size: 22px;
-            font-weight: 900;
-            color: #ffd700;
-            text-shadow: 0 0 10px #ff4500;
-            direction: ltr;
-            display: inline-block;
-            min-width: 200px;
+        .contest-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
         }
-        .contest-join-btn {
+        .contest-card {
+            background: linear-gradient(145deg, #1a1200, #0d0800);
+            border: 2px solid rgba(255,215,0,0.5); border-radius: 20px;
+            padding: 15px; text-align: center;
+            display: flex; flex-direction: column; align-items: center;
+        }
+        .contest-icon { font-size: 40px; margin-bottom: 10px; }
+        .contest-name { font-weight: 900; color: #FFD700; font-size: 16px; margin-bottom: 5px; }
+        .contest-desc { font-size: 12px; color: #ccc; margin-bottom: 15px; line-height: 1.4; }
+        .contest-btn {
             background: linear-gradient(45deg, #ffd700, #ffa500);
-            color: #000;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 30px;
-            font-weight: 900;
-            font-size: 16px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            box-shadow: 0 0 15px gold;
-            transition: 0.2s;
+            color: #000; border: none; padding: 8px 20px; border-radius: 30px;
+            font-weight: bold; font-size: 14px; cursor: pointer; text-decoration: none;
+            display: inline-block; box-shadow: 0 0 10px gold;
         }
-        .contest-join-btn:hover { transform: scale(1.05); }
 
         .statues-title { font-size: 20px; color: #ffd700; text-align: center; margin: 20px 0 15px; }
         .statues-grid {
@@ -308,7 +287,7 @@
 <div class="content">
     <div class="welcome-card">
         <h2>🏆 مرحباً بك في المتحف الكبير</h2>
-        <p>استكشف التماثيل الأسطورية، اربح الجنيهات، وارتقِ بمستواك</p>
+        <p>استكشف التماثيل الأسطورية، شارك في المسابقة الكبرى، اربح الجنيهات</p>
     </div>
 
     <div class="quick-actions">
@@ -338,20 +317,32 @@
         <div style="text-align:center; margin-top:8px; font-size:12px; color:#ffaa00;">اضغط للتفاصيل</div>
     </div>
 
-    <!-- قسم مسابقة كأس العالم 2026 -->
-    <div class="worldcup-contest-card">
-        <div class="contest-badge">🏆 كأس العالم 2026 🏆</div>
-        <div class="contest-title-small">توقع النتائج واربح الجوائز</div>
-        <div class="contest-prize-small">💵 100,000 جنيه مصري 💵</div>
-        <div class="contest-desc-small">
-            تخمين نتائج مباريات مصر والعالم، تسجيل التوقعات اليومية، وجوائز فورية لأكثر المتوقعين دقة.
-            كل مباراة تفتح في يومها فقط – لا تفوت الفرصة!
+    <!-- بطاقة المسابقة الرئيسية -->
+    <a href="event-4000.html" class="event-card">
+        <div class="event-icon">🔥💰🔥</div>
+        <div class="event-name">أسطورة الكنز 4000$</div>
+        <div class="event-short-desc">شارك في المسابقة الكبرى واربح جوائز مالية ضخمة</div>
+    </a>
+
+    <!-- قسم الألعاب التنافسية -->
+    <div class="contest-section">
+        <div class="section-header">
+            <span class="section-title">🎮 الألعاب التنافسية</span>
         </div>
-        <div class="timer-container">
-            <span class="timer-label">⏳ ينطلق المونديال خلال:</span>
-            <span class="timer-value" id="worldcupTimer">-- يوم -- : -- : --</span>
+        <div class="contest-grid">
+            <div class="contest-card">
+                <div class="contest-icon">⛏️</div>
+                <div class="contest-name">الحفار الفرعوني</div>
+                <div class="contest-desc">اكتشف الكنوز وتجنب الأفاعي. العب واربح النجوم!</div>
+                <a href="hafar.html" class="contest-btn">ابدأ اللعب</a>
+            </div>
+            <div class="contest-card">
+                <div class="contest-icon">🧠</div>
+                <div class="contest-name">ذاكرة الفراعنة</div>
+                <div class="contest-desc">طابق الرموز قبل نفاد الوقت. اختبر ذاكرتك!</div>
+                <a href="memory-game.html" class="contest-btn">ابدأ اللعب</a>
+            </div>
         </div>
-        <a href="worldcup.html" class="contest-join-btn">⚽ انضم إلى المسابقة الآن ⚽</a>
     </div>
 
     <div class="statues-title">🏛 التماثيل الأسطورية</div>
@@ -470,35 +461,6 @@
         });
     });
 
-    // ========== عداد كأس العالم الشغال 100% ==========
-    function startWorldcupTimer() {
-        const timerElement = document.getElementById('worldcupTimer');
-        // تاريخ انطلاق كأس العالم: 12 يونيو 2026 الساعة 00:00:00
-        const targetDate = new Date(2026, 5, 12, 0, 0, 0); // ملاحظة: شهر 5 = يونيو
-    
-        function updateTimer() {
-            const now = new Date();
-            const diff = targetDate - now;
-            
-            if (diff <= 0) {
-                timerElement.textContent = "🚀 المونديال انطلق الآن! 🚀";
-                return;
-            }
-            
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-            
-            timerElement.textContent = `${days} يوم ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        }
-        
-        updateTimer();
-        setInterval(updateTimer, 1000);
-    }
-    
-    startWorldcupTimer();
-
     function initParticles() {
         const container = document.getElementById('particles');
         for (let i = 0; i < 25; i++) {
@@ -522,32 +484,51 @@
         setTimeout(() => t.remove(), 3000);
     };
 
-    function initNewsTicker() {
-        const tickerContainer = document.getElementById('tickerContent');
-        if (!tickerContainer) return;
-        
-        const newsItems = [
-            "⚽ إيهاب جلال من المنصورة سجل توقعه لمباراة مصر × ألمانيا",
-            "🏆 aly_eld*** توقع فوز مصر 2-1 وفاز بـ 20,000 جنيه",
-            "🔥 مسابقة كأس العالم 2026 – جوائز تصل إلى 100,000 جنيه",
-            "💸 سحب 500 ج.م", "💰 إيداع 2,500 ج.م", "💸 سحب 1,200 ج.م",
-            "💰 إيداع 10,000 ج.م", "💸 سحب 350 ج.م", "💰 إيداع 7,800 ج.م",
-            "💸 سحب 2,000 ج.م", "💰 إيداع 15,000 ج.م", "💸 سحب 600 ج.م",
-            "⭐ نور الشربيني من الإسكندرية اشتركت في مسابقة كأس العالم",
-            "🏆 رجل المستحيل توقع فوز مصر في المونديال",
-            "⚽ أحمد حسن من القاهرة توقع فوز البرازيل 3-1"
+    // شريط الأخبار بالإنجليزية مع 100 مستخدم
+    function generateEnglishUsers() {
+        const names = [
+            "Ahmed Ali", "Mona Mahmoud", "Karim Hassan", "Noura Samy", "Mohamed Fawzy", "Aya Gamal", "Omar Khaled", "Salma Adel",
+            "Youssef Ibrahim", "Hoda Mohamed", "Mostafa Emad", "Rania Hazem", "Ehab Sherif", "Dina Hani", "Khaled Nabil",
+            "Marwa Ashraf", "Seif El-Din", "Lina Atef", "Hossam Kamel", "Basma Walid", "Ashraf Said", "Naglaa Fathy",
+            "Tarek Hussein", "Abeer Magdy", "Ziad Yasser", "Ghada Refaat", "Islam Galal", "Shaimaa Sabry", "Mohamed Abd", "Nourhan Nasser",
+            "Ayman Salah", "Mirna Alaa", "Hisham Gaber", "Sahar Sameh", "Walid Mostafa", "Nihal Hisham", "Amr Darwish", "Hend Raafat",
+            "Adham Karim", "Zeinab Maher", "Basem Youssef", "Heba Azmy", "Sherif Mokhtar", "Nadine Adel", "Moataz Lotfy", "Habiba Ehab",
+            "Iyad Wael", "Jana Mohamed", "Magdy Ramzy", "Sally Ahmed", "Nader Fouad", "Rania Sameh", "Fadi Nabil", "Marwan Hani",
+            "Hibatullah", "Yahia Omar", "Salma Hazem", "Ahmed Maher", "Doaa Selim", "Mahmoud Tarek", "Nour Yassin", "Karim Abed",
+            "Asmaa Alaa", "Khaled Amin", "Rawan Emad", "Akram Ezzat", "Lama Gamal", "Tamer Farag", "Inas Shawky", "Mohab Zaki",
+            "Saja Aref", "Fares Eid", "Mira Said", "Badr Hani", "Yaqeen Ahmed", "Jawad Hussein", "Laila Morad", "Ghassan Naim",
+            "Nagwa Kamal", "Loay Shaaban", "Raghd Hisham", "Ehab Ghanem", "Alaa Hamdy", "Youssef Awad", "Hagar Fathy", "Bilal Nagy",
+            "Salma Raafat", "Osama Sayed", "Jana Khalil", "Ramy Saleh", "Nuran Asem", "Moamen Adel", "Haneen Galal"
         ];
-        
-        let fullText = '';
-        for (let i = 0; i < 5; i++) {
-            newsItems.forEach(item => {
-                fullText += `<span>${item}</span>`;
-            });
+        const cities = [
+            "Cairo", "Alexandria", "Giza", "Mansoura", "Tanta", "Assiut", "Hurghada", "Port Said",
+            "Ismailia", "Fayoum", "Benha", "Zagazig", "Shubra", "Qena", "Luxor", "Aswan"
+        ];
+        const users = [];
+        for (let i = 0; i < 100; i++) {
+            const name = names[i % names.length];
+            const city = cities[i % cities.length];
+            const isDollar = i % 2 === 0;
+            const amount = isDollar ? "4,000" : "200,000";
+            const currency = isDollar ? "via Binance" : "L.E via Vodafone Cash";
+            users.push(`👤 ${name} (${city}) withdrew $${amount} ${currency}`);
         }
-        tickerContainer.innerHTML = fullText;
+        return users;
     }
-    
-    initNewsTicker();
+
+    const notifications = generateEnglishUsers();
+    let currentIndex = 0;
+    const tickerContent = document.getElementById('tickerContent');
+
+    function updateTicker() {
+        tickerContent.style.animation = 'none';
+        tickerContent.offsetHeight;
+        tickerContent.innerHTML = notifications[currentIndex];
+        tickerContent.style.animation = 'ticker 40s linear infinite';
+        currentIndex = (currentIndex + 1) % notifications.length;
+    }
+    setInterval(updateTicker, 300000);
+    updateTicker();
 </script>
 </body>
 </html>

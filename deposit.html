@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>إيداع الرصيد • المتحف الكبير</title>
-    <meta name="description" content="قم بإيداع الرصيد عبر فودافون كاش، اتصالات كاش، اورنج كاش، أو USDT. أقل مبلغ 50 جنيه.">
+    <meta name="description" content="قم بإيداع الرصيد للمشاركة في مسابقة المحقق. أقل مبلغ 50 جنيه.">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -237,17 +237,12 @@
 
         <input type="number" id="amount" placeholder="أدخل مبلغ الإيداع بالجنيه" min="50">
 
-        <!-- حقل العملات المحذوف -->
-        <!-- <div class="coins-result" id="coinsResult"></div> -->
-
         <input type="file" id="proof" accept="image/*" onchange="checkFileSize()">
         <div class="file-info" id="fileInfo"></div>
 
         <div class="loader" id="loader"></div>
 
         <button onclick="confirmDeposit(event)" id="submitBtn">تقديم طلب الإيداع</button>
-
-        <div class="note">يرجى رفع صورة إثبات التحويل لتأكيد الإيداع</div>
     </div>
 
     <button onclick="location.href='dashboard.html'">العودة للوحة التحكم</button>
@@ -310,9 +305,6 @@ function changePlaceholder(){
     const input = document.getElementById("fromNumber");
     input.placeholder = method === "USDT" ? "أدخل عنوان محفظتك" : "أدخل الرقم الذي تم التحويل منه";
 }
-
-// تم إلغاء calcCoins
-// function calcCoins(){ ... }
 
 function validatePhoneNumber(phone, method){
     const clean = phone.replace(/\s+/g,'').replace(/[^\d]/g,'');
@@ -441,6 +433,11 @@ async function confirmDeposit(event){
         }
         await db.collection("deposits").add({ ...depositData, proofBase64 });
         sendToTelegram(depositData, proofBase64).catch(e=>{});
+
+        // ===== إزالة حظر اللعبة بعد الإيداع =====
+        localStorage.removeItem('gameLost');
+        // ====================================
+
         showCustomToast("تم إرسال طلب الإيداع بنجاح", "success");
         setTimeout(()=> window.location.href = "transactions.html", 2000);
     } catch(err){
@@ -486,4 +483,4 @@ navItems.forEach(item => {
 });
 </script>
 </body>
-    </html>
+</html>
