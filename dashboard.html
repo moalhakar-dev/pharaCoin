@@ -454,12 +454,15 @@
             return;
         }
         userDocRef = doc(db, "users", user.uid);
-        const snap = await getDoc(userDocRef);
-        if (!snap.exists()) {
-            await setDoc(userDocRef, { coins: 1000, totalDeposits: 0, withdrawTier: 'bronze', xp: 0 });
-        }
-        onSnapshot(userDocRef, (doc) => {
-            if (doc.exists()) updateUI(doc.data());
+        onSnapshot(userDocRef, (docSnap) => {
+            if (docSnap.exists()) {
+                updateUI(docSnap.data());
+            } else {
+                // لا تنشئ بيانات مالية من الواجهة حتى لا يتم الكتابة فوق رصيد المستخدم.
+                updateUI({ coins: 0, xp: 0, vipPlan: null });
+            }
+        }, (error) => {
+            console.error('خطأ في مراقبة رصيد المستخدم:', error);
         });
     });
 

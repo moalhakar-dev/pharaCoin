@@ -432,7 +432,8 @@ auth.onAuthStateChanged(async user => {
           }
         }
       } else {
-        userDocRef.set({ coins: 0 }).catch(err => console.error(err));
+        // لا تقم بإنشاء/تصفير الرصيد من صفحة VIP. الرصيد المالي تتم إدارته مركزياً.
+        console.warn('مستند المستخدم غير موجود؛ تم تجاهل إنشاء رصيد افتراضي من صفحة VIP.');
       }
     }, (error) => {
       console.error("خطأ في الاستماع:", error);

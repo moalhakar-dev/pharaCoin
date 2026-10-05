@@ -585,7 +585,7 @@
         userDocRef = doc(db, "users", user.uid);
         const snap = await getDoc(userDocRef);
         if (!snap.exists()) {
-            await setDoc(userDocRef, { coins: 500, totalStars: 0, paidAttempts: 0, totalDeposits: 0 });
+            await setDoc(userDocRef, { coins: 500, totalStars: 0, paidAttempts: 0, totalDeposits: 0 }, { merge: true });
             userBalance = 500; totalStars = 0; paidAttempts = 0; totalDeposits = 0;
         } else {
             const d = snap.data();
