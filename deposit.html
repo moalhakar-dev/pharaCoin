@@ -385,7 +385,7 @@ async function confirmDeposit(event){
     const submitBtn = document.getElementById("submitBtn");
     const loader = document.getElementById("loader");
 
-    if(!method || !fromNumber || !amount || !proofFile){
+    if(!method || !fromNumber || !Number.isFinite(amount) || amount <= 0 || !proofFile){
         showCustomToast("يرجى إدخال جميع البيانات ورفع صورة الإثبات", "error");
         return;
     }
@@ -422,6 +422,7 @@ async function confirmDeposit(event){
             method,
             fromNumber,
             amount,
+            coins: amount,
             status: "pending",
             createdAt: firebase.firestore.FieldValue.serverTimestamp()
         };
@@ -477,9 +478,10 @@ navItems.forEach(item => {
         timer = setTimeout(()=>{
             const c = currentItem.querySelector('.nav-circle');
             c.textContent = currentItem.dataset.egypt;
+            const targetUrl = currentItem.dataset.url;
             currentItem.classList.remove('showing');
             timer = null; currentItem = null;
-            window.location.href = currentItem.dataset.url;
+            window.location.href = targetUrl;
         }, 3000);
     });
 });

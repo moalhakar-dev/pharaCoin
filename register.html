@@ -627,7 +627,9 @@ document.getElementById("registerForm").addEventListener("submit", function(e){
         username: username,
         emailOrPhone: emailOrPhone,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        coins: 1000, // تم تغيير المكافأة إلى 1000 جنيه
+        coins: 1000, // الرصيد الترحيبي
+        totalDeposits: 0,
+        withdrawTier: 'bronze',
         xp: 0,
         vipPlan: null,
         vipExpire: null

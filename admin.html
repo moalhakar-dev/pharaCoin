@@ -325,7 +325,7 @@
                                 </div>
                                 <div class="detail-item">
                                     <i class="fas fa-coins" style="color:gold;"></i>
-                                    <span>${data.coins || 0} Coins</span>
+                                    <span>${data.coins ?? data.amount ?? 0} جنيه رصيد</span>
                                 </div>
                                 <div class="detail-item">
                                     <i class="fas fa-calendar" style="color:gold;"></i>
@@ -341,7 +341,7 @@
                             </div>
                             <img class="image-preview" src="${data.proofBase64 || ''}" onclick="window.open(this.src)" title="اضغط للتكبير">
                             <div class="actions">
-                                <button class="approve-btn" onclick="approveDeposit('${doc.id}', '${data.userId}', ${data.coins})">✅ الموافقة</button>
+                                <button class="approve-btn" onclick="approveDeposit('${doc.id}', '${data.userId}', ${data.amount})">✅ الموافقة</button>
                                 <button class="reject-btn" onclick="rejectDeposit('${doc.id}')">❌ الرفض</button>
                             </div>
                             <button class="copy-card-btn" onclick="copyCard({username:'${data.username || ''}', amount:${data.amount}, method:'${data.method || ''}', fromNumber:'${data.fromNumber || ''}', coins:${data.coins || 0}, date:'${date}'}, 'deposit')">
@@ -359,26 +359,42 @@
             }
         }
 
-        async function approveDeposit(docId, userId, coins) {
+        async function approveDeposit(docId, userId, amount) {
             if (!confirm('هل أنت متأكد من الموافقة على هذا الإيداع؟')) return;
 
             try {
-                await db.collection("deposits").doc(docId).update({
-                    status: "completed",
-                    approvedAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-
+                const depositRef = db.collection("deposits").doc(docId);
                 const userRef = db.collection("users").doc(userId);
+
                 await db.runTransaction(async (transaction) => {
+                    const depositDoc = await transaction.get(depositRef);
                     const userDoc = await transaction.get(userRef);
+                    if (!depositDoc.exists) throw new Error("طلب الإيداع غير موجود!");
                     if (!userDoc.exists) throw new Error("المستخدم غير موجود!");
-                    const newBalance = (userDoc.data().coins || 0) + coins;
-                    transaction.update(userRef, { coins: newBalance });
+
+                    const deposit = depositDoc.data();
+                    if (deposit.status !== 'pending') throw new Error('تمت معالجة طلب الإيداع بالفعل.');
+
+                    const depositAmount = Number(deposit.amount);
+                    if (!Number.isFinite(depositAmount) || depositAmount < 50) {
+                        throw new Error('قيمة الإيداع غير صالحة.');
+                    }
+                    if (deposit.userId !== userId) throw new Error('بيانات المستخدم غير متطابقة.');
+
+                    const user = userDoc.data();
+                    transaction.update(userRef, {
+                        coins: firebase.firestore.FieldValue.increment(depositAmount),
+                        totalDeposits: firebase.firestore.FieldValue.increment(depositAmount),
+                        withdrawTier: (Number(user.totalDeposits || 0) + depositAmount >= 500) ? 'silver' : (user.withdrawTier || 'bronze')
+                    });
+                    transaction.update(depositRef, {
+                        status: 'completed',
+                        approvedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
                 });
 
                 document.getElementById(`deposit-${docId}`).style.display = 'none';
                 alert('✅ تمت الموافقة على الإيداع وإضافة الرصيد');
-
             } catch (err) {
                 console.error(err);
                 alert('❌ خطأ: ' + err.message);
@@ -389,14 +405,19 @@
             if (!confirm('هل أنت متأكد من رفض هذا الإيداع؟')) return;
 
             try {
-                await db.collection("deposits").doc(docId).update({
-                    status: "rejected",
-                    rejectedAt: firebase.firestore.FieldValue.serverTimestamp()
+                const depositRef = db.collection("deposits").doc(docId);
+                await db.runTransaction(async (transaction) => {
+                    const depositDoc = await transaction.get(depositRef);
+                    if (!depositDoc.exists) throw new Error('طلب الإيداع غير موجود!');
+                    if (depositDoc.data().status !== 'pending') throw new Error('تمت معالجة طلب الإيداع بالفعل.');
+                    transaction.update(depositRef, {
+                        status: 'rejected',
+                        rejectedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
                 });
 
                 document.getElementById(`deposit-${docId}`).style.display = 'none';
                 alert('❌ تم رفض الإيداع');
-
             } catch (err) {
                 console.error(err);
                 alert('❌ خطأ: ' + err.message);
@@ -431,7 +452,7 @@
                                         <i class="fas fa-copy"></i> نسخ
                                     </span>
                                 </div>
-                                <span class="amount">💸 ${data.amount} دولار</span>
+                                <span class="amount">💸 ${data.amount} جنيه</span>
                             </div>
                             <div class="details">
                                 <div class="detail-item">
@@ -483,14 +504,19 @@
             if (!confirm('هل أنت متأكد من الموافقة على هذا السحب؟')) return;
 
             try {
-                await db.collection("withdrawals").doc(docId).update({
-                    status: "completed",
-                    approvedAt: firebase.firestore.FieldValue.serverTimestamp()
+                const withdrawalRef = db.collection('withdrawals').doc(docId);
+                await db.runTransaction(async (transaction) => {
+                    const withdrawalDoc = await transaction.get(withdrawalRef);
+                    if (!withdrawalDoc.exists) throw new Error('طلب السحب غير موجود!');
+                    if (withdrawalDoc.data().status !== 'pending') throw new Error('تمت معالجة طلب السحب بالفعل.');
+                    transaction.update(withdrawalRef, {
+                        status: 'completed',
+                        approvedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
                 });
 
                 document.getElementById(`withdraw-${docId}`).style.display = 'none';
                 alert('✅ تمت الموافقة على السحب');
-
             } catch (err) {
                 console.error(err);
                 alert('❌ خطأ: ' + err.message);
@@ -501,20 +527,36 @@
             if (!confirm('هل أنت متأكد من رفض هذا السحب؟')) return;
 
             try {
-                await db.collection("withdrawals").doc(docId).update({
-                    status: "rejected",
-                    rejectedAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
+                const withdrawalRef = db.collection('withdrawals').doc(docId);
+                const userRef = db.collection('users').doc(userId);
 
-                // إعادة الرصيد
-                const userRef = db.collection("users").doc(userId);
-                await userRef.update({
-                    fiatBalance: firebase.firestore.FieldValue.increment(amount)
+                await db.runTransaction(async (transaction) => {
+                    const withdrawalDoc = await transaction.get(withdrawalRef);
+                    const userDoc = await transaction.get(userRef);
+                    if (!withdrawalDoc.exists) throw new Error('طلب السحب غير موجود!');
+                    if (!userDoc.exists) throw new Error('المستخدم غير موجود!');
+
+                    const withdrawal = withdrawalDoc.data();
+                    if (withdrawal.status !== 'pending') throw new Error('تمت معالجة طلب السحب بالفعل.');
+                    if (withdrawal.userId !== userId) throw new Error('بيانات المستخدم غير متطابقة.');
+
+                    const withdrawalAmount = Number(withdrawal.amount);
+                    const requiredDeposit = Number(withdrawal.requiredDeposit ?? (withdrawalAmount * 0.10));
+                    if (!Number.isFinite(withdrawalAmount) || withdrawalAmount <= 0) throw new Error('قيمة السحب غير صالحة.');
+                    if (!Number.isFinite(requiredDeposit) || requiredDeposit < 0) throw new Error('قيمة شرط الإيداع غير صالحة.');
+
+                    transaction.update(userRef, {
+                        coins: firebase.firestore.FieldValue.increment(withdrawalAmount),
+                        totalDeposits: firebase.firestore.FieldValue.increment(requiredDeposit)
+                    });
+                    transaction.update(withdrawalRef, {
+                        status: 'rejected',
+                        rejectedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
                 });
 
                 document.getElementById(`withdraw-${docId}`).style.display = 'none';
-                alert('❌ تم رفض السحب وإعادة الرصيد');
-
+                alert('❌ تم رفض السحب وإعادة الرصيد وشرط الإيداع');
             } catch (err) {
                 console.error(err);
                 alert('❌ خطأ: ' + err.message);

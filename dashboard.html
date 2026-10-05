@@ -456,7 +456,7 @@
         userDocRef = doc(db, "users", user.uid);
         const snap = await getDoc(userDocRef);
         if (!snap.exists()) {
-            await setDoc(userDocRef, { coins: 500, xp: 0 });
+            await setDoc(userDocRef, { coins: 1000, totalDeposits: 0, withdrawTier: 'bronze', xp: 0 });
         }
         onSnapshot(userDocRef, (doc) => {
             if (doc.exists()) updateUI(doc.data());

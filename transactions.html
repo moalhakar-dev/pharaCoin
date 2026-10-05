@@ -405,20 +405,20 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 
 // تحديث العملات المعروضة (بالجنيه)
+let unsubscribeUserBalance = null;
 function updateHeaderCoins() {
+  if (unsubscribeUserBalance) unsubscribeUserBalance();
   const user = auth.currentUser;
-  if (user) {
-    db.collection("users").doc(user.uid).get().then(doc => {
-      if (doc.exists) {
-        const coins = doc.data().coins || 0;
-        document.getElementById('headerCoins').innerText = coins.toLocaleString();
-      }
-    }).catch(() => {
-      document.getElementById('headerCoins').innerText = '0';
-    });
-  } else {
+  if (!user) {
     document.getElementById('headerCoins').innerText = '0';
+    return;
   }
+  unsubscribeUserBalance = db.collection("users").doc(user.uid).onSnapshot(doc => {
+    const coins = doc.exists ? Number(doc.data().coins || 0) : 0;
+    document.getElementById('headerCoins').innerText = Number.isFinite(coins) ? coins.toLocaleString() : '0';
+  }, () => {
+    document.getElementById('headerCoins').innerText = '0';
+  });
 }
 
 // متغيرات عامة
