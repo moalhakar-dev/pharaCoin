@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr" data-ui="v10">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الملف الشخصي • المتحف الكبير</title>
-    <meta name="description" content="صفحة الملف الشخصي: بيانات حسابك، رصيدك، مستواك، وإعداداتك.">
+    <title>Profile • Grand Museum</title>
+    <meta name="description" content="صفحة Profile: بيانات حسابك، رصيدك، مستواك، وإعداداتك.">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
@@ -179,74 +179,68 @@
             margin:0 5px;
         }
     </style>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="v10.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="v10.js" defer></script>
 </head>
 <body>
 
 <div class="header">
-    <h1>👤 الملف الشخصي</h1>
-    <div class="back" onclick="goBack()">⬅ رجوع</div>
+    <h1>👤 Profile</h1>
+    <div class="back" onclick="goBack()">⬅ Back</div>
 </div>
 
 <div class="container">
     <div class="card">
-        <div class="label">اسم المستخدم</div>
+        <div class="label">Username</div>
         <div class="data-box" id="username">...</div>
 
-        <div class="label">رصيدك (جنيه مصري)</div>
+        <div class="label">Your Balance (EGP)</div>
         <div class="balance-item">
             <div class="currency">🇪🇬 EGP</div>
             <div class="value" id="egpBalance">0</div>
         </div>
 
         <div class="action-row">
-            <button class="action-btn" onclick="window.location.href='deposit.html'">💰 إيداع</button>
-            <button class="action-btn" onclick="window.location.href='withdraw.html'">💸 سحب</button>
+            <button class="action-btn" onclick="window.location.href='deposit.html'">💰 Deposit</button>
+            <button class="action-btn" onclick="window.location.href='withdraw.html'">💸 Withdraw</button>
         </div>
 
         <div class="card clickable-card" onclick="window.location.href='levels.html'" style="margin-top:10px; padding:10px;">
-            <div class="label">المستوى</div>
+            <div class="label">Level</div>
             <div class="data-box" style="margin-bottom:5px;">Level <span id="level">1</span></div>
             <div class="progress-bar">
                 <div class="progress-fill" id="xpBar" style="width:0%"></div>
             </div>
-            <div style="color:#ffaa00; font-size:12px; margin-top:5px;">اضغط لعرض كل المستويات</div>
+            <div style="color:#ffaa00; font-size:12px; margin-top:5px;">Tap to view all levels</div>
         </div>
     </div>
 
     <div class="card clickable-card" onclick="window.location.href='vip.html'">
-        <div class="label">عضوية VIP</div>
-        <div class="data-box" id="vipStatus">جارِ التحميل...</div>
-        <div style="color:#ffaa00; font-size:12px; text-align:center;">اضغط للترقية أو تفعيل الاشتراك</div>
+        <div class="label">VIP Membership</div>
+        <div class="data-box" id="vipStatus">Loading...</div>
+        <div style="color:#ffaa00; font-size:12px; text-align:center;">Tap to upgrade or activate your subscription</div>
     </div>
 
     <div class="card">
-        <div class="label">البريد الإلكتروني / رقم الهاتف</div>
+        <div class="label">Email / Phone Number</div>
         <div class="data-box" id="userContact">...</div>
     </div>
 
     <div class="card">
-        <div class="label">تغيير كلمة المرور</div>
-        <input type="password" placeholder="كلمة المرور الجديدة" id="newpass">
-        <button onclick="savePass()">حفظ التغيير</button>
+        <div class="label">Change Password</div>
+        <input type="password" placeholder="Password الجديدة" id="newpass">
+        <button onclick="savePass()">Save Changes</button>
     </div>
 
     <div class="card">
-        <button onclick="logout()">🚪 تسجيل خروج</button>
+        <button onclick="logout()">🚪 Log Out</button>
     </div>
 
     <div class="policy-links">
-        <a href="terms.html">📜 الشروط</a> |
-        <a href="privacy.html">🔒 الخصوصية</a>
+        <a href="terms.html">📜 Terms</a> |
+        <a href="privacy.html">🔒 Privacy</a>
     </div>
-</div>
-
-<div class="bottom-nav" style="position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:space-around;align-items:center;padding:10px 6px;background:rgba(10,10,20,.96);backdrop-filter:blur(12px);border-top:1px solid rgba(255,215,0,.18);z-index:9999;">
-  <a href="dashboard.html" style="color:#fff;text-decoration:none;text-align:center;font-size:12px;">🏠<br>الرئيسية</a>
-  <a href="deposit.html" style="color:#fff;text-decoration:none;text-align:center;font-size:12px;">💰<br>إيداع</a>
-  <a href="withdraw.html" style="color:#fff;text-decoration:none;text-align:center;font-size:12px;">💸<br>سحب</a>
-  <a href="profile.html" style="color:#ffd700;text-decoration:none;text-align:center;font-size:12px;font-weight:700;">👤<br>حسابي</a>
 </div>
 
 <script>
@@ -268,12 +262,12 @@ auth.onAuthStateChanged(user => {
         db.collection("users").doc(user.uid).get().then(doc => {
             if (doc.exists) {
                 const data = doc.data();
-                document.getElementById("username").innerText = data.username || "غير متوفر";
+                document.getElementById("username").innerText = data.username || "Unavailable";
                 
                 const coins = data.coins || 0;
                 document.getElementById("egpBalance").innerText = formatNumber(coins);
                 
-                document.getElementById("userContact").innerText = data.emailOrPhone || user.email || "غير متوفر";
+                document.getElementById("userContact").innerText = data.emailOrPhone || user.email || "Unavailable";
 
                 const xp = data.xp || 0;
                 const level = Math.floor(xp / 100) + 1;
@@ -285,7 +279,7 @@ auth.onAuthStateChanged(user => {
                 const expire = data.vipExpire?.toDate?.();
                 if (vip && expire && expire > new Date()) {
                     const days = Math.ceil((expire - new Date()) / (1000*60*60*24));
-                    document.getElementById("vipStatus").innerHTML = `👑 مشترك في ${vip}<br>ينتهي خلال ${days} يوم`;
+                    document.getElementById("vipStatus").innerHTML = `👑 مشترك في ${vip}<br>ينتهي خلال ${days} days`;
                 } else {
                     document.getElementById("vipStatus").innerText = "لا يوجد اشتراك VIP";
                 }
@@ -299,11 +293,11 @@ auth.onAuthStateChanged(user => {
 function savePass() {
     const newPass = document.getElementById("newpass").value;
     if (newPass.length < 6) {
-        alert("كلمة المرور يجب أن تكون 6 أحرف على الأقل");
+        alert("Password يجب أن تكون 6 أحرف على الأقل");
         return;
     }
     auth.currentUser.updatePassword(newPass)
-        .then(() => alert("تم تغيير كلمة المرور بنجاح"))
+        .then(() => alert("تم Change Password بنجاح"))
         .catch(err => alert(err.message));
 }
 
@@ -316,6 +310,5 @@ function goBack() {
     else location.href = "dashboard.html";
 }
 </script>
-    <script src="v10.js" defer></script>
 </body>
 </html>

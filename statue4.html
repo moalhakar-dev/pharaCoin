@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr" data-ui="v10">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>👑 تعدين التمثال الذهبي • المرحلة الرابعة • المتحف الكبير</title>
-    <meta name="description" content="اشترِ أدوات التعدين الإلهية واربح جنيهات كل ثانية.">
+    <title>👑 Golden Statue Mining • Stage 4 • Grand Museum</title>
+    <meta name="description" content="اشترِ Mining Tools الإلهية واربح جنيهات كل ثانية.">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
@@ -12,7 +12,7 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Cairo', sans-serif;
+            font-family: 'Inter','Segoe UI',Arial,sans-serif;
             background: #000;
             color: #fff;
             min-height: 100vh;
@@ -69,7 +69,7 @@
             margin: 0 auto;
         }
 
-        /* صندوق التعدين الرئيسي */
+        /* صندوق Mining الرئيسي */
         .mining-box {
             background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
             border: 1px solid rgba(255,0,51,0.4); border-radius: 30px;
@@ -127,7 +127,7 @@
             transition: width 0.3s;
         }
 
-        /* أدوات التعدين (كروت) */
+        /* Mining Tools (كروت) */
         .tools-container {
             display: flex; flex-direction: column; gap: 12px; margin-top: 15px;
         }
@@ -175,7 +175,7 @@
             font-weight: bold; font-size: 13px;
         }
 
-        /* المكافأة النهائية */
+        /* Final Reward */
         .reward-card {
             background: rgba(0,0,0,0.7); border: 2px solid #00ff9d;
             border-radius: 25px; padding: 20px; margin-top: 25px;
@@ -227,8 +227,9 @@
             .tool-icon { width: 45px; height: 45px; }
         }
     </style>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="v10.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="v10.js" defer></script>
 </head>
 <body>
 <div class="bg"></div>
@@ -237,34 +238,34 @@
 <!-- شريط علوي -->
 <div class="top-bar">
     <div class="nav-links">
-        <a href="dashboard.html">🏠 الرئيسية</a>
-        <a href="museum.html">🏺 المتحف</a>
-        <a href="statue4.html" class="active">👑 المرحلة 4</a>
+        <a href="dashboard.html">🏠 Home</a>
+        <a href="museum.html">🏺 Museum</a>
+        <a href="statue4.html" class="active">👑 Stage 4</a>
     </div>
-    <div class="coin-display">💰 <span id="coinCount">0</span> جنيه</div>
+    <div class="coin-display">💰 <span id="coinCount">0</span> EGP</div>
 </div>
 
 <!-- المحتوى -->
 <div class="content">
-    <!-- معدل الاستخراج المباشر -->
+    <!-- Live Mining Rate -->
     <div class="mining-box">
-        <span class="mining-label">⛏️ إجمالي الاستخراج</span>
-        <span class="mining-value" id="totalRate">0.0 جنيه/ث</span>
+        <span class="mining-label">⛏️ Total Mined</span>
+        <span class="mining-value" id="totalRate">0.0 EGP/sec</span>
         <span class="live-badge">LIVE</span>
-        <button class="collect-btn" id="collectBtn">⛏️ جمع</button>
+        <button class="collect-btn" id="collectBtn">⛏️ Collect</button>
     </div>
-    <div class="pending-amount" id="pendingDisplay">⏳ قيد التعدين: 0.0 جنيه</div>
+    <div class="pending-amount" id="pendingDisplay">⏳ Mining: 0.0 EGP</div>
 
     <!-- صورة التمثال الإلهي -->
     <div class="statue-full-img">
-        <img src="Object/statue4_full.jpg" alt="التمثال الذهبي" onerror="this.style.display='none'">
-        <p>👑 التمثال الذهبي 👑</p>
+        <img src="Object/statue4_full.jpg" alt="Golden Statue" onerror="this.style.display='none'">
+        <p>👑 Golden Statue 👑</p>
     </div>
 
     <!-- شريط تقدم الأدوات -->
     <div class="progress-section">
         <div class="progress-label">
-            <span>📊 الأدوات المملوكة</span>
+            <span>📊 Owned Tools</span>
             <span id="progressText">0/7</span>
         </div>
         <div class="progress-bar">
@@ -272,24 +273,24 @@
         </div>
     </div>
 
-    <!-- قائمة أدوات التعدين -->
+    <!-- قائمة Mining Tools -->
     <div class="tools-container" id="toolsContainer"></div>
 
     <!-- بطاقة إكمال جميع الأدوات -->
     <div class="reward-card" id="completionCard">
-        <h3>🏆 اكتملت جميع الأدوات الإلهية! 🏆</h3>
-        <p>لقد قمت بشراء جميع أدوات التعدين الإلهية.</p>
-        <p style="color:#ff0033; margin:10px 0">+500,000 جنيه مكافأة إتمام</p>
-        <p style="color:#ff6600;">👑 لقد أنهيت اللعبة بنجاح 👑</p>
+        <h3>🏆 All divine tools completed! 🏆</h3>
+        <p>You have purchased all divine mining tools.</p>
+        <p style="color:#ff0033; margin:10px 0">+500,000 EGP completion bonus</p>
+        <p style="color:#ff6600;">👑 You completed the game successfully 👑</p>
     </div>
 </div>
 
 <!-- شريط سفلي -->
 <div class="bottom-nav">
-    <a href="dashboard.html" class="nav-item">🏠 الرئيسية</a>
-    <a href="museum.html" class="nav-item">🏺 المتحف</a>
-    <a href="statue4.html" class="nav-item active">👑 المرحلة 4</a>
-    <a href="profile.html" class="nav-item">👤 حسابي</a>
+    <a href="dashboard.html" class="nav-item">🏠 Home</a>
+    <a href="museum.html" class="nav-item">🏺 Museum</a>
+    <a href="statue4.html" class="nav-item active">👑 Stage 4</a>
+    <a href="profile.html" class="nav-item">👤 My Account</a>
 </div>
 
 <div class="toast-container" id="toastContainer"></div>
@@ -308,22 +309,22 @@
     let userDocRef = null;
     let userCoins = 0;
     
-    // أدوات التعدين الإلهية: الأسعار والمعدلات (جنيه / ثانية) - تبدأ من 30 ج/ث
+    // Mining Tools الإلهية: الأسعار والمعدلات (EGP / sec) - تبدأ من 30 ج/ث
     const TOOLS = [
         { id: 0, name: "الصولجان الملكي", price: 150000, rate: 30, img: "Object/statue4_part1.jpg" },
-        { id: 1, name: "الصولجان الذهبي", price: 200000, rate: 35, img: "Object/statue4_part2.jpg" },
-        { id: 2, name: "الصولجان الفضي", price: 280000, rate: 40, img: "Object/statue4_part3.jpg" },
+        { id: 1, name: "الصولجان الGold", price: 200000, rate: 35, img: "Object/statue4_part2.jpg" },
+        { id: 2, name: "الصولجان الSilver", price: 280000, rate: 40, img: "Object/statue4_part3.jpg" },
         { id: 3, name: "الصولجان البرونزي", price: 350000, rate: 45, img: "Object/statue4_part4.jpg" },
         { id: 4, name: "الصولجان الماسي", price: 450000, rate: 50, img: "Object/statue4_part5.jpg" },
         { id: 5, name: "الصولجان النادر", price: 600000, rate: 55, img: "Object/statue4_part6.jpg" },
         { id: 6, name: "الصولجان الناري", price: 800000, rate: 65, img: "Object/statue4_part7.jpg" }
     ];
     
-    // حالة الأدوات (مملوكة أم لا)
+    // حالة الأدوات (Owned أم لا)
     let toolsOwned = [false, false, false, false, false, false, false];
     let totalRate = 0.0;
     
-    // بيانات التعدين التراكمي
+    // بيانات Mining التراكمي
     let lastCollectTimestamp = Date.now();
     let pendingEarnings = 0.0;
     let earningsInterval = null;
@@ -357,20 +358,20 @@
     // حساب إجمالي المعدل وتحديث الواجهة
     function updateTotalRate() {
         totalRate = toolsOwned.reduce((sum, owned, idx) => owned ? sum + TOOLS[idx].rate : sum, 0);
-        totalRateSpan.innerText = totalRate.toFixed(1) + ' جنيه/ث';
+        totalRateSpan.innerText = totalRate.toFixed(1) + ' EGP/sec';
     }
 
     // تحديث شريط التقدم
     function updateProgress() {
         const ownedCount = toolsOwned.filter(v => v).length;
         progressFill.style.width = (ownedCount / TOOLS.length * 100) + '%';
-        progressText.innerText = `${ownedCount}/${TOOLS.length} أدوات`;
+        progressText.innerText = `${ownedCount}/${TOOLS.length} Tools`;
         completionCard.style.display = ownedCount === TOOLS.length ? 'block' : 'none';
     }
 
     // تحديث عرض الأرباح المعلقة
     function updatePendingDisplay() {
-        pendingDisplay.innerText = `⏳ قيد التعدين: ${pendingEarnings.toFixed(2)} جنيه`;
+        pendingDisplay.innerText = `⏳ Mining: ${pendingEarnings.toFixed(2)} EGP`;
     }
 
     // تحديث الرصيد في الواجهة
@@ -392,14 +393,14 @@
                     </div>
                     <div class="tool-details">
                         <h4>${tool.name}</h4>
-                        <div class="tool-rate">⚡ ${tool.rate} جنيه / ثانية</div>
-                        <div class="tool-price">💎 ${formatNumber(tool.price)} جنيه</div>
+                        <div class="tool-rate">⚡ ${tool.rate} EGP / sec</div>
+                        <div class="tool-price">💎 ${formatNumber(tool.price)} EGP</div>
                     </div>
                 </div>
                 <div class="tool-action">
                     ${owned ? 
-                        '<span class="owned-badge">✔ مملوكة</span>' : 
-                        `<button onclick="purchaseTool(${idx})">شراء</button>`
+                        '<span class="owned-badge">✔ Owned</span>' : 
+                        `<button onclick="purchaseTool(${idx})">Buy</button>`
                     }
                 </div>
             `;
@@ -407,16 +408,16 @@
         });
     }
 
-    // دالة شراء الأداة
+    // دالة Buy Tool
     window.purchaseTool = async function(index) {
         if (!currentUser) return;
         if (toolsOwned[index]) {
-            showToast('هذه الأداة مملوكة بالفعل', false);
+            showToast('This tool is already owned', false);
             return;
         }
         const tool = TOOLS[index];
         if (userCoins < tool.price) {
-            showToast(`رصيد غير كافٍ! تحتاج ${formatNumber(tool.price)} جنيه`, false);
+            showToast(`Insufficient balance! تحتاج ${formatNumber(tool.price)} EGP`, false);
             return;
         }
 
@@ -425,18 +426,18 @@
                 coins: firebase.firestore.FieldValue.increment(-tool.price),
                 [`tool4_owned_${index}`]: true
             });
-            showToast(`🎉 تم شراء ${tool.name}! أضافت ${tool.rate} جنيه/ث`, true, true);
+            showToast(`🎉 Purchased ${tool.name}! added ${tool.rate} EGP/sec`, true, true);
         } catch (err) {
             console.error(err);
-            showToast('حدث خطأ أثناء الشراء', false);
+            showToast('An error occurred while purchasing', false);
         }
     };
 
-    // جمع الأرباح
+    // Collect الأرباح
     async function collectEarnings() {
         if (!currentUser) return;
         if (pendingEarnings < 0.01) {
-            showToast('لا توجد أرباح كافية بعد', false);
+            showToast('Not enough earnings yet', false);
             return;
         }
         const amount = pendingEarnings;
@@ -446,10 +447,10 @@
                 coins: firebase.firestore.FieldValue.increment(amount),
                 last_collect4: now
             });
-            showToast(`💰 تم جمع ${amount.toFixed(2)} جنيه!`, true, true);
+            showToast(`💰 Collected ${amount.toFixed(2)} EGP!`, true, true);
         } catch (err) {
             console.error(err);
-            showToast('فشل جمع الأرباح', false);
+            showToast('Failed to collect earnings', false);
         }
     }
 
@@ -478,7 +479,7 @@
                         tool4_owned_0: false, tool4_owned_1: false, tool4_owned_2: false,
                         tool4_owned_3: false, tool4_owned_4: false, tool4_owned_5: false, tool4_owned_6: false,
                         last_collect4: Date.now()
-                    }, { merge: true });
+                    });
                     return;
                 }
                 
@@ -509,7 +510,7 @@
                         coins: firebase.firestore.FieldValue.increment(500000),
                         stage4_completed: true
                     });
-                    showToast('👑 مبروك! اكتملت جميع الأدوات القناع الذهبي +500,000 جنيه', true, true);
+                    showToast('👑 مبروك! اكتملت جميع الأدوات القناع الGold +500,000 EGP', true, true);
                 }
             });
         });
@@ -549,6 +550,5 @@
         if (earningsInterval) clearInterval(earningsInterval);
     });
 </script>
-    <script src="v10.js" defer></script>
 </body>
 </html>

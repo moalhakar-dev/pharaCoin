@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr" data-ui="v10">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة المشرف - طلبات VIP | PharaCoin</title>
+    <title>Admin Dashboard - VIP Requests | PharaCoin</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
@@ -164,25 +164,26 @@
             margin:20px 0;
         }
     </style>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="v10.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="v10.js" defer></script>
 </head>
 <body>
     <div class="container">
-        <h1>👑 طلبات اشتراك VIP</h1>
+        <h1>👑 VIP Subscription Requests</h1>
         
         <div class="filter-bar">
-            <button class="filter-btn active" onclick="filterRequests('all')" id="filterAll">الكل</button>
-            <button class="filter-btn" onclick="filterRequests('pending')" id="filterPending">⏳ قيد المراجعة</button>
-            <button class="filter-btn" onclick="filterRequests('approved')" id="filterApproved">✅ مقبولة</button>
-            <button class="filter-btn" onclick="filterRequests('rejected')" id="filterRejected">❌ مرفوضة</button>
+            <button class="filter-btn active" onclick="filterRequests('all')" id="filterAll">All</button>
+            <button class="filter-btn" onclick="filterRequests('pending')" id="filterPending">⏳ Pending</button>
+            <button class="filter-btn" onclick="filterRequests('approved')" id="filterApproved">✅ Approved</button>
+            <button class="filter-btn" onclick="filterRequests('rejected')" id="filterRejected">❌ Rejected</button>
         </div>
         
         <div id="requestsList">
-            <p class="empty-msg">جاري تحميل الطلبات...</p>
+            <p class="empty-msg">Loading requests...</p>
         </div>
         
-        <button class="btn" onclick="location.href='admin.html'">🔙 العودة للوحة الرئيسية</button>
+        <button class="btn" onclick="location.href='admin.html'">🔙 Back to Main Dashboard</button>
     </div>
 
     <script>
@@ -203,21 +204,21 @@
         let currentFilter = 'all';
         let unsubscribe = null;
         
-        // التحقق من تسجيل الدخول وصلاحية المشرف
+        // التحقق من Login وصلاحية المشرف
         auth.onAuthStateChanged(user => {
             if (!user) {
                 window.location.href = "login.html";
                 return;
             }
             
-            console.log("المستخدم الحالي:", user.uid);
-            console.log("المشرفون المسموح لهم:", ADMIN_UIDS);
+            console.log("Current user:", user.uid);
+            console.log("Allowed admins:", ADMIN_UIDS);
             
             if (!ADMIN_UIDS.includes(user.uid)) {
                 document.getElementById('requestsList').innerHTML = `
                     <div class="error-msg">
-                        ⚠️ ليس لديك صلاحية الدخول<br>
-                        <small style="color:#aaa;">UID الخاص بك: ${user.uid}</small>
+                        ⚠️ You do not have access<br>
+                        <small style="color:#aaa;">UID Your UID: ${user.uid}</small>
                     </div>
                 `;
                 return;
@@ -237,7 +238,7 @@
                     console.error("خطأ في الاستماع:", error);
                     document.getElementById('requestsList').innerHTML = `
                         <div class="error-msg">
-                            ❌ خطأ: ${error.message}<br>
+                            ❌ Error: ${error.message}<br>
                             ${error.message.includes('index') ? 
                                 '<small>تحتاج إلى إنشاء Index في Firestore</small>' : ''}
                         </div>
@@ -256,48 +257,48 @@
             
             if (filtered.length === 0) {
                 let filterText = '';
-                if (currentFilter === 'pending') filterText = 'معلقة';
-                else if (currentFilter === 'approved') filterText = 'مقبولة';
-                else if (currentFilter === 'rejected') filterText = 'مرفوضة';
+                if (currentFilter === 'pending') filterText = 'Pending';
+                else if (currentFilter === 'approved') filterText = 'Approved';
+                else if (currentFilter === 'rejected') filterText = 'Rejected';
                 
-                listEl.innerHTML = `<p class="empty-msg">📭 لا توجد طلبات ${filterText ? filterText : ''}</p>`;
+                listEl.innerHTML = `<p class="empty-msg">📭 No ${filterText ? filterText : ''}</p>`;
                 return;
             }
             
             listEl.innerHTML = filtered.map(req => {
-                const date = req.requestedAt ? new Date(req.requestedAt.seconds * 1000).toLocaleString('ar-EG') : 'غير معروف';
+                const date = req.requestedAt ? new Date(req.requestedAt.seconds * 1000).toLocaleString('en-US') : 'Unknown';
                 
                 let statusClass = '';
                 let statusText = '';
                 if (req.status === 'pending') {
                     statusClass = 'status-pending';
-                    statusText = '⏳ قيد المراجعة';
+                    statusText = '⏳ Pending';
                 } else if (req.status === 'approved') {
                     statusClass = 'status-approved';
-                    statusText = '✅ مقبولة';
+                    statusText = '✅ Approved';
                 } else if (req.status === 'rejected') {
                     statusClass = 'status-rejected';
-                    statusText = '❌ مرفوضة';
+                    statusText = '❌ Rejected';
                 }
                 
                 return `
                     <div class="request-card" id="req-${req.id}">
                         <div class="request-header">
-                            <span class="user-info">👤 ${req.username || 'غير معروف'}</span>
+                            <span class="user-info">👤 ${req.username || 'Unknown'}</span>
                             <span class="plan-name">${req.planName}</span>
                         </div>
                         <div class="details">
-                            <div>📊 المستوى: ${req.planLevel}</div>
-                            <div>💰 السعر: ${req.priceUSD}$</div>
-                            <div>🪙 العملات: ${req.priceCoins} Coins</div>
-                            <div>🆔 المستخدم: ${req.userId.substring(0,10)}...</div>
-                            <div>🕐 الطلب: ${date}</div>
+                            <div>📊 Level: ${req.planLevel}</div>
+                            <div>💰 Price: ${req.priceUSD}$</div>
+                            <div>🪙 Coins: ${req.priceCoins} Coins</div>
+                            <div>🆔 User: ${req.userId.substring(0,10)}...</div>
+                            <div>🕐 Request: ${date}</div>
                             <div><span class="status-badge ${statusClass}">${statusText}</span></div>
                         </div>
                         ${req.status === 'pending' ? `
                             <div class="actions">
-                                <button class="approve-btn" onclick="approveRequest('${req.id}', '${req.userId}', '${req.planName}', ${req.planLevel}, ${req.priceUSD})">✅ قبول</button>
-                                <button class="reject-btn" onclick="rejectRequest('${req.id}')">❌ رفض</button>
+                                <button class="approve-btn" onclick="approveRequest('${req.id}', '${req.userId}', '${req.planName}', ${req.planLevel}, ${req.priceUSD})">✅ Approve</button>
+                                <button class="reject-btn" onclick="rejectRequest('${req.id}')">❌ Reject</button>
                             </div>
                         ` : ''}
                     </div>
@@ -305,22 +306,22 @@
             }).join('');
         }
         
-        // قبول طلب VIP
+        // Approve VIP Request
         async function approveRequest(docId, userId, planName, planLevel, priceUSD) {
-            if (!confirm(`هل أنت متأكد من قبول طلب ${planName}؟`)) return;
+            if (!confirm(`هل أنت متأكد من Approve طلب ${planName}؟`)) return;
             
             try {
-                // تحديث حالة الطلب
+                // Update request status
                 await db.collection("vip_requests").doc(docId).update({
                     status: "approved",
                     approvedAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
                 
-                // حساب تاريخ انتهاء الصلاحية (30 يوم)
+                // Calculate expiration date (30 days)
                 const expireDate = new Date();
                 expireDate.setDate(expireDate.getDate() + 30);
                 
-                // خصم الرصيد وتحديث بيانات المستخدم
+                // Deduct balance and update user data
                 await db.collection("users").doc(userId).update({
                     coins: firebase.firestore.FieldValue.increment(-(priceUSD * 100)), // 1$ = 100 Coins
                     vipPlan: planName,
@@ -328,17 +329,17 @@
                     vipExpire: expireDate
                 });
                 
-                alert('✅ تم قبول الطلب وتفعيل الاشتراك');
+                alert('✅ Request approved and subscription activated');
                 
             } catch (err) {
                 console.error(err);
-                alert('❌ خطأ: ' + err.message);
+                alert('❌ Error: ' + err.message);
             }
         }
         
-        // رفض طلب VIP
+        // Reject VIP Request
         async function rejectRequest(docId) {
-            if (!confirm('هل أنت متأكد من رفض هذا الطلب؟')) return;
+            if (!confirm('هل أنت متأكد من Reject هذا الطلب؟')) return;
             
             try {
                 await db.collection("vip_requests").doc(docId).update({
@@ -346,11 +347,11 @@
                     rejectedAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
                 
-                alert('❌ تم رفض الطلب');
+                alert('❌ Request rejected');
                 
             } catch (err) {
                 console.error(err);
-                alert('❌ خطأ: ' + err.message);
+                alert('❌ Error: ' + err.message);
             }
         }
         
@@ -368,6 +369,5 @@
             renderRequests();
         }
     </script>
-    <script src="v10.js" defer></script>
 </body>
 </html>

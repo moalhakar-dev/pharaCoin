@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr" data-ui="v10">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>أسطورة الكنز 4000$ • المتحف الكبير</title>
-    <meta name="description" content="حدث أسطورة الكنز: اربح حصتك من 4000 دولار بدعوة 3 أصدقاء والمشاركة في الألعاب. انضم الآن!">
+    <title>$4,000 Treasure Legend • Grand Museum</title>
+    <meta name="description" content="حدث أسطورة الكنز: اربح حصتك من 4000 USD بInvite 3 Friends والمشاركة في الألعاب. انضم الآن!">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Cairo', sans-serif;
+            font-family: 'Inter','Segoe UI',Arial,sans-serif;
             background: #000;
             color: #fff;
             min-height: 100vh;
@@ -308,8 +308,9 @@
             0% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; }
         }
     </style>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="v10.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="v10.js" defer></script>
 </head>
 <body>
 <div class="bg"></div>
@@ -333,31 +334,31 @@
 
 <div class="content">
     <div class="event-header">
-        <div class="event-badge">🔥 حدث محدود 🔥</div>
-        <div class="event-title">أسطورة الكنز 4000$</div>
-        <div class="prize-text">💵 جائزة 4000 دولار أمريكي 💵</div>
+        <div class="event-badge">🔥 Limited Event 🔥</div>
+        <div class="event-title">$4,000 Treasure Legend</div>
+        <div class="prize-text">💵 $4,000 USD Prize 💵</div>
     </div>
 
     <div class="timer-card">
-        <div class="timer-label">⏳ الوقت المتبقي لنهاية الحدث</div>
+        <div class="timer-label">⏳ Time Remaining</div>
         <div class="countdown" id="countdown">-- : -- : --</div>
     </div>
 
     <!-- الألعاب الجديدة -->
     <div class="games-section">
-        <div class="games-title">🎮 الألعاب التنافسية</div>
+        <div class="games-title">🎮 Competitive Games</div>
         <div class="games-grid">
             <div class="game-card">
                 <div class="game-icon">⛏️</div>
-                <div class="game-name">الحفار الفرعوني</div>
-                <div class="game-desc">انقر على الأحجار لاكتشاف الكنوز وتجنب الأفاعي. اجمع النجوم واربح الجائزة!</div>
-                <a href="hafar.html" class="game-btn">ابدأ اللعب</a>
+                <div class="game-name">Pharaoh Digger</div>
+                <div class="game-desc">Click the stones to discover treasures and avoid snakes. Collect stars and win the prize!</div>
+                <a href="hafar.html" class="game-btn">Play Now</a>
             </div>
             <div class="game-card">
                 <div class="game-icon">🧠</div>
-                <div class="game-name">ذاكرة الفراعنة</div>
-                <div class="game-desc">طابق الرموز الفرعونية قبل نفاد الوقت. اختبر ذاكرتك واجمع النجوم للفوز.</div>
-                <a href="memory-game.html" class="game-btn">ابدأ اللعب</a>
+                <div class="game-name">Pharaoh Memory</div>
+                <div class="game-desc">Match the Egyptian symbols before time runs out. Test your memory and collect stars to win.</div>
+                <a href="memory-game.html" class="game-btn">Play Now</a>
             </div>
         </div>
     </div>
@@ -365,27 +366,27 @@
     <!-- نظام الإحالات الحالي -->
     <div class="progress-section">
         <div class="progress-header">
-            <span>📊 نقاطك: <span id="userPoints">0</span></span>
-            <span>الهدف: 300 نقطة</span>
+            <span>📊 Your Points: <span id="userPoints">0</span></span>
+            <span>Goal: 300 points</span>
         </div>
         <div class="progress-bar">
             <div class="progress-fill" id="progressFill" style="width:0%"></div>
         </div>
-        <p style="text-align:center; margin-top:10px; font-size:13px; color:#ffaa00;">كل 100 نقطة = إحالة واحدة ناجحة</p>
+        <p style="text-align:center; margin-top:10px; font-size:13px; color:#ffaa00;">Every 100 points = 1 successful referral</p>
     </div>
 
     <div class="task-item">
         <div class="task-info">
-            <div class="task-name">👥 دعوة 3 أصدقاء</div>
-            <div class="task-desc">ادعُ 3 أصدقاء للانضمام واحصل على 300 نقطة</div>
+            <div class="task-name">👥 Invite 3 Friends</div>
+            <div class="task-desc">Invite 3 friends to join and get 300 points</div>
         </div>
         <span class="referral-count" id="referralCount">0/3</span>
-        <button class="task-btn" id="inviteBtn" onclick="window.location.href='profile.html'">📤 دعوة</button>
+        <button class="task-btn" id="inviteBtn" onclick="window.location.href='profile.html'">📤 Invite</button>
     </div>
 
     <div class="action-buttons">
-        <a href="dashboard.html" class="btn btn-outline">🔙 لوحة التحكم</a>
-        <button class="btn btn-gold" onclick="claimReward()" id="claimBtn" disabled>🎁 استلم حصتك</button>
+        <a href="dashboard.html" class="btn btn-outline">🔙 Dashboard</a>
+        <button class="btn btn-gold" onclick="claimReward()" id="claimBtn" disabled>🎁 Claim Your Share</button>
     </div>
 </div>
 
@@ -510,7 +511,7 @@
         userDocRef = doc(db, "users", user.uid);
         const snap = await getDoc(userDocRef);
         if (!snap.exists()) {
-            await setDoc(userDocRef, { coins: 500, referralCount: 0, eventPoints: 0 }, { merge: true });
+            await setDoc(userDocRef, { coins: 500, referralCount: 0, eventPoints: 0 });
         }
         onSnapshot(userDocRef, (doc) => {
             if (doc.exists()) {
@@ -542,6 +543,5 @@
     initParticles();
     startCountdown();
 </script>
-    <script src="v10.js" defer></script>
 </body>
 </html>

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr" data-ui="v10">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سحب الأموال • المتحف الكبير</title>
-    <meta name="description" content="اسحب أرباحك بأمان – جميع السحوبات محفوظة ومضمونة.">
+    <title>Withdraw Funds • Grand Museum</title>
+    <meta name="description" content="اسحب Your Earnings بأمان – جميع السحوبات محفوظة ومضمونة.">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js">
     </script>
@@ -27,7 +27,7 @@
         }
 
         body {
-            font-family: 'Cairo', sans-serif;
+            font-family: 'Inter','Segoe UI',Arial,sans-serif;
             background: url("Object/qa.jpg") no-repeat center center fixed;
             background-size: cover;
             color: white;
@@ -213,7 +213,7 @@
         .balance-value { font-size: 18px; font-weight: 800; background: rgba(255,215,0,0.15); padding: 4px 12px; border-radius: 20px; }
         select, input {
             width: 100%; padding: 14px; margin-bottom: 12px; border-radius: 12px; border: 1px solid gold;
-            background: #0e0e0e; color: white; font-family: 'Cairo', sans-serif;
+            background: #0e0e0e; color: white; font-family: 'Inter','Segoe UI',Arial,sans-serif;
         }
         .deposit-warning {
             background: rgba(255,100,0,0.2); border: 1px solid #ff6600; border-radius: 12px;
@@ -223,7 +223,7 @@
         button {
             width: 100%; padding: 14px; border: none; border-radius: 15px; background: gold; color: black;
             font-weight: bold; font-size: 16px; cursor: pointer; box-shadow: 0 0 15px gold;
-            margin-bottom: 8px; font-family: 'Cairo', sans-serif;
+            margin-bottom: 8px; font-family: 'Inter','Segoe UI',Arial,sans-serif;
         }
         button:disabled { opacity: 0.5; cursor: not-allowed; }
         .btn-upgrade {
@@ -257,7 +257,7 @@
         .landing-subtitle { font-size: 15px; margin: 6px 0 14px; }
         .landing-btn {
             width: 100%; padding: 15px; border: none; border-radius: 15px; font-weight: 900; font-size: 17px;
-            cursor: pointer; margin-top: 15px; font-family: 'Cairo', sans-serif;
+            cursor: pointer; margin-top: 15px; font-family: 'Inter','Segoe UI',Arial,sans-serif;
         }
         .silver-landing .landing-btn { background: linear-gradient(135deg, #c0c0c0, #e0e0f0); color: #1a1a2e; }
         .gold-landing .landing-btn { background: linear-gradient(135deg, #ffd700, #ffaa00); color: #000; }
@@ -284,139 +284,140 @@
         .nav-label { font-size: 12px; font-weight: 700; color: #ffdb8e; display: none; }
         .nav-item.showing .nav-label { display: block; }
     </style>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="v10.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="v10.js" defer></script>
 </head>
 <body>
     <div class="toast-container" id="toastContainer"></div>
 
-    <!-- مودال الترقية إلى الفضي -->
+    <!-- مودال الترقية إلى الSilver -->
     <div class="modal-overlay hidden" id="silverLandingOverlay">
         <div class="landing-modal silver-landing">
             <button class="landing-close" onclick="closeSilverLanding()">✕</button>
             <span class="landing-icon">⬆️🪙</span>
-            <div class="landing-title">⭐ ارتقيت إلى الفئة الفضية!</div>
-            <div class="landing-subtitle">لقد أكملت الفئة البرونزية بنجاح</div>
-            <button class="landing-btn" onclick="closeSilverLanding()">🎯 متابعة</button>
+            <div class="landing-title">⭐ You reached Silver Tier!</div>
+            <div class="landing-subtitle">You successfully completed Bronze Tier</div>
+            <button class="landing-btn" onclick="closeSilverLanding()">🎯 Continue</button>
         </div>
     </div>
 
-    <!-- مودال الترقية إلى الذهبي -->
+    <!-- مودال الترقية إلى الGold -->
     <div class="modal-overlay hidden" id="goldLandingOverlay">
         <div class="landing-modal gold-landing">
             <button class="landing-close" onclick="closeGoldLanding()">✕</button>
             <span class="landing-icon">👑✨</span>
-            <div class="landing-title">👑 مرحباً بك في النخبة الذهبية!</div>
-            <div class="landing-subtitle">لقد أنهيت جميع المراحل – السحب بأعلى حد الآن</div>
-            <button class="landing-btn" onclick="closeGoldLanding()">🚀 عظيم</button>
+            <div class="landing-title">👑 Welcome to the Golden Elite!</div>
+            <div class="landing-subtitle">You completed all stages – withdrawals are now at the highest limit</div>
+            <button class="landing-btn" onclick="closeGoldLanding()">🚀 Great</button>
         </div>
     </div>
 
-    <!-- تأكيد الترقية للذهبي -->
+    <!-- تأكيد الترقية للGold -->
     <div class="modal-overlay hidden" id="confirmGoldOverlay">
         <div class="landing-modal gold-landing" style="border-color:#ff8c00;">
             <button class="landing-close" onclick="closeConfirmGold()">✕</button>
             <span class="landing-icon">💳⚡</span>
-            <div class="landing-title" style="font-size:22px;">تأكيد الترقية إلى الذهبي</div>
+            <div class="landing-title" style="font-size:22px;">Confirm Gold Upgrade</div>
             <div class="landing-subtitle">
-                سيتم خصم <strong style="color:#ffd700;font-size:20px;">1,500 جنيه</strong> فقط من رصيدك<br>
-                وستحصل على حد سحب <strong style="color:#ffd700;">50,000 جنيه</strong>
+                You will be charged <strong style="color:#ffd700;font-size:20px;">1,500 EGP</strong> from your balance<br>
+                and receive a withdrawal limit of <strong style="color:#ffd700;">50,000 EGP</strong>
             </div>
             <div class="landing-feature" style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.04);border-radius:12px;padding:10px 14px;margin:8px 0;text-align:right;">
-                <span>💰</span><span>رصيدك بعد الخصم: <strong id="balanceAfterUpgrade">0</strong> جنيه</span>
+                <span>💰</span><span>Balance after deduction: <strong id="balanceAfterUpgrade">0</strong> EGP</span>
             </div>
-            <button class="landing-btn" id="confirmGoldBtn" onclick="executeGoldUpgrade()">✅ نعم، أرتقِ الآن!</button>
-            <button style="background:transparent;border:1px solid #666;color:#aaa;margin-top:5px;" onclick="closeConfirmGold()">❌ إلغاء</button>
+            <button class="landing-btn" id="confirmGoldBtn" onclick="executeGoldUpgrade()">✅ Yes, Upgrade Now!</button>
+            <button style="background:transparent;border:1px solid #666;color:#aaa;margin-top:5px;" onclick="closeConfirmGold()">❌ Cancel</button>
             <div class="loader" id="goldUpgradeLoader" style="display:none;"></div>
         </div>
     </div>
 
     <div class="header">
-        <h1>💰 سحب الأموال</h1>
-        <div class="back" onclick="goBack()">⬅ رجوع</div>
+        <h1>💰 Withdraw Funds</h1>
+        <div class="back" onclick="goBack()">⬅ Back</div>
     </div>
 
     <div class="container">
         <!-- شريط الأمان والثقة -->
         <div class="trust-badge">
             <span class="trust-icon">🛡️</span>
-            <div class="trust-text">جميع السحوبات محفوظة وآمنة</div>
-            <div class="trust-sub">✅ كل معاملة مسجلة ومشفرة – أموالك في أمان كامل</div>
+            <div class="trust-text">All withdrawals are stored securely</div>
+            <div class="trust-sub">✅ Every transaction is recorded and encrypted – your funds are secure</div>
         </div>
 
         <!-- شريط الفئة -->
         <div class="tier-banner bronze" id="tierBanner">
             <span class="tier-icon" id="tierIcon">🪙</span>
-            <div class="tier-name" id="tierName">الفئة البرونزية</div>
-            <div class="tier-limit" id="tierLimit">الحد الأدنى للسحب: 3,000 جنيه</div>
+            <div class="tier-name" id="tierName">Bronze Tier</div>
+            <div class="tier-limit" id="tierLimit">Minimum withdrawal: 3,000 EGP</div>
             <div class="tier-progress-container" id="tierProgressContainer">
                 <div class="tier-progress-fill" id="tierProgressFill" style="width:0%;"></div>
             </div>
-            <div class="tier-next-hint" id="tierNextHint">📌 أودع 500 جنيه للترقية إلى الفضي (حد 5,000)</div>
+            <div class="tier-next-hint" id="tierNextHint">📌 Deposit 500 EGP to upgrade to Silver (5,000 limit)</div>
         </div>
 
-        <!-- بانر التحفيز (يظهر دائماً ما لم تكن ذهبياً) -->
+        <!-- بانر التحفيز (يظهر دائماً ما لم تكن Goldاً) -->
         <div class="progress-banner" id="progressBanner">
             <span class="progress-icon">🚀</span>
-            <div class="progress-title">رحلتك نحو السحب الأعلى</div>
-            <div class="progress-subtitle" id="progressSubtitle">أكمل الفئة البرونزية للوصول إلى الفضية</div>
+            <div class="progress-title">Your Journey to Higher Limits</div>
+            <div class="progress-subtitle" id="progressSubtitle">Complete Bronze to reach Silver</div>
             <div class="progress-steps" id="progressSteps">
-                <div class="progress-step completed">🪙 برونزي ✓</div>
-                <div class="progress-step current">⭐ فضي</div>
-                <div class="progress-step">👑 ذهبي</div>
+                <div class="progress-step completed">🪙 Bronze ✓</div>
+                <div class="progress-step current">⭐ Silver</div>
+                <div class="progress-step">👑 Gold</div>
             </div>
         </div>
 
         <div class="card" id="withdrawCard">
             <div class="balance-row">
-                <span class="balance-label">💵 رصيدك الحالي</span>
-                <span class="balance-value" id="balanceDisplay">0.00 جنيه</span>
+                <span class="balance-label">💵 Current Balance</span>
+                <span class="balance-value" id="balanceDisplay">0.00 EGP</span>
             </div>
             <div class="balance-row">
-                <span class="balance-label">📥 إجمالي إيداعاتك</span>
-                <span class="balance-value" id="totalDepositsDisplay">0.00 جنيه</span>
+                <span class="balance-label">📥 Total Deposits</span>
+                <span class="balance-value" id="totalDepositsDisplay">0.00 EGP</span>
             </div>
 
             <select id="method">
-                <option value="">اختر طريقة السحب</option>
-                <option value="فودافون كاش">فودافون كاش</option>
-                <option value="اتصالات كاش">اتصالات كاش</option>
-                <option value="اورنج كاش">اورنج كاش</option>
+                <option value="">Choose Withdrawal Method</option>
+                <option value="Vodafone Cash">Vodafone Cash</option>
+                <option value="Etisalat Cash">Etisalat Cash</option>
+                <option value="Orange Cash">Orange Cash</option>
                 <option value="Binance">Binance</option>
                 <option value="OKX">OKX</option>
             </select>
-            <input type="text" id="accountAddress" placeholder="رقم المحفظة أو العنوان">
-            <input type="number" id="amount" placeholder="المبلغ المراد سحبه" min="3000" step="any" oninput="updateCalculations()">
+            <input type="text" id="accountAddress" placeholder="Wallet number or address">
+            <input type="number" id="amount" placeholder="Withdrawal amount" min="3000" step="any" oninput="updateCalculations()">
 
             <div class="deposit-warning" id="depositWarning">
-                <span>🔔 يجب أن يكون لديك إيداعات لا تقل عن </span>
-                <span class="required" id="requiredDeposit">0.00 جنيه</span>
-                <span> (10% من قيمة السحب)</span>
+                <span>🔔 You must have deposits of at least </span>
+                <span class="required" id="requiredDeposit">0.00 EGP</span>
+                <span> (10% of the withdrawal amount)</span>
             </div>
-            <div class="note" id="minNote">* الحد الأدنى للسحب <span id="minWithdrawLabel">3,000</span> جنيه</div>
+            <div class="note" id="minNote">* Minimum withdrawal <span id="minWithdrawLabel">3,000</span> EGP</div>
             <div class="loader" id="loader"></div>
 
-            <button onclick="requestWithdraw()" id="withdrawBtn">✅ سحب الرصيد الآن</button>
+            <button onclick="requestWithdraw()" id="withdrawBtn">✅ Withdraw Balance Now</button>
             <button class="btn-upgrade" id="upgradeToGoldBtn" style="display:none;" onclick="openConfirmGold()">
-                👑 ترقية إلى الفئة الذهبية (1,500 جنيه فقط)
+                👑 Upgrade to Gold (1,500 EGP only)
             </button>
-            <button onclick="location.href='transactions.html'">📋 سجل المعاملات</button>
+            <button onclick="location.href='transactions.html'">📋 Transaction History</button>
         </div>
-        <button onclick="location.href='dashboard.html'">العودة للوحة التحكم</button>
+        <button onclick="location.href='dashboard.html'">Back to Dashboard</button>
     </div>
 
     <div class="bottom-nav">
-        <div class="nav-item" data-url="dashboard.html" data-label="الرئيسية" data-egypt="𓂀" data-alt="🏠">
-            <div class="nav-circle">𓂀</div><div class="nav-label">الرئيسية</div>
+        <div class="nav-item" data-url="dashboard.html" data-label="Home" data-egypt="𓂀" data-alt="🏠">
+            <div class="nav-circle">𓂀</div><div class="nav-label">Home</div>
         </div>
-        <div class="nav-item" data-url="museum.html" data-label="المتحف" data-egypt="𓆣" data-alt="🏺">
-            <div class="nav-circle">𓆣</div><div class="nav-label">المتحف</div>
+        <div class="nav-item" data-url="museum.html" data-label="Museum" data-egypt="𓆣" data-alt="🏺">
+            <div class="nav-circle">𓆣</div><div class="nav-label">Museum</div>
         </div>
-        <div class="nav-item" data-url="statue1.html" data-label="المرحلة 1" data-egypt="𓁹" data-alt="⚒️">
-            <div class="nav-circle">𓁹</div><div class="nav-label">المرحلة 1</div>
+        <div class="nav-item" data-url="statue1.html" data-label="Stage 1" data-egypt="𓁹" data-alt="⚒️">
+            <div class="nav-circle">𓁹</div><div class="nav-label">Stage 1</div>
         </div>
-        <div class="nav-item" data-url="profile.html" data-label="حسابي" data-egypt="☥" data-alt="👤">
-            <div class="nav-circle">☥</div><div class="nav-label">حسابي</div>
+        <div class="nav-item" data-url="profile.html" data-label="My Account" data-egypt="☥" data-alt="👤">
+            <div class="nav-circle">☥</div><div class="nav-label">My Account</div>
         </div>
     </div>
 
@@ -427,17 +428,17 @@
 
         const TIER_CONFIG = {
             bronze: {
-                name: 'الفئة البرونزية', icon: '🪙', cssClass: 'bronze',
+                name: 'Bronze Tier', icon: '🪙', cssClass: 'bronze',
                 minWithdraw: 3000, canWithdraw: true,
                 nextTier: 'silver', upgradeCondition: 'deposits', upgradeValue: 500
             },
             silver: {
-                name: 'الفئة الفضية', icon: '⭐', cssClass: 'silver',
+                name: 'Silver Tier', icon: '⭐', cssClass: 'silver',
                 minWithdraw: 5000, canWithdraw: true,
                 nextTier: 'gold', upgradeCondition: 'payment', upgradeCost: 1500
             },
             gold: {
-                name: 'الفئة الذهبية', icon: '👑', cssClass: 'gold',
+                name: 'Gold Tier', icon: '👑', cssClass: 'gold',
                 minWithdraw: 50000, canWithdraw: true,
                 nextTier: null
             }
@@ -521,8 +522,8 @@
                 updateTierUI();
                 updateCalculations();
                 updateProgressBanner();
-                showMotivationToast('🎉 تمت ترقيتك إلى الفئة الفضية تلقائياً!');
-            } catch(e) { showCustomToast('خطأ: '+e.message,'error'); }
+                showMotivationToast('🎉 تمت ترقيتك إلى Silver Tier تلقائياً!');
+            } catch(e) { showCustomToast('Error: '+e.message,'error'); }
             finally { isUpgrading = false; }
         }
 
@@ -547,43 +548,34 @@
         }
 
         function openConfirmGold() {
-            if(currentTier!=='silver') { showCustomToast('يجب أن تكون في الفئة الفضية أولاً','warning'); return; }
-            if(userCoinsEGP < TIER_CONFIG.silver.upgradeCost) { showCustomToast('رصيدك غير كافٍ (1,500 جنيه)','error'); return; }
+            if(currentTier!=='silver') { showCustomToast('يجب أن تكون في Silver Tier أولاً','warning'); return; }
+            if(userCoinsEGP < TIER_CONFIG.silver.upgradeCost) { showCustomToast('رصيدك غير كافٍ (1,500 EGP)','error'); return; }
             document.getElementById('balanceAfterUpgrade').textContent = (userCoinsEGP - TIER_CONFIG.silver.upgradeCost).toLocaleString();
             document.getElementById('confirmGoldOverlay').classList.remove('hidden');
         }
         function closeConfirmGold() { document.getElementById('confirmGoldOverlay').classList.add('hidden'); }
 
         async function executeGoldUpgrade() {
-            if(isUpgrading || currentTier!=='silver' || !currentUser) return;
+            if(isUpgrading || currentTier!=='silver') return;
+            if(userCoinsEGP < TIER_CONFIG.silver.upgradeCost) return;
             isUpgrading = true;
             const loader = document.getElementById('goldUpgradeLoader');
             const btn = document.getElementById('confirmGoldBtn');
             btn.disabled = true; btn.style.display='none'; loader.style.display='block';
             try {
-                const userRef = db.collection('users').doc(currentUser.uid);
-                await db.runTransaction(async (transaction) => {
-                    const userDoc = await transaction.get(userRef);
-                    if (!userDoc.exists) throw new Error('المستخدم غير موجود.');
-                    const data = userDoc.data();
-                    const balance = Number(data.coins || 0);
-                    const tier = data.withdrawTier || 'bronze';
-                    if (tier !== 'silver') throw new Error('يجب أن تكون في الفئة الفضية أولاً.');
-                    if (balance < TIER_CONFIG.silver.upgradeCost) throw new Error('رصيدك غير كافٍ (1,500 جنيه).');
-                    transaction.update(userRef, {
-                        coins: firebase.firestore.FieldValue.increment(-TIER_CONFIG.silver.upgradeCost),
-                        withdrawTier: 'gold',
-                        goldUpgradePaid: true,
-                        goldUpgradeTimestamp: firebase.firestore.FieldValue.serverTimestamp()
-                    });
+                await db.collection('users').doc(currentUser.uid).update({
+                    coins: firebase.firestore.FieldValue.increment(-TIER_CONFIG.silver.upgradeCost),
+                    withdrawTier: 'gold',
+                    goldUpgradePaid: true,
+                    goldUpgradeTimestamp: firebase.firestore.FieldValue.serverTimestamp()
                 });
                 currentTier = 'gold';
                 closeConfirmGold();
                 updateTierUI();
                 updateCalculations();
                 updateProgressBanner();
-                showMotivationToast('👑 أنت الآن ذهبي!');
-            } catch(e) { showCustomToast('خطأ: '+e.message,'error'); }
+                showMotivationToast('👑 أنت الآن Gold!');
+            } catch(e) { showCustomToast('Error: '+e.message,'error'); }
             finally { isUpgrading=false; btn.disabled=false; btn.style.display=''; loader.style.display='none'; }
         }
 
@@ -593,10 +585,10 @@
             banner.className = 'tier-banner ' + config.cssClass;
             document.getElementById('tierIcon').textContent = config.icon;
             document.getElementById('tierName').textContent = config.name;
-            document.getElementById('tierLimit').textContent = 'الحد الأدنى للسحب: ' + config.minWithdraw.toLocaleString() + ' جنيه';
+            document.getElementById('tierLimit').textContent = 'Minimum withdrawal: ' + config.minWithdraw.toLocaleString() + ' EGP';
             document.getElementById('minWithdrawLabel').textContent = config.minWithdraw.toLocaleString();
             document.getElementById('amount').min = config.minWithdraw;
-            document.getElementById('amount').placeholder = 'المبلغ المراد سحبه (الحد الأدنى ' + config.minWithdraw.toLocaleString() + ')';
+            document.getElementById('amount').placeholder = 'Withdrawal amount (Minimum ' + config.minWithdraw.toLocaleString() + ')';
 
             const upgradeBtn = document.getElementById('upgradeToGoldBtn');
             upgradeBtn.style.display = (currentTier === 'silver') ? 'block' : 'none';
@@ -607,10 +599,10 @@
                 const pct = Math.min(100, (totalDepositsEGP / TIER_CONFIG.bronze.upgradeValue) * 100);
                 progressFill.style.width = pct + '%';
                 const rem = Math.max(0, TIER_CONFIG.bronze.upgradeValue - totalDepositsEGP);
-                nextHint.textContent = rem > 0 ? '📌 أودع ' + rem.toLocaleString() + ' جنيه إضافية للترقية إلى الفضي' : '✨ جارٍ الترقية...';
+                nextHint.textContent = rem > 0 ? '📌 أودع ' + rem.toLocaleString() + ' EGP إضافية للترقية إلى الSilver' : '✨ جارٍ الترقية...';
             } else if(currentTier === 'silver') {
                 progressFill.style.width = '65%';
-                nextHint.textContent = '💡 ادفع 1,500 جنيه للترقية إلى الذهبي (حد 50,000)';
+                nextHint.textContent = '💡 ادفع 1,500 EGP للترقية إلى الGold (حد 50,000)';
             } else {
                 progressFill.style.width = '100%';
                 nextHint.textContent = '🏆 أنت في أعلى فئة!';
@@ -629,133 +621,98 @@
             if(currentTier === 'bronze') {
                 steps[0].classList.add('completed');
                 steps[1].classList.add('current');
-                document.getElementById('progressSubtitle').textContent = 'أكمل الفئة البرونزية (إيداع 500) للوصول إلى الفضية';
+                document.getElementById('progressSubtitle').textContent = 'أكمل Bronze Tier (Deposit 500) للوصول إلى الSilverة';
             } else if(currentTier === 'silver') {
                 steps[0].classList.add('completed');
                 steps[1].classList.add('completed');
                 steps[2].classList.add('current');
-                document.getElementById('progressSubtitle').textContent = 'أنت في الفئة الفضية! ادفع 1,500 للترقية إلى الذهبية';
+                document.getElementById('progressSubtitle').textContent = 'أنت في Silver Tier! ادفع 1,500 للترقية إلى الGoldة';
             }
         }
 
         function updateBalanceDisplay() {
-            document.getElementById('balanceDisplay').textContent = userCoinsEGP.toLocaleString() + ' جنيه';
-            document.getElementById('totalDepositsDisplay').textContent = totalDepositsEGP.toLocaleString() + ' جنيه';
+            document.getElementById('balanceDisplay').textContent = userCoinsEGP.toLocaleString() + ' EGP';
+            document.getElementById('totalDepositsDisplay').textContent = totalDepositsEGP.toLocaleString() + ' EGP';
         }
 
         function updateCalculations() {
             const amount = parseFloat(document.getElementById('amount').value) || 0;
             const minWithdraw = TIER_CONFIG[currentTier].minWithdraw;
             const required = amount * DEPOSIT_RATIO;
-            document.getElementById('requiredDeposit').textContent = required.toLocaleString() + ' جنيه';
+            document.getElementById('requiredDeposit').textContent = required.toLocaleString() + ' EGP';
             const withdrawBtn = document.getElementById('withdrawBtn');
 
             if(amount < minWithdraw) {
                 withdrawBtn.disabled = true;
-                document.getElementById('minNote').innerHTML = '⚠️ الحد الأدنى ' + minWithdraw.toLocaleString() + ' جنيه. <em>قم بالترقية لزيادة الحد!</em>';
+                document.getElementById('minNote').innerHTML = '⚠️ Minimum ' + minWithdraw.toLocaleString() + ' EGP. <em>قم بالترقية لزيادة الحد!</em>';
             } else if(amount > userCoinsEGP) {
                 withdrawBtn.disabled = true;
                 document.getElementById('minNote').textContent = '❌ رصيدك غير كافٍ';
             } else if(required > totalDepositsEGP) {
                 withdrawBtn.disabled = true;
-                document.getElementById('minNote').textContent = '📌 تحتاج إيداعات ' + required.toLocaleString() + ' جنيه (10%)';
+                document.getElementById('minNote').textContent = '📌 تحتاج إيداعات ' + required.toLocaleString() + ' EGP (10%)';
             } else {
                 withdrawBtn.disabled = false;
-                document.getElementById('minNote').innerHTML = '* الحد الأدنى للسحب <span id="minWithdrawLabel">' + minWithdraw.toLocaleString() + '</span> جنيه';
+                document.getElementById('minNote').innerHTML = '* Minimum withdrawal <span id="minWithdrawLabel">' + minWithdraw.toLocaleString() + '</span> EGP';
             }
         }
 
         function validatePhone(phone, method) {
             let clean = phone.replace(/\s+/g,'').replace(/[^\d]/g,'');
-            const prefixes = { 'فودافون كاش':['010','015','016'], 'اتصالات كاش':['011'], 'اورنج كاش':['012'] };
+            const prefixes = { 'Vodafone Cash':['010','015','016'], 'Etisalat Cash':['011'], 'Orange Cash':['012'] };
             if(!prefixes[method]) return true;
             if(clean.length !== 11) return false;
             return prefixes[method].some(p => clean.startsWith(p));
         }
 
         async function requestWithdraw() {
-            if (!currentUser) { window.location.href='login.html'; return; }
-
-            const amount = Number(document.getElementById('amount').value);
+            const config = TIER_CONFIG[currentTier];
+            const amount = parseFloat(document.getElementById('amount').value);
+            if(amount < config.minWithdraw) {
+                showCustomToast('Minimum ' + config.minWithdraw.toLocaleString() + ' EGP - ترقى لزيادة الحد!', 'warning');
+                return;
+            }
             const method = document.getElementById('method').value;
             const address = document.getElementById('accountAddress').value.trim();
-
-            if (!Number.isFinite(amount) || amount <= 0) {
-                showCustomToast('أدخل مبلغ سحب صحيح','error'); return;
-            }
-            if(!method || !address) { showCustomToast('أكمل البيانات','error'); return; }
-            if(['فودافون كاش','اتصالات كاش','اورنج كاش'].includes(method) && !validatePhone(address,method)) {
+            if(!method || !address || !amount) { showCustomToast('أكمل البيانات','error'); return; }
+            if(amount > userCoinsEGP) { showCustomToast('رصيد غير كاف','error'); return; }
+            const required = amount * DEPOSIT_RATIO;
+            if(required > totalDepositsEGP) { showCustomToast('تحتاج إيداعات ' + required.toLocaleString() + ' (10%)','error'); return; }
+            if(['Vodafone Cash','Etisalat Cash','Orange Cash'].includes(method) && !validatePhone(address,method)) {
                 let err=''; if(method.startsWith('فودا')) err='يبدأ بـ 010/015/016'; else if(method.startsWith('اتصالات')) err='يبدأ بـ 011'; else err='يبدأ بـ 012';
-                showCustomToast('رقم خطأ: '+err,'error'); return;
+                showCustomToast('Number Error: '+err,'error'); return;
             }
+            if(!confirm('Withdraw ' + amount.toLocaleString() + ' جنيه؟\n\nYou will be charged ' + required.toLocaleString() + ' من Total Deposits كشرط Withdraw.\n🛡️ All withdrawals are stored securely.')) return;
 
             const btn = document.getElementById('withdrawBtn');
             const loader = document.getElementById('loader');
             btn.disabled = true; btn.textContent = 'جاري...'; loader.style.display='block';
 
             try {
-                const userRef = db.collection('users').doc(currentUser.uid);
-                const withdrawalRef = db.collection('withdrawals').doc();
-
-                await db.runTransaction(async (transaction) => {
-                    const userDoc = await transaction.get(userRef);
-                    if (!userDoc.exists) throw new Error('المستخدم غير موجود.');
-
-                    const data = userDoc.data();
-                    let tier = data.withdrawTier || 'bronze';
-                    const balance = Number(data.coins || 0);
-                    let totalDeposits = Number(data.totalDeposits || 0);
-                    if (!Number.isFinite(balance) || balance < 0) throw new Error('الرصيد الحالي غير صالح.');
-                    if (!Number.isFinite(totalDeposits) || totalDeposits < 0) totalDeposits = 0;
-
-                    // ترقية البرونزي إلى الفضي فور تحقق شرط 500 جنيه، قبل تقييم حد السحب.
-                    const shouldUpgradeToSilver = tier === 'bronze' && totalDeposits >= TIER_CONFIG.bronze.upgradeValue;
-                    if (shouldUpgradeToSilver) tier = 'silver';
-
-                    const config = TIER_CONFIG[tier];
-                    if (!config || !config.canWithdraw) throw new Error('السحب غير متاح لهذه الفئة.');
-                    if (amount < config.minWithdraw) throw new Error('الحد الأدنى للسحب '+config.minWithdraw.toLocaleString()+' جنيه.');
-                    if (amount > balance) throw new Error('رصيد غير كافٍ.');
-
-                    const requiredDeposit = amount * DEPOSIT_RATIO;
-                    if (requiredDeposit > totalDeposits) {
-                        throw new Error('تحتاج إيداعات '+requiredDeposit.toLocaleString()+' جنيه (10%).');
-                    }
-
-                    const userUpdate = {
-                        coins: firebase.firestore.FieldValue.increment(-amount),
-                        totalDeposits: firebase.firestore.FieldValue.increment(-requiredDeposit)
-                    };
-                    if (shouldUpgradeToSilver) userUpdate.withdrawTier = 'silver';
-                    transaction.update(userRef, userUpdate);
-                    transaction.set(withdrawalRef, {
-                        userId: currentUser.uid,
-                        username: data.username || '',
-                        method,
-                        address,
-                        amount,
-                        requiredDeposit,
-                        currency: 'EGP',
-                        tier,
-                        status: 'pending',
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
+                const userDoc = await db.collection('users').doc(currentUser.uid).get();
+                const userData = userDoc.data();
+                await db.collection('users').doc(currentUser.uid).update({
+                    coins: firebase.firestore.FieldValue.increment(-amount),
+                    totalDeposits: firebase.firestore.FieldValue.increment(-required)
                 });
-
-                // إرسال إشعار خارجي بعد نجاح الحفظ المالي فقط؛ فشل Telegram لا يلغي الطلب.
+                await db.collection('withdrawals').add({
+                    userId: currentUser.uid, username: userData.username || '',
+                    method, address, amount, currency:'EGP', tier: currentTier,
+                    status:'pending', createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
                 try {
-                    const msg = '🆕 سحب جديد\n👤 '+(currentUser.email || currentUser.uid)+'\n💰 '+amount.toLocaleString()+' جنيه\n🏅 '+TIER_CONFIG[currentTier].name;
+                    const msg = '🆕 Withdraw جديد\n👤 '+(userData.username||'')+'\n💰 '+amount.toLocaleString()+' EGP\n🏅 '+config.name+'\n🛡️ محفوظ وآمن';
                     await fetch('https://api.telegram.org/bot'+TELEGRAM_TOKEN+'/sendMessage',{
                         method:'POST', headers:{'Content-Type':'application/json'},
                         body: JSON.stringify({chat_id:TELEGRAM_CHAT_ID, text:msg})
                     });
-                } catch(e) {}
+                } catch(e){}
                 showCustomToast('تم إرسال طلب السحب بنجاح!', 'success');
                 showTrustToast('🛡️ جميع السحوبات محفوظة – طلبك في أمان كامل');
                 setTimeout(()=>location.href='transactions.html',2000);
             } catch(e) {
-                showCustomToast('خطأ: '+e.message,'error');
-                btn.disabled=false; btn.textContent='✅ سحب الرصيد الآن'; loader.style.display='none';
+                showCustomToast('Error: '+e.message,'error');
+                btn.disabled=false; btn.textContent='✅ Withdraw Balance Now'; loader.style.display='none';
             }
         }
 
@@ -780,20 +737,18 @@
                 currentItem=this;
                 timer=setTimeout(()=>{
                     currentItem.querySelector('.nav-circle').textContent=currentItem.dataset.egypt;
-                    const targetUrl = currentItem.dataset.url;
                     currentItem.classList.remove('showing');
                     timer=null; currentItem=null;
-                    window.location.href=targetUrl;
+                    window.location.href=currentItem.dataset.url;
                 },3000);
             });
         });
 
         setTimeout(()=>{
             showTrustToast('🛡️ أموالك في أمان – جميع السحوبات محفوظة ومشفرة');
-            if(currentTier==='bronze') showMotivationToast('💡 أودع 500 جنيه لترتقي إلى الفضة وحد سحب 5,000');
-            else if(currentTier==='silver') showMotivationToast('🌟 ادفع 1,500 للترقية إلى الذهب وحد سحب 50,000');
+            if(currentTier==='bronze') showMotivationToast('💡 أودع 500 EGP لترتقي إلى الفضة وحد Withdraw 5,000');
+            else if(currentTier==='silver') showMotivationToast('🌟 ادفع 1,500 للترقية إلى الذهب وحد Withdraw 50,000');
         },4000);
     </script>
-    <script src="v10.js" defer></script>
 </body>
 </html>

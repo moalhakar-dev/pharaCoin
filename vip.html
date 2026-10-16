@@ -1,22 +1,22 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr" data-ui="v10">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>عضويات VIP • المتحف الكبير</title>
+    <title>VIP Memberships • Grand Museum</title>
     <!-- جميع الوسوم التعريفية والمظهر كما هي لم تتغير -->
-    <meta name="description" content="اختر باقة VIP المناسبة لك وابدأ بمزايا حصرية: مضاعف أرباح، سحب أسرع، وأولوية في الدعم.">
-    <meta name="keywords" content="VIP, عضوية مميزة, باقات VIP, مزايا حصرية, المتحف الكبير">
+    <meta name="description" content="اختر باقة VIP المناسبة لك وابدأ بمزايا حصرية: Earnings Multiplier، Withdraw أسرع، وأولوية في الدعم.">
+    <meta name="keywords" content="VIP, عضوية مميزة, باقات VIP, مزايا حصرية, Grand Museum">
     <meta name="author" content="PharaCoin Team">
     <meta name="robots" content="noindex, nofollow">
-    <meta property="og:title" content="عضويات VIP • المتحف الكبير">
+    <meta property="og:title" content="VIP Memberships • Grand Museum">
     <meta property="og:description" content="اختر باقة VIP المميزة واستمتع بمزايا حصرية.">
     <meta property="og:image" content="https://pharacoin.pages.dev/Object/qa.jpg">
     <meta property="og:url" content="https://pharacoin.pages.dev/vip.html">
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="المتحف الكبير">
+    <meta property="og:site_name" content="Grand Museum">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="عضويات VIP • المتحف الكبير">
+    <meta name="twitter:title" content="VIP Memberships • Grand Museum">
     <meta name="twitter:description" content="اختر باقة VIP المميزة واستمتع بمزايا حصرية.">
     <meta name="twitter:image" content="https://pharacoin.pages.dev/Object/qa.jpg">
     <link rel="canonical" href="https://pharacoin.pages.dev/vip.html">
@@ -217,8 +217,9 @@
         }
         .nav-item.active .nav-label{color:gold;}
     </style>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="v10.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="v10.js" defer></script>
 </head>
 <body>
 
@@ -226,94 +227,94 @@
 <div class="toast-container" id="toastContainer"></div>
 
 <div class="header">
-  <div class="logo">👑 عضويات VIP</div>
+  <div class="logo">👑 VIP Memberships</div>
   <div class="balance-box">
     <span>💰</span>
-    <span id="balanceDisplay">0</span> ج.م
+    <span id="balanceDisplay">0</span> EGP
   </div>
 </div>
 
 <div class="status-bar" id="vipStatus"></div>
 <div class="countdown" id="offerTimer"></div>
 
-<h1 class="page-title">اختر عضويتك</h1>
+<h1 class="page-title">Choose Your Membership</h1>
 
 <div class="vip-container">
 
 <!-- VIP 1 -->
 <div class="vip-card" onclick="toggle(this)" data-level="1" id="vip1">
-<div class="vip-header"><span>⭐ VIP 1</span><span class="price">500 ج.م</span></div>
+<div class="vip-header"><span>⭐ VIP 1</span><span class="price">500 EGP</span></div>
 <div class="features">
 <ul>
-<li>⚡ مضاعف أرباح ×1.5</li>
-<li>🎁 مكافأة يومية 10 ج.م</li>
-<li>⏱️ سرعة سحب عادية</li>
+<li>⚡ Earnings Multiplier ×1.5</li>
+<li>🎁 Daily Bonus 10 EGP</li>
+<li>⏱️ Standard withdrawal speed</li>
 </ul>
-<button class="subscribe-btn" onclick="buyVIP(event,'VIP 1',1,500)">اشترك الآن</button>
+<button class="subscribe-btn" onclick="buyVIP(event,'VIP 1',1,500)">Subscribe Now</button>
 </div>
 </div>
 
 <!-- VIP 2 -->
 <div class="vip-card" onclick="toggle(this)" data-level="2" id="vip2">
-<div class="vip-header"><span>🌟🌟 VIP 2</span><span class="price">1000 ج.م</span></div>
+<div class="vip-header"><span>🌟🌟 VIP 2</span><span class="price">1000 EGP</span></div>
 <div class="features">
 <ul>
-<li>⚡ مضاعف أرباح ×2</li>
-<li>🎁 مكافأة يومية 25 ج.م</li>
-<li>⏱️ سحب أسرع (24 ساعة)</li>
+<li>⚡ Earnings Multiplier ×2</li>
+<li>🎁 Daily Bonus 25 EGP</li>
+<li>⏱️ Faster withdrawal (24 hours)</li>
 </ul>
-<button class="subscribe-btn" onclick="buyVIP(event,'VIP 2',2,1000)">اشترك الآن</button>
+<button class="subscribe-btn" onclick="buyVIP(event,'VIP 2',2,1000)">Subscribe Now</button>
 </div>
 </div>
 
-<!-- VIP 3 (الأكثر طلبًا) -->
+<!-- VIP 3 (Most Popular) -->
 <div class="vip-card popular" onclick="toggle(this)" data-level="3" id="vip3">
-<div class="popular-badge">🔥 الأكثر طلبًا</div>
-<div class="vip-header"><span>🌟🌟🌟 VIP 3</span><span class="price">1500 ج.م</span></div>
+<div class="popular-badge">🔥 Most Popular</div>
+<div class="vip-header"><span>🌟🌟🌟 VIP 3</span><span class="price">1500 EGP</span></div>
 <div class="features">
 <ul>
-<li>⚡ مضاعف أرباح ×3</li>
-<li>🎁 مكافأة يومية 50 ج.م</li>
-<li>⏱️ سحب فوري (12 ساعة)</li>
-<li>🎖️ شارة VIP حصرية</li>
+<li>⚡ Earnings Multiplier ×3</li>
+<li>🎁 Daily Bonus 50 EGP</li>
+<li>⏱️ Instant withdrawal (12 hours)</li>
+<li>🎖️ Exclusive VIP Badge</li>
 </ul>
-<button class="subscribe-btn" onclick="buyVIP(event,'VIP 3',3,1500)">اشترك الآن</button>
+<button class="subscribe-btn" onclick="buyVIP(event,'VIP 3',3,1500)">Subscribe Now</button>
 </div>
 </div>
 
 <!-- VIP 4 -->
 <div class="vip-card" onclick="toggle(this)" data-level="4" id="vip4">
-<div class="vip-header"><span>👑 VIP 4</span><span class="price">2000 ج.م</span></div>
+<div class="vip-header"><span>👑 VIP 4</span><span class="price">2000 EGP</span></div>
 <div class="features">
 <ul>
-<li>⚡ مضاعف أرباح ×4</li>
-<li>🎁 مكافأة يومية 100 ج.م</li>
-<li>⏱️ سحب فوري (6 ساعات)</li>
-<li>💬 دعم فني مباشر</li>
+<li>⚡ Earnings Multiplier ×4</li>
+<li>🎁 Daily Bonus 100 EGP</li>
+<li>⏱️ Instant withdrawal (6 hours)</li>
+<li>💬 Live Support</li>
 </ul>
-<button class="subscribe-btn" onclick="buyVIP(event,'VIP 4',4,2000)">اشترك الآن</button>
+<button class="subscribe-btn" onclick="buyVIP(event,'VIP 4',4,2000)">Subscribe Now</button>
 </div>
 </div>
 
 <!-- VIP 5 -->
 <div class="vip-card" onclick="toggle(this)" data-level="5" id="vip5">
-<div class="vip-header"><span>💎 VIP 5</span><span class="price">2500 ج.م</span></div>
+<div class="vip-header"><span>💎 VIP 5</span><span class="price">2500 EGP</span></div>
 <div class="features">
 <ul>
-<li>⚡ مضاعف أرباح ×5</li>
-<li>🎁 مكافأة يومية 200 ج.م</li>
-<li>⏱️ سحب فوري (أقل من ساعة)</li>
-<li>📞 دعم VIP خاص</li>
-<li>🏆 شارة النخبة الذهبية</li>
+<li>⚡ Earnings Multiplier ×5</li>
+<li>🎁 Daily Bonus 200 EGP</li>
+<li>⏱️ Instant withdrawal (under 1 hour)</li>
+<li>📞 Private VIP Support</li>
+<li>🏆 Golden Elite Badge</li>
 </ul>
-<button class="subscribe-btn" onclick="buyVIP(event,'VIP 5',5,2500)">اشترك الآن</button>
+<button class="subscribe-btn" onclick="buyVIP(event,'VIP 5',5,2500)">Subscribe Now</button>
 </div>
 </div>
 
 </div>
 
 <div class="success-overlay" id="successBox">
-  🎉 جاري التحويل لصفحة الإيداع...
+  🎉 Redirecting to the deposit page...
   <div id="expireInfo"></div>
 </div>
 
@@ -321,7 +322,7 @@
 <div class="bottom-nav">
   <div class="nav-item" onclick="location.href='dashboard.html'">
     <div class="nav-circle">🏠</div>
-    <div class="nav-label">الرئيسية</div>
+    <div class="nav-label">Home</div>
   </div>
   <div class="nav-item active">
     <div class="nav-circle">👑</div>
@@ -329,7 +330,7 @@
   </div>
   <div class="nav-item" onclick="location.href='profile.html'">
     <div class="nav-circle">👤</div>
-    <div class="nav-label">حسابي</div>
+    <div class="nav-label">My Account</div>
   </div>
 </div>
 
@@ -359,7 +360,7 @@ let currentUser = null;
 let userDocRef = null;
 let unsubscribe = null;
 let userCoins = 0;
-let activeVIPRequest = null; // لتتبع الطلب المعلق
+let activeVIPRequest = null; // لتتبع Request المعلق
 
 // تنسيق الأرقام
 function formatNumber(num) {
@@ -382,7 +383,7 @@ async function checkPendingRequest(uid) {
   return false;
 }
 
-// تحديث حالة جميع أزرار "اشترك الآن"
+// تحديث حالة جميع أزرار "Subscribe Now"
 function updateSubscribeButtons(disable = false) {
   document.querySelectorAll('.subscribe-btn').forEach(btn => {
     btn.disabled = disable;
@@ -391,13 +392,13 @@ function updateSubscribeButtons(disable = false) {
     } else {
       const card = btn.closest('.vip-card');
       if (card) {
-        btn.textContent = 'اشترك الآن';
+        btn.textContent = 'Subscribe Now';
       }
     }
   });
 }
 
-// التحقق من تسجيل الدخول والاستماع للبيانات
+// التحقق من Login والاستماع للبيانات
 auth.onAuthStateChanged(async user => {
   if (!user) {
     window.location.href = "login.html";
@@ -417,23 +418,22 @@ auth.onAuthStateChanged(async user => {
         const vipExpire = data.vipExpire ? data.vipExpire.toDate() : null;
         if (vipPlan && vipExpire && vipExpire > new Date()) {
           document.getElementById('vipStatus').style.display = 'block';
-          document.getElementById('vipStatus').innerHTML = `👑 أنت مشترك في ${vipPlan}<br>ينتهي في: ${vipExpire.toLocaleDateString('ar-EG')}`;
+          document.getElementById('vipStatus').innerHTML = `👑 أنت مشترك في ${vipPlan}<br>ينتهي في: ${vipExpire.toLocaleDateString('en-US')}`;
           updateSubscribeButtons(true);
         } else {
           document.getElementById('vipStatus').style.display = 'none';
-          // لا يوجد اشتراك نشط، تحقق من طلبات معلقة
+          // لا يوجد اشتراك نشط، تحقق من requests Pending
           const hasPending = await checkPendingRequest(user.uid);
           if (hasPending) {
             // عرض تنبيه بالطلب المعلق
-            showCustomToast(`لديك طلب ${activeVIPRequest.planName} قيد المراجعة`, "warning");
+            showCustomToast(`لديك طلب ${activeVIPRequest.planName} Pending`, "warning");
             updateSubscribeButtons(true);
           } else {
             updateSubscribeButtons(false);
           }
         }
       } else {
-        // لا تقم بإنشاء/تصفير الرصيد من صفحة VIP. الرصيد المالي تتم إدارته مركزياً.
-        console.warn('مستند المستخدم غير موجود؛ تم تجاهل إنشاء رصيد افتراضي من صفحة VIP.');
+        userDocRef.set({ coins: 0 }).catch(err => console.error(err));
       }
     }, (error) => {
       console.error("خطأ في الاستماع:", error);
@@ -448,18 +448,18 @@ function toggle(card) {
   f.style.display = f.style.display === "block" ? "none" : "block";
 }
 
-// طلب اشتراك VIP — يرسل الطلب إلى Firestore ثم يوجه إلى الإيداع
+// طلب اشتراك VIP — يرسل Request إلى Firestore ثم يوجه إلى الإيداع
 async function buyVIP(e, name, level, priceEGP) {
   e.stopPropagation();
   
   if (!currentUser) {
-    showCustomToast("يجب تسجيل الدخول أولاً", "error");
+    showCustomToast("Please log in first", "error");
     return;
   }
 
   // منع إرسال طلب إذا كان هناك طلب معلق بالفعل
   if (activeVIPRequest) {
-    showCustomToast("لديك بالفعل طلب VIP قيد المراجعة", "warning");
+    showCustomToast("لديك بالفعل طلب VIP Pending", "warning");
     return;
   }
 
@@ -474,9 +474,9 @@ async function buyVIP(e, name, level, priceEGP) {
       username: currentUser.displayName || currentUser.email || 'مستخدم',
       planName: name,          // "VIP 1", "VIP 2" ...
       planLevel: level,        // 1,2,3,4,5
-      priceEGP: priceEGP,      // السعر بالجنيه
+      priceEGP: priceEGP,      // Price بالجنيه
       priceUSD: (priceEGP / 30).toFixed(2), // تقديري للعرض فقط
-      priceCoins: priceEGP,    // يمكنك تعديل العلاقة لاحقاً (1 ج.م = 1 كوين حالياً)
+      priceCoins: priceEGP,    // يمكنك تعديل العلاقة لاحقاً (1 EGP = 1 كوين حالياً)
       requestedAt: firebase.firestore.FieldValue.serverTimestamp(),
       status: "pending"
     });
@@ -499,7 +499,7 @@ async function buyVIP(e, name, level, priceEGP) {
     console.error("فشل إرسال طلب VIP:", error);
     showCustomToast("❌ فشل إنشاء طلب VIP. حاول مجدداً.", "error");
     btn.disabled = false;
-    btn.textContent = 'اشترك الآن';
+    btn.textContent = 'Subscribe Now';
   }
 }
 
@@ -520,6 +520,5 @@ function startTimer() {
 startTimer();
 </script>
 
-    <script src="v10.js" defer></script>
 </body>
 </html>

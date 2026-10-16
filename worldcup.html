@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr" data-ui="v10">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>كأس العالم 2026 • مباريات وتخمين – المتحف الكبير</title>
-    <meta name="description" content="تابع مباريات كأس العالم 2026، سجل توقعك، اربح جوائز يومية. اشتراك 100 جنيه للمباراة الواحدة.">
+    <title>World Cup 2026 • Matches & Predictions – Grand Museum</title>
+    <meta name="description" content="تابع مباريات World Cup 2026، سجل توقعك، اربح جوائز يومية. اشتراك 100 EGP للمباراة الواحدة.">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -18,7 +18,7 @@
             overflow-x: hidden;
             position: relative;
             background: #000;
-            font-family: 'Cairo', sans-serif;
+            font-family: 'Inter','Segoe UI',Arial,sans-serif;
             color: #fff;
         }
         body {
@@ -262,8 +262,9 @@
             .match-teams { font-size: 0.9rem; }
         }
     </style>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="v10.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="v10.js" defer></script>
 </head>
 <body>
 <div class="bg-fixed"></div>
@@ -271,19 +272,19 @@
 <!-- شريط الإشعارات الحية - مضمون العمل -->
 <div class="news-ticker">
     <div class="ticker-content" id="liveTicker">
-        <span>🔥 أهلاً بك في مسابقة كأس العالم 2026 – سجل توقعك واربح جوائز يومية</span>
+        <span>🔥 Welcome to the 2026 World Cup Challenge – make your prediction and win daily prizes</span>
     </div>
 </div>
 
 <div class="top-bar">
-    <div class="logo">🏛️ المتحف الكبير • كأس العالم 2026</div>
-    <div class="coin">💰 رصيدك: <span id="userBalance">500</span> ج.م</div>
+    <div class="logo">🏛️ Grand Museum • World Cup 2026</div>
+    <div class="coin">💰 Your balance: <span id="userBalance">500</span> EGP</div>
 </div>
 
 <div class="main-container">
     <div class="hero">
-        <h1>⚽ جدول مباريات كأس العالم 2026 ⚽</h1>
-        <p>كل مباراة تفتح في يومها | اشتراك 100 جنيه للتخمين | جوائز يومية حقيقية</p>
+        <h1>⚽ 2026 World Cup Match Schedule ⚽</h1>
+        <p>Each match opens on its match day | 100 EGP entry per prediction | Real daily prizes</p>
     </div>
 
     <div class="day-filter" id="dayFilter"></div>
@@ -300,32 +301,32 @@
     <a href="index.html" class="back-home"><i class="fas fa-arrow-right"></i> Back to Home</a>
 </div>
 
-<footer>© 2026 كأس العالم – المتحف الكبير. رسوم تفعيل التخمين 100 جنيه لكل مباراة.</footer>
+<footer>© 2026 World Cup – Grand Museum. Prediction entry fee: 100 EGP per match.</footer>
 
 <script>
     // --------------------------------------------------------------
     // جميع المباريات الكاملة (اختصاراً للطول، يتم إدراج الدفعة الكاملة)
     // --------------------------------------------------------------
     const allMatches = [
-        { id:1, team1:"كندا", team2:"البوسنة والهرسك", date:"2026-06-12", flag1:"🇨🇦", flag2:"🇧🇦" },
-        { id:2, team1:"الولايات المتحدة", team2:"باراغواي", date:"2026-06-12", flag1:"🇺🇸", flag2:"🇵🇾" },
-        { id:3, team1:"هايتي", team2:"اسكتلندا", date:"2026-06-13", flag1:"🇭🇹", flag2:"🏴󠁧󠁢󠁳󠁣󠁴󠁿" },
-        { id:4, team1:"أستراليا", team2:"تركيا", date:"2026-06-13", flag1:"🇦🇺", flag2:"🇹🇷" },
-        { id:5, team1:"البرازيل", team2:"المغرب", date:"2026-06-13", flag1:"🇧🇷", flag2:"🇲🇦" },
-        { id:6, team1:"قطر", team2:"سويسرا", date:"2026-06-13", flag1:"🇶🇦", flag2:"🇨🇭" },
-        { id:7, team1:"كوت ديفوار", team2:"الإكوادور", date:"2026-06-14", flag1:"🇨🇮", flag2:"🇪🇨" },
-        { id:8, team1:"ألمانيا", team2:"كوراساو", date:"2026-06-14", flag1:"🇩🇪", flag2:"🇨🇼" },
-        { id:9, team1:"هولندا", team2:"اليابان", date:"2026-06-14", flag1:"🇳🇱", flag2:"🇯🇵" },
-        { id:10, team1:"السويد", team2:"تونس", date:"2026-06-14", flag1:"🇸🇪", flag2:"🇹🇳" },
-        { id:11, team1:"السعودية", team2:"أوروغواي", date:"2026-06-15", flag1:"🇸🇦", flag2:"🇺🇾" },
-        { id:12, team1:"إسبانيا", team2:"الرأس الأخضر", date:"2026-06-15", flag1:"🇪🇸", flag2:"🇨🇻" },
-        { id:13, team1:"إيران", team2:"نيوزيلندا", date:"2026-06-15", flag1:"🇮🇷", flag2:"🇳🇿" },
-        { id:14, team1:"بلجيكا", team2:"مصر", date:"2026-06-15", flag1:"🇧🇪", flag2:"🇪🇬" },
-        { id:15, team1:"فرنسا", team2:"السنغال", date:"2026-06-16", flag1:"🇫🇷", flag2:"🇸🇳" },
-        { id:16, team1:"العراق", team2:"النرويج", date:"2026-06-16", flag1:"🇮🇶", flag2:"🇳🇴" },
-        { id:17, team1:"الأرجنتين", team2:"الجزائر", date:"2026-06-16", flag1:"🇦🇷", flag2:"🇩🇿" },
-        { id:18, team1:"النمسا", team2:"الأردن", date:"2026-06-16", flag1:"🇦🇹", flag2:"🇯🇴" },
-        { id:19, team1:"غانا", team2:"بنما", date:"2026-06-17", flag1:"🇬🇭", flag2:"🇵🇦" },
+        { id:1, team1:"Canada", team2:"Bosnia and Herzegovina", date:"2026-06-12", flag1:"🇨🇦", flag2:"🇧🇦" },
+        { id:2, team1:"United States", team2:"Paraguay", date:"2026-06-12", flag1:"🇺🇸", flag2:"🇵🇾" },
+        { id:3, team1:"Haiti", team2:"Scotland", date:"2026-06-13", flag1:"🇭🇹", flag2:"🏴󠁧󠁢󠁳󠁣󠁴󠁿" },
+        { id:4, team1:"Australia", team2:"Türkiye", date:"2026-06-13", flag1:"🇦🇺", flag2:"🇹🇷" },
+        { id:5, team1:"Brazil", team2:"Morocco", date:"2026-06-13", flag1:"🇧🇷", flag2:"🇲🇦" },
+        { id:6, team1:"Qatar", team2:"Switzerland", date:"2026-06-13", flag1:"🇶🇦", flag2:"🇨🇭" },
+        { id:7, team1:"Côte d’Ivoire", team2:"Ecuador", date:"2026-06-14", flag1:"🇨🇮", flag2:"🇪🇨" },
+        { id:8, team1:"Germany", team2:"Curaçao", date:"2026-06-14", flag1:"🇩🇪", flag2:"🇨🇼" },
+        { id:9, team1:"Netherlands", team2:"Japan", date:"2026-06-14", flag1:"🇳🇱", flag2:"🇯🇵" },
+        { id:10, team1:"Sweden", team2:"Tunisia", date:"2026-06-14", flag1:"🇸🇪", flag2:"🇹🇳" },
+        { id:11, team1:"Saudi Arabia", team2:"Uruguay", date:"2026-06-15", flag1:"🇸🇦", flag2:"🇺🇾" },
+        { id:12, team1:"Spain", team2:"Cape Verde", date:"2026-06-15", flag1:"🇪🇸", flag2:"🇨🇻" },
+        { id:13, team1:"Iran", team2:"New Zealand", date:"2026-06-15", flag1:"🇮🇷", flag2:"🇳🇿" },
+        { id:14, team1:"Belgium", team2:"Egypt", date:"2026-06-15", flag1:"🇧🇪", flag2:"🇪🇬" },
+        { id:15, team1:"France", team2:"Senegal", date:"2026-06-16", flag1:"🇫🇷", flag2:"🇸🇳" },
+        { id:16, team1:"Iraq", team2:"Norway", date:"2026-06-16", flag1:"🇮🇶", flag2:"🇳🇴" },
+        { id:17, team1:"Argentina", team2:"Algeria", date:"2026-06-16", flag1:"🇦🇷", flag2:"🇩🇿" },
+        { id:18, team1:"Austria", team2:"Jordan", date:"2026-06-16", flag1:"🇦🇹", flag2:"🇯🇴" },
+        { id:19, team1:"Ghana", team2:"Panama", date:"2026-06-17", flag1:"🇬🇭", flag2:"🇵🇦" },
         { id:20, team1:"إنجلترا", team2:"كرواتيا", date:"2026-06-17", flag1:"🏴󠁧󠁢󠁥󠁮󠁧󠁿", flag2:"🇭🇷" },
         // ... (يمكن إضافة باقي المباريات بنفس النمط، ولكن للاختصار نضع عينة)
     ];
@@ -347,14 +348,14 @@
         "منة الله طارق", "ياسين عمرو", "جودي هشام", "فريدة محمد", "أدهم حسام", "كنزي خالد"
     ];
     const citiesList = [
-        "القاهرة", "الإسكندرية", "المنصورة", "الجيزة", "طنطا", "بورسعيد", "أسيوط", "الشرقية", "المنيا", 
-        "السويس", "دمياط", "الفيوم", "بنها", "كفر الشيخ", "الزقازيق", "الأقصر", "أسوان", "الإسماعيلية",
-        "سوهاج", "قنا", "الغردقة", "شرم الشيخ", "المحلة الكبرى", "دمنهور", "بنى سويف", "مرسى مطروح"
+        "Cairo", "Alexandria", "Mansoura", "Giza", "Tanta", "Port Said", "Asyut", "Sharqia", "Minya", 
+        "Suez", "Damietta", "Fayoum", "Banha", "Kafr El Sheikh", "Zagazig", "Luxor", "Aswan", "Ismailia",
+        "Sohag", "Qena", "Hurghada", "Sharm El Sheikh", "El Mahalla El Kubra", "Damanhur", "Beni Suef", "Marsa Matruh"
     ];
     const matchesForNotifications = [
-        "مصر × ألمانيا", "البرازيل × المغرب", "بلجيكا × مصر", "السعودية × أوروغواي", "فرنسا × السنغال",
-        "إنجلترا × كرواتيا", "الأرجنتين × الجزائر", "هولندا × اليابان", "قطر × سويسرا", "إسبانيا × الرأس الأخضر",
-        "أستراليا × تركيا", "العراق × النرويج", "غانا × بنما", "البرتغال × الكونغو", "كندا × البوسنة"
+        "Egypt × Germany", "Brazil × Morocco", "Belgium × Egypt", "Saudi Arabia × Uruguay", "France × Senegal",
+        "إنجلترا × كرواتيا", "Argentina × Algeria", "Netherlands × Japan", "Qatar × Switzerland", "Spain × Cape Verde",
+        "Australia × Türkiye", "Iraq × Norway", "Ghana × Panama", "Portugal × Congo", "Canada × البوسنة"
     ];
 
     // دالة إضافة إشعار جديد إلى الشريط
@@ -376,18 +377,18 @@
     // بدء الإشعارات الحية (مرتين في الدقيقة)
     function startLiveNotifications() {
         // إشعار فوري للترحيب
-        addNotification("🌟 مرحباً بك في مسابقة كأس العالم 2026 – جوائز يومية تصل إلى 50,000 EGP");
+        addNotification("🌟 مرحباً بك في مسابقة World Cup 2026 – جوائز يومية تصل إلى 50,000 EGP");
         // إشعارات دورية كل 30 ثانية
         setInterval(() => {
             const randomName = namesList[Math.floor(Math.random() * namesList.length)];
             const randomCity = citiesList[Math.floor(Math.random() * citiesList.length)];
             const randomMatch = matchesForNotifications[Math.floor(Math.random() * matchesForNotifications.length)];
-            const action = Math.random() > 0.4 ? "اشترك للتو" : "سجل توقعه لمباراة";
+            const action = Math.random() > 0.4 ? "just joined" : "made a match prediction";
             let message = "";
-            if (action === "اشترك للتو") {
-                message = `${randomName} من ${randomCity} اشترك للتو في مسابقة كأس العالم 🔔`;
+            if (action === "just joined") {
+                message = `${randomName} من ${randomCity} just joined في مسابقة كأس العالم 🔔`;
             } else {
-                message = `${randomName} من ${randomCity} سجل توقعه لمباراة ${randomMatch} 🎯`;
+                message = `${randomName} من ${randomCity} made a match prediction ${randomMatch} 🎯`;
             }
             addNotification(message);
         }, 30000);
@@ -417,7 +418,7 @@
         const matches = groups[dateStr] || [];
         const container = document.getElementById('matchesContainer');
         if(matches.length === 0) {
-            container.innerHTML = '<div style="text-align:center; padding:40px;">لا توجد مباريات في هذا اليوم</div>';
+            container.innerHTML = '<div style="text-align:center; padding:40px;">No matches on this day</div>';
             return;
         }
         container.innerHTML = '';
@@ -432,8 +433,8 @@
                     <span>${match.flag2} ${match.team2}</span>
                 </div>
                 <div class="match-date"><i class="far fa-calendar-alt"></i> ${match.date}</div>
-                <div class="match-status ${isOpen ? 'status-open' : 'status-locked'}">${isOpen ? '✨ مفتوحة للتخمين ✨' : '🔒 ستفتح في يوم المباراة'}</div>
-                <button class="predict-btn ${!isOpen ? 'disabled' : ''}" data-match='${JSON.stringify(match)}' ${!isOpen ? 'disabled' : ''}>${isOpen ? '⚡ سجل توقعك (100 جنيه) ⚡' : 'غير متاحة'}</button>
+                <div class="match-status ${isOpen ? 'status-open' : 'status-locked'}">${isOpen ? '✨ Open for predictions ✨' : '🔒 Opens on match day'}</div>
+                <button class="predict-btn ${!isOpen ? 'disabled' : ''}" data-match='${JSON.stringify(match)}' ${!isOpen ? 'disabled' : ''}>${isOpen ? '⚡ Make Your Prediction (100 EGP) ⚡' : 'Unavailable'}</button>
             `;
             container.appendChild(card);
         });
@@ -468,7 +469,7 @@
         renderMatchesForDate(today);
     }
 
-    // رصيد المستخدم
+    // رصيد User
     let balance = localStorage.getItem('userCoins') ? parseInt(localStorage.getItem('userCoins')) : 500;
     document.getElementById('userBalance').innerText = balance;
     setInterval(() => {
@@ -481,6 +482,5 @@
     generateWinners();
     startLiveNotifications();
 </script>
-    <script src="v10.js" defer></script>
 </body>
 </html>

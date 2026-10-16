@@ -1,28 +1,28 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr" data-ui="v10">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
 
     <!-- ========== تحسينات SEO ========== -->
-    <title>المتحف الكبير • استخراج كنوز الفراعنة</title>
-    <meta name="description" content="ادخل عالم المتحف الكبير. استخرج الكنوز الرقمية، اربح يومياً بالجنيه المصري، واجمع الأدوات الفرعونية. انضم إلى آلاف المستخدمين.">
-    <meta name="keywords" content="المتحف الكبير, كنوز الفراعنة, ربح يومي, أدوات تعدين, جنيه مصري, بوابة الكرنك">
+    <title>Grand Museum • Pharaoh Treasure Mining</title>
+    <meta name="description" content="Enter the Grand Museum. Mine digital treasures, earn daily in EGP, and collect Egyptian-themed tools. Join thousands of users.">
+    <meta name="keywords" content="Grand Museum, Pharaoh Treasures, ربح يومي, Tools تعدين, Egyptian Pounds, بوابة الكرنك">
     <meta name="author" content="PharaCoin">
     <meta name="robots" content="index, follow">
 
     <!-- ========== بطاقات Open Graph ========== -->
-    <meta property="og:title" content="المتحف الكبير | استخراج الكنوز">
-    <meta property="og:description" content="استخرج الكنوز الرقمية بالجنيه المصري. انضم إلى آلاف المستخدمين واربح من خلال أدوات التعدين الفرعونية.">
+    <meta property="og:title" content="Grand Museum | استخراج الكنوز">
+    <meta property="og:description" content="Mine digital treasures in EGP. Join thousands of users and earn through Egyptian-themed mining tools.">
     <meta property="og:image" content="https://pharacoin.pages.dev/Object/qa.jpg">
     <meta property="og:url" content="https://pharacoin.pages.dev/index.html">
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="المتحف الكبير">
-    <meta property="og:locale" content="ar_AR">
+    <meta property="og:site_name" content="Grand Museum">
+    <meta property="og:locale" content="en_US">
 
     <!-- ========== بطاقات Twitter ========== -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="المتحف الكبير">
+    <meta name="twitter:title" content="Grand Museum">
     <meta name="twitter:description" content="استخرج الكنوز الرقمية بالجنيه المصري.">
     <meta name="twitter:image" content="https://pharacoin.pages.dev/Object/qa.jpg">
     <meta name="twitter:site" content="@PharaCoinApp">
@@ -34,10 +34,10 @@
     {
         "@context": "https://schema.org",
         "@type": "WebApplication",
-        "name": "المتحف الكبير",
+        "name": "Grand Museum",
         "url": "https://pharacoin.pages.dev",
-        "description": "منصة استخراج الكنوز الرقمية بتصميم فرعوني. اربح يومياً بالجنيه المصري عبر أدوات التعدين والإحالات.",
-        "inLanguage": "ar",
+        "description": "A Pharaoh-themed digital treasure mining platform. Earn daily in EGP through mining tools and referrals.",
+        "inLanguage": "en",
         "applicationCategory": "Finance",
         "operatingSystem": "All"
     }
@@ -52,7 +52,7 @@
             box-sizing: border-box;
         }
         body {
-            font-family: 'Cairo', sans-serif;
+            font-family: 'Inter','Segoe UI',Arial,sans-serif;
             background: #000;
             color: #fff;
             overflow-x: hidden;
@@ -187,11 +187,17 @@
 
         /* ===== الخلفية والمحتوى الرئيسي ===== */
         .bg {
-            position: fixed;
-            inset: 0;
-            background: url("Object/qa.jpg") center/cover no-repeat;
-            filter: brightness(0.25) saturate(1.2);
-            z-index: -2;
+            position: fixed !important;
+            inset: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            background-image: url("Object/qa.jpg") !important;
+            background-position: center center !important;
+            background-size: cover !important;
+            background-repeat: no-repeat !important;
+            filter: brightness(0.35) saturate(1.2) !important;
+            z-index: 0 !important;
+            pointer-events: none !important;
         }
         .bg::after {
             content: '';
@@ -202,6 +208,7 @@
         }
         .overlay {
             min-height: 100vh;
+            z-index: 2 !important;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -214,9 +221,9 @@
 
         /* ===== الجسيمات ===== */
         .particles {
-            position: fixed;
-            inset: 0;
-            z-index: -1;
+            position: fixed !important;
+            inset: 0 !important;
+            z-index: 1 !important;
             overflow: hidden;
             pointer-events: none;
         }
@@ -292,7 +299,7 @@
             border-radius: 30px;
         }
 
-        /* ===== HERO SECTION (مدخل الصفحة المحترف) ===== */
+        /* ===== HERO SECTION (مدخل الصفحة الProfessional) ===== */
         .hero-section {
             background: rgba(0, 0, 0, 0.4);
             backdrop-filter: blur(12px);
@@ -409,7 +416,7 @@
             padding: 16px 40px;
             font-size: 20px;
             font-weight: 900;
-            font-family: 'Cairo', sans-serif;
+            font-family: 'Inter','Segoe UI',Arial,sans-serif;
             border: none;
             border-radius: 50px;
             cursor: pointer;
@@ -691,8 +698,25 @@
             font-size: 12px;
         }
     </style>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="v10.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        /* ===== الخلفية تحت الكلام والنص فوقها ===== */
+        body { position: relative !important; min-height: 100vh !important; background: #000 !important; }
+        .bg {
+            position: fixed !important; inset: 0 !important; width: 100vw !important; height: 100vh !important;
+            background-image: url("Object/qa.jpg") !important; background-position: center center !important;
+            background-size: cover !important; background-repeat: no-repeat !important;
+            filter: brightness(0.35) saturate(1.2) !important; z-index: 0 !important; pointer-events: none !important;
+        }
+        .particles { position: fixed !important; inset: 0 !important; z-index: 1 !important; pointer-events: none !important; }
+        .overlay { position: relative !important; z-index: 2 !important; min-height: 100vh !important; }
+        .overlay .container { position: relative !important; z-index: 3 !important; }
+        #onlineCount, #offlineCount { direction: ltr !important; unicode-bidi: isolate !important; font-variant-numeric: lining-nums !important; }
+    </style>
+
+    <script src="v10.js" defer></script>
 </head>
 <body>
 
@@ -719,8 +743,8 @@
 
     <div class="text-wrapper">
         <div class="symbol-line">☥ 𓂀 𓆣 ☥</div>
-        <div class="loader-text">☥ المتحف الكبير ☥</div>
-        <div class="loader-subtitle">جارِ فتح بوابة استخراج الكنوز...</div>
+        <div class="loader-text">☥ Grand Museum ☥</div>
+        <div class="loader-subtitle">Opening the treasure mining gate...</div>
         <div class="symbol-line">☥ 𓁹 𓂀 ☥</div>
     </div>
 </div>
@@ -744,111 +768,111 @@
                 <span id="offlineCount">0</span> Offline
             </div>
         </div>
-        <div id="templeStatus">⚡ المتحف ممتلئ الآن</div>
+        <div id="templeStatus">⚡ Museum is currently full</div>
 
         <!-- ========== HERO SECTION ========== -->
         <div class="hero-section">
-            <h1 class="main-title">كنوز الفراعنة<br><span style="font-size: 0.6em; display: block; color: #FFD700;">المتحف الكبير • استخراج الكنوز</span></h1>
-            <div class="subtitle">⛏️ ابدأ رحلتك الآن واربح بالجنيه المصري</div>
+            <h1 class="main-title">Pharaoh Treasures<br><span style="font-size: 0.6em; display: block; color: #FFD700;">Grand Museum • Treasure Mining</span></h1>
+            <div class="subtitle">⛏️ Start your journey and earn in Egyptian EGP</div>
             
-            <!-- معدل التعدين المباشر -->
+            <!-- معدل Mining المباشر -->
             <div class="mining-rate-box">
-                <span class="rate-label">☥ معدل الاستخراج</span>
+                <span class="rate-label">☥ Mining Rate</span>
                 <span class="rate-value" id="miningRate">15.79753</span>
                 <span class="live-badge">LIVE</span>
-                <button class="collect-btn" id="collectBtn">⛏️ جمع</button>
+                <button class="collect-btn" id="collectBtn">⛏️ Collect</button>
             </div>
-            <p style="color: #aaa; margin-bottom: 15px;">الأداة الحالية: Earthbound • العائد 185%</p>
+            <p style="color: #aaa; margin-bottom: 15px;">Current tool: Earthbound • Return 185%</p>
 
             <!-- أزرار CTA مزدوجة -->
             <div class="cta-dual">
-                <a href="register.html" class="cta-btn">☥ أنشئ حساباً مجانياً ☥</a>
-                <a href="login.html" class="cta-btn secondary">𓂀 تسجيل الدخول</a>
+                <a href="register.html" class="cta-btn">☥ Create a Free Account ☥</a>
+                <a href="login.html" class="cta-btn secondary">𓂀 Log In</a>
             </div>
 
             <!-- مكافأة الترحيب (تم تعديل النص) -->
             <div class="welcome-bonus">
-                <span>🎁 ابدأ بمكافأة 1000 جنيه فوراً</span>
-                <p style="font-size: 14px; color: #ccc;">بدون استثمار • سحب من 5000 جنيه</p>
+                <span>🎁 Start with a 1,000 EGP bonus instantly</span>
+                <p style="font-size: 14px; color: #ccc;">No investment • Withdraw from 5,000 EGP</p>
             </div>
         </div>
 
         <!-- إحصائيات المنصة -->
         <div class="stats-grid">
-            <div class="stat-card"><div class="stat-number" id="activeMiners">247,892</div><div class="stat-label">عمال التعدين النشطون</div></div>
-            <div class="stat-card"><div class="stat-number" id="totalTools">456,304</div><div class="stat-label">إجمالي الأدوات النشطة</div></div>
-            <div class="stat-card"><div class="stat-number">3,215,000</div><div class="stat-label">إجمالي الودائع (ج.م)</div></div>
-            <div class="stat-card"><div class="stat-number">2,845,000</div><div class="stat-label">إجمالي السحب (ج.م)</div></div>
+            <div class="stat-card"><div class="stat-number" id="activeMiners">247,892</div><div class="stat-label">Active Miners</div></div>
+            <div class="stat-card"><div class="stat-number" id="totalTools">456,304</div><div class="stat-label">Total Active Tools</div></div>
+            <div class="stat-card"><div class="stat-number">3,215,000</div><div class="stat-label">Total Deposits (EGP)</div></div>
+            <div class="stat-card"><div class="stat-number">2,845,000</div><div class="stat-label">Total Withdrawals (EGP)</div></div>
         </div>
 
         <!-- كيف يعمل؟ -->
-        <div class="section-title">☥ كيف يعمل؟ ☥</div>
+        <div class="section-title">☥ How It Works ☥</div>
         <div class="steps-container">
-            <div class="step"><div class="step-icon">𓂀</div><h3>1. إنشاء حساب</h3><p>افتح لوحة التحكم الفرعونية الخاصة بك</p></div>
-            <div class="step"><div class="step-icon">𓆣</div><h3>2. اربح الجنيهات</h3><p>تصفح الإعلانات وأكمل المهام</p></div>
-            <div class="step"><div class="step-icon">𓋹</div><h3>3. اقتناء الأدوات</h3><p>أدوات تولد جنيهات كل ثانية</p></div>
+            <div class="step"><div class="step-icon">𓂀</div><h3>1. Create an Account</h3><p>Open your Egyptian-themed dashboard</p></div>
+            <div class="step"><div class="step-icon">𓆣</div><h3>2. Earn EGP</h3><p>Browse ads and complete tasks</p></div>
+            <div class="step"><div class="step-icon">𓋹</div><h3>3. Acquire Tools</h3><p>Tools generate EGP every second</p></div>
         </div>
 
-        <!-- أدوات التعدين -->
-        <div class="section-title">⛏️ أدوات التعدين ⛏️</div>
+        <!-- Mining Tools -->
+        <div class="section-title">⛏️ Mining Tools ⛏️</div>
         <div class="tool-card">
-            <div class="tool-name">𓃀 صولجان الفرعون</div>
+            <div class="tool-name">𓃀 Pharaoh Scepter</div>
             <div class="tool-stats">
-                <div class="stat-item"><span class="stat-value">0.00005</span><br>في الثانية</div>
-                <div class="stat-item"><span class="stat-value">200 يوم</span><br>متانة</div>
-                <div class="stat-item"><span class="stat-value">188%</span><br>عائد</div>
-                <div class="stat-item"><span class="stat-value">500</span><br>جنيه</div>
+                <div class="stat-item"><span class="stat-value">0.00005</span><br>per second</div>
+                <div class="stat-item"><span class="stat-value">200 days</span><br>Durability</div>
+                <div class="stat-item"><span class="stat-value">188%</span><br>Return</div>
+                <div class="stat-item"><span class="stat-value">500</span><br>EGP</div>
             </div>
-            <button class="collect-btn" style="width:100%">شراء الأداة</button>
+            <button class="collect-btn" style="width:100%">Buy Tool</button>
         </div>
 
-        <!-- الدخل النشط والسلبي -->
+        <!-- Active Income والسلبي -->
         <div class="two-columns">
             <div class="info-panel">
-                <div class="panel-title"><span>💰 الدخل النشط</span> <span>☥</span></div>
+                <div class="panel-title"><span>💰 Active Income</span> <span>☥</span></div>
                 <ul class="check-list">
-                    <li>✅ 10 - 75 جنيه لكل إعلان</li>
-                    <li>✅ 1 - 5 جنيه لكل نقرة إحالة</li>
-                    <li>✅ لا يتطلب استثمار</li>
-                    <li>✅ مكافآت رفع المستوى</li>
-                    <li>✅ سحب نقدي من 5000 جنيه</li>
+                    <li>✅ 10–75 EGP per ad</li>
+                    <li>✅ 1–5 EGP per referral click</li>
+                    <li>✅ No investment required</li>
+                    <li>✅ Level-up rewards</li>
+                    <li>✅ Cash withdrawal from 5,000 EGP</li>
                 </ul>
             </div>
             <div class="info-panel">
-                <div class="panel-title"><span>💤 الدخل السلبي</span> <span>𓆣</span></div>
-                <p>أدواتك تستخرج الجنيهات حتى وأنت غير متصل. كلما ارتفع مستوى إحالاتك زادت عمولتك.</p>
+                <div class="panel-title"><span>💤 Passive Income</span> <span>𓆣</span></div>
+                <p>Your tools keep generating EGP while you are offline. The higher your referral level, the higher your commission.</p>
                 <ul class="check-list" style="margin-top:20px">
-                    <li>✅ اربح من عمال المناجم المُحالين</li>
-                    <li>✅ أرباح مدى الحياة</li>
+                    <li>✅ Earn from referred miners</li>
+                    <li>✅ Lifetime earnings</li>
                 </ul>
             </div>
         </div>
 
         <!-- مركز التحكم -->
         <div style="margin: 50px 0 20px; background: rgba(0,0,0,0.3); border-radius: 30px; padding: 30px;">
-            <h2 style="color: gold; font-size: 28px;">📊 مركز التحكم في التعدين</h2>
-            <p style="max-width: 700px; margin: 20px auto;">تتبع الأرباح، راقب الأدوات، وشاهد نمو أرباحك بالجنيه المصري في الوقت الفعلي. واجهة سلسة تشبه الألعاب.</p>
+            <h2 style="color: gold; font-size: 28px;">📊 Mining Control Center</h2>
+            <p style="max-width: 700px; margin: 20px auto;">Track earnings, monitor tools, and watch your EGP income grow in real time with a smooth, game-like interface.</p>
         </div>
 
         <!-- أيقونات التنقل -->
         <div class="page-icons">
-            <div class="icon-box" onclick="toggleLabel(this)" ondblclick="openPage('faq.html')"><div class="circle">☥</div><div class="icon-label">الأسئلة</div></div>
-            <div class="icon-box" onclick="toggleLabel(this)" ondblclick="openPage('how.html')"><div class="circle">𓂀</div><div class="icon-label">كيف تعمل</div></div>
-            <div class="icon-box" onclick="toggleLabel(this)" ondblclick="openPage('about.html')"><div class="circle">𓆣</div><div class="icon-label">عن المشروع</div></div>
+            <div class="icon-box" onclick="toggleLabel(this)" ondblclick="openPage('faq.html')"><div class="circle">☥</div><div class="icon-label">FAQ</div></div>
+            <div class="icon-box" onclick="toggleLabel(this)" ondblclick="openPage('how.html')"><div class="circle">𓂀</div><div class="icon-label">How It Works</div></div>
+            <div class="icon-box" onclick="toggleLabel(this)" ondblclick="openPage('about.html')"><div class="circle">𓆣</div><div class="icon-label">About</div></div>
         </div>
 
         <!-- فوتر -->
         <div class="footer-links">
-            <a href="#">شروط</a> <span>|</span> <a href="#">خصوصية</a> <span>|</span> <a href="#">إثباتات الدفع</a> <span>|</span>
-            <a href="#">خارطة الطريق</a> <span>|</span> <a href="#">تليجرام الرسمي</a>
+            <a href="#">Terms</a> <span>|</span> <a href="#">Privacy</a> <span>|</span> <a href="#">Payment Proofs</a> <span>|</span>
+            <a href="#">Roadmap</a> <span>|</span> <a href="#">Official Telegram</a>
         </div>
         <div class="ssl-badge">
-            🔒 مؤمن بشهادة SSL • مشفر • الإتاحية متصل 334
+            🔒 Secured with SSL • Encrypted • Online 334
         </div>
 
         <footer class="main-footer">
-            © 2026 المتحف الكبير • كنوز الفراعنة — جميع الحقوق محفوظة ☥<br>
-            <span style="opacity:0.5">لا يتطلب استثمارًا • ابدأ الربح فوراً</span>
+            © 2026 Grand Museum • Pharaoh Treasures — All rights reserved ☥<br>
+            <span style="opacity:0.5">No investment required • Start earning now</span>
         </footer>
     </div>
 </main>
@@ -905,7 +929,7 @@
                     if (e.target.id === 'collectBtn') {
                         e.preventDefault();
                         const currentRate = document.getElementById('miningRate').innerText;
-                        showToast(`☥ تم جمع ${currentRate} جنيه! استمر في الاستخراج.`, 2800);
+                        showToast(`☥ Collected ${currentRate} EGP! Keep mining.`, 2800);
                     } else {
                         playTone(800, 0.08);
                     }
@@ -916,8 +940,8 @@
         let online = 231456;
         let offline = 45231;
         function updateDisplay() {
-            document.getElementById("onlineCount").innerText = online.toLocaleString();
-            document.getElementById("offlineCount").innerText = offline.toLocaleString();
+            document.getElementById("onlineCount").innerText = online.toLocaleString("en-US");
+            document.getElementById("offlineCount").innerText = offline.toLocaleString("en-US");
             document.getElementById("templeStatus").style.display = online > 200000 ? "block" : "none";
         }
         function fluctuate() {
@@ -966,16 +990,15 @@
         document.getElementById('collectBtn').addEventListener('click', (e) => {
             e.preventDefault();
             const currentRate = document.getElementById('miningRate').innerText;
-            showToast(`☥ تم جمع ${currentRate} جنيه! استمر في الاستخراج.`, 2800);
+            showToast(`☥ Collected ${currentRate} EGP! Keep mining.`, 2800);
         });
     })();
 </script>
 
 <!-- قسم SEO مخفي -->
 <section style="display:none">
-    <h2>اكتشف كنوز الفراعنة واستخرج الجنيهات الرقمية مع المتحف الكبير</h2>
-    <p>منصة المتحف الكبير بتصميم فرعوني تتيح لك ربح الجنيهات الرقمية عبر أدوات التعدين والإحالات. انضم اليوم واحصل على مكافأة 1000 جنيه.</p>
+    <h2>Discover Pharaoh treasures and mine digital EGP with the Grand Museum</h2>
+    <p>The Grand Museum platform lets you earn digital EGP through mining tools and referrals. Join today and receive a 1,000 EGP bonus.</p>
 </section>
-    <script src="v10.js" defer></script>
 </body>
 </html>

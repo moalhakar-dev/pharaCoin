@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr" data-ui="v10">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>دعوة الأصدقاء - PharaCoin | اربح 10 كوينز لكل صديق</title>
+    <title>Invite Friends - PharaCoin | Earn 10 coins per friend</title>
     <meta name="description" content="ادعُ أصدقاءك إلى PharaCoin واربح 10 كوينز عن كل صديق يسجل عبر رابطك. تتبع دعواتك وأرباحك في لوحة الإحصائيات.">
-    <meta name="keywords" content="PharaCoin, دعوة الأصدقاء, برنامج الإحالة, كوينز, مكافآت">
+    <meta name="keywords" content="PharaCoin, Invite Friends, برنامج الإحالة, كوينز, مكافآت">
     <meta name="author" content="PharaCoin Team">
     <meta name="robots" content="noindex, nofollow">
 
-    <meta property="og:title" content="دعوة الأصدقاء - PharaCoin">
+    <meta property="og:title" content="Invite Friends - PharaCoin">
     <meta property="og:description" content="ادعُ أصدقاءك واربح 10 كوينز عن كل صديق.">
     <meta property="og:image" content="https://pharacoin.pages.dev/og-image.jpg">
     <meta property="og:url" content="https://pharacoin.pages.dev/invite.html">
@@ -18,7 +18,7 @@
     <meta property="og:site_name" content="PharaCoin">
 
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="دعوة الأصدقاء - PharaCoin">
+    <meta name="twitter:title" content="Invite Friends - PharaCoin">
     <meta name="twitter:description" content="ادعُ أصدقاءك واربح 10 كوينز عن كل صديق.">
     <meta name="twitter:image" content="https://pharacoin.pages.dev/twitter-image.jpg">
     <meta name="twitter:site" content="@PharaCoinApp">
@@ -29,8 +29,8 @@
     {
         "@context": "https://schema.org",
         "@type": "WebPage",
-        "name": "دعوة الأصدقاء - PharaCoin",
-        "description": "صفحة دعوة الأصدقاء في منصة PharaCoin.",
+        "name": "Invite Friends - PharaCoin",
+        "description": "صفحة Invite Friends في منصة PharaCoin.",
         "url": "https://pharacoin.pages.dev/invite.html",
         "isPartOf": {
             "@type": "WebSite",
@@ -215,44 +215,45 @@
           text-align:center;
         }
     </style>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="v10.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="v10.js" defer></script>
 </head>
 <body>
 
 <div class="toast-container" id="toastContainer"></div>
 
 <div class="header">
-  <h1>🔗 دعوة الأصدقاء</h1>
-  <div class="back" onclick="goBack()">⬅ رجوع</div>
+  <h1>🔗 Invite Friends</h1>
+  <div class="back" onclick="goBack()">⬅ Back</div>
 </div>
 
 <div class="container">
 
   <div class="card">
-    <h2>اربح كوينز بدعوة أصدقائك</h2>
-    <p style="color:#00ffcc; text-align:center;">كل صديق يسجل من رابطك يعطيك 10 كوينز</p>
+    <h2>Earn coins by inviting your friends</h2>
+    <p style="color:#00ffcc; text-align:center;">Each friend who registers through your link gives you 10 coins</p>
   </div>
 
   <div class="card">
-    <div class="link-box" id="inviteLink">جاري تحميل الرابط...</div>
-    <button onclick="copyLink()" id="copyBtn">نسخ الرابط</button>
+    <div class="link-box" id="inviteLink">Loading referral link...</div>
+    <button onclick="copyLink()" id="copyBtn">Copy Link</button>
   </div>
 
   <div class="stats">
     <div class="stat">
-      <p>عدد الدعوات</p>
+      <p>Invites</p>
       <h3 id="invitesCount">0</h3>
     </div>
     <div class="stat">
-      <p>أرباحك</p>
+      <p>Your Earnings</p>
       <h3 id="earnings">0 🪙</h3>
     </div>
   </div>
 
-  <div class="note">سيتم إضافة 10 كوينز فور تسجيل صديقك عبر رابطك</div>
+  <div class="note">10 coins will be added when a friend registers through your link</div>
 
-  <button onclick="window.location.href='dashboard.html'">العودة للوحة التحكم</button>
+  <button onclick="window.location.href='dashboard.html'">Back to Dashboard</button>
 
 </div>
 
@@ -281,7 +282,7 @@ const db = firebase.firestore();
 let currentUser = null;
 let unsubscribeUser = null;
 
-// التحقق من تسجيل الدخول
+// التحقق من Login
 auth.onAuthStateChanged(user => {
   if (!user) {
     window.location.href = "login.html";
@@ -292,13 +293,13 @@ auth.onAuthStateChanged(user => {
     const inviteLink = `${baseUrl}?ref=${user.uid}`;
     document.getElementById('inviteLink').innerText = inviteLink;
     
-    // الاستماع لتغييرات بيانات المستخدم
+    // الاستماع لتغييرات بيانات User
     if (unsubscribeUser) unsubscribeUser();
     unsubscribeUser = db.collection("users").doc(user.uid).onSnapshot((doc) => {
       if (doc.exists) {
         const data = doc.data();
         const referralCount = data.referralCount || 0;
-        const earnings = referralCount * 10; // 10 كوينز لكل دعوة
+        const earnings = referralCount * 10; // 10 كوينز لكل Invite
         document.getElementById('invitesCount').innerText = referralCount;
         document.getElementById('earnings').innerHTML = earnings + ' 🪙';
       } else {
@@ -314,12 +315,12 @@ auth.onAuthStateChanged(user => {
   }
 });
 
-// نسخ الرابط
+// Copy Link
 function copyLink() {
   const link = document.getElementById('inviteLink').innerText;
-  if (link && link !== 'جاري تحميل الرابط...') {
+  if (link && link !== 'Loading referral link...') {
     navigator.clipboard.writeText(link);
-    showCustomToast('تم نسخ الرابط! شاركه مع أصدقائك', 'success');
+    showCustomToast('تم Copy Link! شاركه مع أصدقائك', 'success');
   } else {
     showCustomToast('الرابط غير متاح بعد', 'error');
   }
@@ -330,6 +331,5 @@ function goBack() {
   else location.href = "dashboard.html";
 }
 </script>
-    <script src="v10.js" defer></script>
 </body>
 </html>

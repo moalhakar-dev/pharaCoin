@@ -1,26 +1,26 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr" data-ui="v10">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- === تحسينات SEO محسنة === -->
-    <title>مهام PharaCoin اليومية - اربح النقاط والمكافآت</title>
-    <meta name="description" content="أكمل المهام اليومية في PharaCoin: سجل دخولك، شاهد إعلانات، شارك الموقع، العب ألعاباً صغيرة واربح نقاطاً إضافية لتحويلها إلى عملات.">
-    <meta name="keywords" content="PharaCoin, مهام يومية, مكافآت, نقاط, إعلانات, مشاركة, ألعاب">
+    <title>Daily PharaCoin Tasks - Earn points and rewards</title>
+    <meta name="description" content="أكمل Daily Tasks في PharaCoin: سجل دخولك، شاهد إعلانات، شارك الموقع، العب ألعاباً صغيرة واربح pointsاً إضافية لتحويلها إلى عملات.">
+    <meta name="keywords" content="PharaCoin, مهام يومية, مكافآت, points, إعلانات, مشاركة, ألعاب">
     <meta name="author" content="PharaCoin Team">
     <meta name="robots" content="noindex, nofollow">
 
-    <meta property="og:title" content="مهام PharaCoin اليومية">
-    <meta property="og:description" content="أكمل المهام اليومية واربح نقاطاً إضافية في PharaCoin.">
+    <meta property="og:title" content="Daily PharaCoin Tasks">
+    <meta property="og:description" content="Complete daily tasks and earn extra points in PharaCoin.">
     <meta property="og:image" content="https://pharacoin.pages.dev/og-image.jpg">
     <meta property="og:url" content="https://pharacoin.pages.dev/tasks.html">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="PharaCoin">
 
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="مهام PharaCoin اليومية">
-    <meta name="twitter:description" content="أكمل المهام اليومية واربح نقاطاً إضافية في PharaCoin.">
+    <meta name="twitter:title" content="Daily PharaCoin Tasks">
+    <meta name="twitter:description" content="Complete daily tasks and earn extra points in PharaCoin.">
     <meta name="twitter:image" content="https://pharacoin.pages.dev/twitter-image.jpg">
     <meta name="twitter:site" content="@PharaCoinApp">
 
@@ -30,36 +30,36 @@
     {
         "@context": "https://schema.org",
         "@type": "ItemList",
-        "name": "المهام اليومية في PharaCoin",
-        "description": "قائمة بالمهام اليومية التي يمكنك إكمالها لربح النقاط والمكافآت.",
+        "name": "Daily Tasks في PharaCoin",
+        "description": "قائمة بDaily Tasks التي يمكنك إكمالها لربح الpoints والمكافآت.",
         "numberOfItems": 4,
         "itemListElement": [
             {
                 "@type": "ListItem",
                 "position": 1,
-                "name": "تسجيل الدخول اليومي",
-                "description": "سجل دخولك اليوم لتحصل على 10 نقاط إضافية.",
+                "name": "Daily Login",
+                "description": "Log in today to get 10 extra points.",
                 "url": "https://pharacoin.pages.dev/tasks.html#daily-login"
             },
             {
                 "@type": "ListItem",
                 "position": 2,
-                "name": "مشاهدة إعلان",
-                "description": "شاهد إعلان مدته 20 ثانية واحصل على 30 نقطة.",
+                "name": "Watch an Ad",
+                "description": "Watch a 20-second ad and get 30 points.",
                 "url": "https://pharacoin.pages.dev/tasks.html#watch-ad"
             },
             {
                 "@type": "ListItem",
                 "position": 3,
-                "name": "مشاركة الموقع",
-                "description": "شارك الموقع مع أصدقائك لتحصل على 50 نقطة.",
+                "name": "Share the Website",
+                "description": "Share the website with friends and get 50 points.",
                 "url": "https://pharacoin.pages.dev/tasks.html#share-site"
             },
             {
                 "@type": "ListItem",
                 "position": 4,
-                "name": "لعب لعبة صغيرة",
-                "description": "العب لعبة قصيرة واربح من 20 إلى 60 نقطة.",
+                "name": "Play a Mini Game",
+                "description": "Play a short game and earn 20–60 points.",
                 "url": "https://pharacoin.pages.dev/tasks.html#play-game"
             }
         ]
@@ -154,7 +154,7 @@
           font-size:13px;
         }
 
-        /* العنوان الرئيسي */
+        /* Address الرئيسي */
         .page-main-title{
           text-align:center;
           margin:18px 0 12px;
@@ -300,7 +300,9 @@
           display: block;
         }
     </style>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="v10.css">
+    <script src="v10.js" defer></script>
 </head>
 <body>
 
@@ -309,39 +311,39 @@
 
 <div class="header">
   <div class="logo">📋 PharaCoin</div>
-  <div class="back" onclick="goBack()">⬅ رجوع</div>
+  <div class="back" onclick="goBack()">⬅ Back</div>
 </div>
 
-<h1 class="page-main-title">المهام اليومية</h1>
+<h1 class="page-main-title">Daily Tasks</h1>
 
 <div class="box">
 
   <div class="task-card" id="daily-login">
     <i class="fa-solid fa-bolt task-icon"></i>
-    <h2>تسجيل الدخول اليومي</h2>
-    <p>سجل دخولك اليوم لتحصل على 10 نقاط إضافية.</p>
-    <button class="task-btn" onclick="handleTaskClick('login')">احصل على النقاط</button>
+    <h2>Daily Login</h2>
+    <p>Log in today to get 10 extra points.</p>
+    <button class="task-btn" onclick="handleTaskClick('login')">Get Points</button>
   </div>
 
   <div class="task-card" id="watch-ad">
     <i class="fa-solid fa-play task-icon"></i>
-    <h2>مشاهدة إعلان</h2>
-    <p>شاهد إعلان مدته 20 ثانية واحصل على 30 نقطة.</p>
-    <button class="task-btn" onclick="handleTaskClick('ad')">ابدأ الآن</button>
+    <h2>Watch an Ad</h2>
+    <p>Watch a 20-second ad and get 30 points.</p>
+    <button class="task-btn" onclick="handleTaskClick('ad')">Start Now</button>
   </div>
 
   <div class="task-card" id="share-site">
     <i class="fa-solid fa-share-nodes task-icon"></i>
-    <h2>مشاركة الموقع</h2>
-    <p>شارك الموقع مع أصدقائك لتحصل على 50 نقطة.</p>
-    <button class="task-btn" onclick="handleTaskClick('share')">شارك الآن</button>
+    <h2>Share the Website</h2>
+    <p>Share the website with friends and get 50 points.</p>
+    <button class="task-btn" onclick="handleTaskClick('share')">Share Now</button>
   </div>
 
   <div class="task-card" id="play-game">
     <i class="fa-solid fa-gamepad task-icon"></i>
-    <h2>لعب لعبة صغيرة</h2>
-    <p>العب لعبة قصيرة واربح من 20 إلى 60 نقطة.</p>
-    <button class="task-btn" onclick="handleTaskClick('game')">ابدأ اللعبة</button>
+    <h2>Play a Mini Game</h2>
+    <p>Play a short game and earn 20–60 points.</p>
+    <button class="task-btn" onclick="handleTaskClick('game')">Start Game</button>
   </div>
 
   <!-- تم إخفاء زر إعادة التعيين نهائياً -->
@@ -350,21 +352,21 @@
 
 <!-- Bottom Nav بالرموز المصرية -->
 <div class="bottom-nav">
-  <div class="nav-item" data-url="dashboard.html" data-label="الرئيسية" data-egypt="𓂀" data-alt="🏠">
+  <div class="nav-item" data-url="dashboard.html" data-label="Home" data-egypt="𓂀" data-alt="🏠">
     <div class="nav-circle">𓂀</div>
-    <div class="nav-label">الرئيسية</div>
+    <div class="nav-label">Home</div>
   </div>
-  <div class="nav-item" data-url="museum.html" data-label="المتحف" data-egypt="𓆣" data-alt="🏺">
+  <div class="nav-item" data-url="museum.html" data-label="Museum" data-egypt="𓆣" data-alt="🏺">
     <div class="nav-circle">𓆣</div>
-    <div class="nav-label">المتحف</div>
+    <div class="nav-label">Museum</div>
   </div>
-  <div class="nav-item" data-url="statue-builder.html" data-label="التجميع" data-egypt="𓁹" data-alt="⚒️">
+  <div class="nav-item" data-url="statue-builder.html" data-label="Collection" data-egypt="𓁹" data-alt="⚒️">
     <div class="nav-circle">𓁹</div>
-    <div class="nav-label">التجميع</div>
+    <div class="nav-label">Collection</div>
   </div>
-  <div class="nav-item current-page" data-url="profile.html" data-label="حسابي" data-egypt="☥" data-alt="👤">
+  <div class="nav-item current-page" data-url="profile.html" data-label="My Account" data-egypt="☥" data-alt="👤">
     <div class="nav-circle">☥</div>
-    <div class="nav-label">حسابي</div>
+    <div class="nav-label">My Account</div>
   </div>
 </div>
 
@@ -396,13 +398,13 @@ let unsubscribe = null;
 
 // تعريف المهام
 const TASKS = [
-  { id: 'login', name: 'تسجيل الدخول اليومي', points: 10 },
-  { id: 'ad', name: 'مشاهدة إعلان', points: 30 }, // تم زيادة النقاط إلى 30
-  { id: 'share', name: 'مشاركة الموقع', points: 50 },
-  { id: 'game', name: 'لعب لعبة صغيرة', points: { min: 20, max: 60 } }
+  { id: 'login', name: 'Daily Login', points: 10 },
+  { id: 'ad', name: 'Watch an Ad', points: 30 }, // تم زيادة الpoints إلى 30
+  { id: 'share', name: 'Share the Website', points: 50 },
+  { id: 'game', name: 'Play a Mini Game', points: { min: 20, max: 60 } }
 ];
 
-// التحقق من تسجيل الدخول والاستماع للبيانات
+// التحقق من Login والاستماع للبيانات
 auth.onAuthStateChanged(user => {
   if (!user) {
     window.location.href = "login.html";
@@ -452,9 +454,9 @@ function updateTaskUI(tasks) {
     } else {
       card.classList.remove('completed');
       btn.disabled = false;
-      btn.innerText = task.id === 'login' ? 'احصل على النقاط' :
-                      task.id === 'ad' ? 'ابدأ الآن' :
-                      task.id === 'share' ? 'شارك الآن' : 'ابدأ اللعبة';
+      btn.innerText = task.id === 'login' ? 'Get Points' :
+                      task.id === 'ad' ? 'Start Now' :
+                      task.id === 'share' ? 'Share Now' : 'Start Game';
     }
   });
 }
@@ -510,7 +512,7 @@ function handleAdTask() {
           clearInterval(adTimer);
           adTimer = null;
           
-          // إكمال المهمة وإضافة النقاط
+          // إكمال المهمة وإضافة الpoints
           completeAdTask();
         }
       }, 1000);
@@ -521,7 +523,7 @@ function handleAdTask() {
       
       // إعادة تعيين الزر
       adBtn.disabled = false;
-      adBtn.innerText = 'ابدأ الآن';
+      adBtn.innerText = 'Start Now';
       adInProgress = false;
     });
 }
@@ -543,7 +545,7 @@ async function completeAdTask() {
   if (!currentUser) return;
 
   const task = TASKS.find(t => t.id === 'ad');
-  const points = task.points; // 30 نقطة
+  const points = task.points; // 30 points
   const today = new Date().toDateString();
 
   try {
@@ -556,12 +558,12 @@ async function completeAdTask() {
       }
     });
 
-    // إضافة النقاط إلى رصيد المستخدم
+    // إضافة الpoints إلى رصيد User
     await userDocRef.update({
       coins: firebase.firestore.FieldValue.increment(points)
     });
 
-    showCustomToast(`✅ حصلت على ${points} نقطة!`, 'success');
+    showCustomToast(`✅ حصلت على ${points} points!`, 'success');
     
     // إعادة تعيين المتغيرات
     adInProgress = false;
@@ -576,7 +578,7 @@ async function completeAdTask() {
     // إعادة تعيين الزر يدوياً إذا فشلت الإضافة
     const adBtn = document.getElementById('watch-ad').querySelector('button');
     adBtn.disabled = false;
-    adBtn.innerText = 'ابدأ الآن';
+    adBtn.innerText = 'Start Now';
   }
 }
 
@@ -585,7 +587,7 @@ async function completeTask(taskId) {
   const task = TASKS.find(t => t.id === taskId);
   if (!task) return;
   
-  // حساب النقاط للمهام المتغيرة
+  // حساب الpoints للمهام المتغيرة
   let points = task.points;
   if (typeof task.points === 'object') {
     points = Math.floor(Math.random() * (task.points.max - task.points.min + 1)) + task.points.min;
@@ -606,7 +608,7 @@ async function completeTask(taskId) {
       coins: firebase.firestore.FieldValue.increment(points)
     });
     
-    showCustomToast(`✅ حصلت على ${points} نقطة!`, 'success');
+    showCustomToast(`✅ حصلت على ${points} points!`, 'success');
     
   } catch (err) {
     console.error(err);
@@ -712,6 +714,5 @@ navItems.forEach((item, index) => {
 });
 </script>
 
-    <script src="v10.js" defer></script>
 </body>
 </html>

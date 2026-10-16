@@ -1,0 +1,84 @@
+/* =========================================================
+   PharaCoin — Professional Global Theme
+   English / LTR / Egyptian Museum UI
+   ========================================================= */
+:root{
+  --bg:#070604;
+  --surface:rgba(16,14,10,.78);
+  --surface-2:rgba(25,21,14,.86);
+  --gold:#f6c453;
+  --gold-2:#ffdf82;
+  --gold-dark:#9a6b12;
+  --text:#f8f4ea;
+  --muted:#bdb5a5;
+  --success:#36e28b;
+  --danger:#ff5c6c;
+  --border:rgba(246,196,83,.22);
+  --shadow:0 24px 70px rgba(0,0,0,.55);
+  --radius:20px;
+  --font:'Inter','Segoe UI',Roboto,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{margin:0;min-height:100vh;background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.65;text-align:center;direction:ltr;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+a{color:inherit;text-decoration:none}
+::selection{background:rgba(246,196,83,.28);color:#fff}
+
+/* Global page atmosphere */
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(circle at 50% -10%,rgba(246,196,83,.09),transparent 38%),linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.32))}
+
+/* Shared content containers */
+.container,.content,.page-container,.main-container{width:min(1180px,calc(100% - 32px));margin-inline:auto}
+.card,.box,.panel,.section,.content-box,.info-box,.form-box,.hero-section,.tool-card,.vip-card,.task-card,.offer-card,.stat-card,.transaction-card{background:linear-gradient(145deg,rgba(26,23,17,.88),rgba(10,9,7,.78));border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+
+/* Typography */
+h1,h2,h3{letter-spacing:-.02em;color:var(--gold-2)}
+h1{font-size:clamp(30px,5vw,54px);line-height:1.1}
+h2{font-size:clamp(24px,4vw,38px)}
+p{color:var(--muted)}
+.gold,.highlight,.price,.amount{color:var(--gold-2)}
+
+/* Header / navigation */
+header,.header,.top-bar,.navbar{position:relative;z-index:20}
+.navbar,.top-bar{background:rgba(7,6,4,.82);border:1px solid rgba(246,196,83,.15);box-shadow:0 10px 35px rgba(0,0,0,.35);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.nav-item{transition:transform .22s ease,color .22s ease,background .22s ease}
+.nav-item:hover{transform:translateY(-2px);color:var(--gold-2)}
+.nav-label{font-size:12px;font-weight:700}
+
+/* Buttons */
+button,.btn,.button,.cta,.primary-btn,.approve-btn,.buy-btn{border:1px solid rgba(246,196,83,.42);border-radius:12px;padding:11px 18px;font-weight:800;transition:transform .2s ease,box-shadow .2s ease,filter .2s ease,background .2s ease}
+button:hover,.btn:hover,.button:hover,.cta:hover,.primary-btn:hover,.approve-btn:hover,.buy-btn:hover{transform:translateY(-2px);filter:brightness(1.08);box-shadow:0 12px 30px rgba(0,0,0,.3),0 0 24px rgba(246,196,83,.12)}
+button:active,.btn:active,.button:active{transform:translateY(0)}
+
+/* Forms */
+input,select,textarea{width:100%;background:rgba(4,4,3,.72);color:var(--text);border:1px solid rgba(246,196,83,.2);border-radius:12px;padding:12px 14px;outline:none;transition:border-color .2s,box-shadow .2s,background .2s}
+input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.65);box-shadow:0 0 0 4px rgba(246,196,83,.08);background:rgba(10,9,7,.9)}
+::placeholder{color:#756f64}
+
+/* Tables */
+table{width:100%;border-collapse:separate;border-spacing:0;overflow:hidden;border:1px solid var(--border);border-radius:16px;background:rgba(8,7,5,.58)}
+th{color:var(--gold-2);font-weight:800;background:rgba(246,196,83,.07)}
+th,td{padding:12px 14px;border-bottom:1px solid rgba(246,196,83,.09)}
+tr:last-child td{border-bottom:0}
+
+/* Status */
+.success,.approved,.online{color:var(--success)!important}
+.error,.rejected,.danger{color:var(--danger)!important}
+.pending{color:#ffd166!important}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:#090806}
+::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#8f6619,#d6a83c);border-radius:20px;border:2px solid #090806}
+
+/* Mobile */
+@media(max-width:700px){
+  .container,.content,.page-container,.main-container{width:min(100% - 20px,1180px)}
+  h1{font-size:34px}
+  h2{font-size:26px}
+  .card,.box,.panel,.section,.content-box,.info-box,.form-box{border-radius:16px}
+  button,.btn,.button{padding:10px 14px}
+}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition:none!important}}

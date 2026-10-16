@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr" data-ui="v10">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>الحفار الفرعوني • أسطورة الكنز 4000$</title>
+    <title>Pharaoh Digger • $4,000 Treasure Legend</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Cairo', sans-serif;
+            font-family: 'Inter','Segoe UI',Arial,sans-serif;
             background: #000;
             color: #fff;
             min-height: 100vh;
@@ -248,8 +248,9 @@
             0% { opacity: 1; } 70% { opacity: 1; } 100% { opacity: 0; }
         }
     </style>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="v10.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="v10.js" defer></script>
 </head>
 <body>
 <div class="bg"></div>
@@ -257,32 +258,32 @@
 
 <div class="game-container">
     <div class="game-header">
-        <div class="game-title">⛏️ الحفار الفرعوني</div>
-        <div class="subtitle">اكشف الكنوز واجمع النجوم</div>
-        <a href="event-4000.html" class="event-badge">🔥 أسطورة الكنز 4000$</a>
+        <div class="game-title">⛏️ Pharaoh Digger</div>
+        <div class="subtitle">Reveal treasures and collect stars</div>
+        <a href="event-4000.html" class="event-badge">🔥 $4,000 Treasure Legend</a>
     </div>
 
     <div class="progress-card">
-        <div class="stars-label">⭐ النجوم المجمعة</div>
+        <div class="stars-label">⭐ Stars Collected</div>
         <div class="stars-count"><span id="totalStarsDisplay">0</span> / 100</div>
         <div class="progress-bar">
             <div class="progress-fill" id="progressFill" style="width:0%"></div>
         </div>
-        <div class="stars-target" id="goalMessage">اجمع 100 نجمة لفتح الجائزة الكبرى</div>
+        <div class="stars-target" id="goalMessage">Collect 100 stars to unlock the grand prize</div>
     </div>
 
     <div class="round-stats">
         <div class="round-stat">
             <div class="value" id="treasureCount">0/5</div>
-            <div class="label">🏺 كنوز</div>
+            <div class="label">🏺 Treasures</div>
         </div>
         <div class="round-stat">
             <div class="value" id="livesCount">3</div>
-            <div class="label">❤️ أرواح</div>
+            <div class="label">❤️ Lives</div>
         </div>
         <div class="round-stat">
             <div class="value" id="sessionStars">0</div>
-            <div class="label">🌟 جولة</div>
+            <div class="label">🌟 Round</div>
         </div>
     </div>
 
@@ -290,10 +291,10 @@
     <div class="message" id="message"></div>
 
     <div class="actions">
-        <button class="btn btn-primary" id="restartBtn">🔄 جاري التحميل...</button>
-        <button class="btn btn-primary" id="claimBtn" disabled>🎁 فتح الجائزة</button>
-        <a href="event-4000.html" class="btn btn-outline">🔥 صفحة الحدث</a>
-        <a href="dashboard.html" class="btn btn-outline">🏠 لوحة التحكم</a>
+        <button class="btn btn-primary" id="restartBtn">🔄 Loading...</button>
+        <button class="btn btn-primary" id="claimBtn" disabled>🎁 Unlock Prize</button>
+        <a href="event-4000.html" class="btn btn-outline">🔥 Event Page</a>
+        <a href="dashboard.html" class="btn btn-outline">🏠 Dashboard</a>
     </div>
 </div>
 
@@ -407,7 +408,7 @@
         progressFill.style.width = progress + '%';
 
         if (totalStars >= REQUIRED_STARS && paidAttempts >= REQUIRED_ATTEMPTS) {
-            goalMessage.textContent = '🏆 أنت مؤهل للجائزة! اضغط "فتح الجائزة"';
+            goalMessage.textContent = '🏆 أنت مؤهل للجائزة! اضغط "Unlock Prize"';
             goalMessage.style.color = '#FFD700';
         } else if (totalStars >= REQUIRED_STARS) {
             goalMessage.textContent = '⭐ لديك نجوم كافية! تابع اللعب لاستيفاء الشروط';
@@ -435,17 +436,17 @@
         const lost = localStorage.getItem('gameLost') === 'true';
 
         if (!freeUsed) {
-            restartBtn.textContent = '🎮 ابدأ اللعبة مجاناً';
+            restartBtn.textContent = '🎮 Start Game مجاناً';
             restartBtn.className = 'btn btn-primary';
             restartBtn.onclick = startFirstAttempt;
             restartBtn.disabled = false;
         } else if (lost && !checkDepositIncrease()) {
-            restartBtn.textContent = '💳 إيداع للمتابعة (200 جنيه)';
+            restartBtn.textContent = '💳 Deposit للمتابعة (200 EGP)';
             restartBtn.className = 'btn btn-glow';
             restartBtn.onclick = () => window.location.href = 'deposit.html';
             restartBtn.disabled = false;
         } else {
-            restartBtn.textContent = '🔄 محاولة جديدة (200 جنيه)';
+            restartBtn.textContent = '🔄 محاولة جديدة (200 EGP)';
             restartBtn.className = 'btn btn-primary';
             restartBtn.onclick = handlePaidAttempt;
             restartBtn.disabled = false;
@@ -493,10 +494,10 @@
     }
 
     async function handlePaidAttempt() {
-        if (!currentUser) return showToast('يجب تسجيل الدخول أولاً');
+        if (!currentUser) return showToast('Please log in first');
 
         if (localStorage.getItem('gameLost') === 'true' && !checkDepositIncrease()) {
-            showToast('يجب إيداع 200 جنيه على الأقل للمتابعة');
+            showToast('يجب Deposit 200 EGP على الأقل للمتابعة');
             window.location.href = 'deposit.html';
             return;
         }
@@ -513,7 +514,7 @@
             });
             userBalance -= ATTEMPT_FEE;
             paidAttempts++;
-            showToast('🔄 بدأت محاولة جديدة! تم خصم 200 جنيه.');
+            showToast('🔄 بدأت محاولة جديدة! تم خصم 200 EGP.');
             startRound();
         } catch (e) {
             showToast('❌ حدث خطأ، حاول لاحقاً');
@@ -564,7 +565,7 @@
             userBalance += 10000;
             totalStars = 0;
             updateUI();
-            showToast('🎁 مبروك! تمت إضافة 10,000 جنيه إلى حسابك.');
+            showToast('🎁 مبروك! تمت إضافة 10,000 EGP إلى Your Balance.');
             setTimeout(() => window.location.href = 'event-4000.html', 2000);
         } catch (e) {
             showToast('❌ فشلت العملية');
@@ -585,7 +586,7 @@
         userDocRef = doc(db, "users", user.uid);
         const snap = await getDoc(userDocRef);
         if (!snap.exists()) {
-            await setDoc(userDocRef, { coins: 500, totalStars: 0, paidAttempts: 0, totalDeposits: 0 }, { merge: true });
+            await setDoc(userDocRef, { coins: 500, totalStars: 0, paidAttempts: 0, totalDeposits: 0 });
             userBalance = 500; totalStars = 0; paidAttempts = 0; totalDeposits = 0;
         } else {
             const d = snap.data();
@@ -631,6 +632,5 @@
         }
     })();
 </script>
-    <script src="v10.js" defer></script>
 </body>
 </html>
