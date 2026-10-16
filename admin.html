@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr" data-ui="v10">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة المشرف - PharaCoin</title>
+    <title>Admin Dashboard - PharaCoin</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <!-- Font Awesome للأيقونات -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -164,7 +164,7 @@
             padding:20px;
             color:#888;
         }
-        /* زر نسخ البطاقة بالكامل */
+        /* زر Copy البطاقة بالكامل */
         .copy-card-btn{
             background: #333;
             border: 1px solid gold;
@@ -185,29 +185,30 @@
             color: black;
         }
     </style>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="v10.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="v10.js" defer></script>
 </head>
 <body>
     <div class="container">
-        <h1>👑 لوحة تحكم المشرف</h1>
+        <h1>👑 Admin Dashboard</h1>
 
         <div class="tabs">
-            <button class="tab-btn active" id="tabDepositsBtn" onclick="switchTab('deposits')">💰 طلبات الإيداع</button>
-            <button class="tab-btn" id="tabWithdrawalsBtn" onclick="switchTab('withdrawals')">💸 طلبات السحب</button>
+            <button class="tab-btn active" id="tabDepositsBtn" onclick="switchTab('deposits')">💰 Deposit Requests</button>
+            <button class="tab-btn" id="tabWithdrawalsBtn" onclick="switchTab('withdrawals')">💸 Withdrawal Requests</button>
         </div>
 
         <!-- قسم الإيداعات -->
         <div id="depositsSection" class="tab-content active">
             <div id="depositsList">
-                <p class="loader">جاري تحميل طلبات الإيداع...</p>
+                <p class="loader">Loading deposit requests...</p>
             </div>
         </div>
 
         <!-- قسم السحوبات -->
         <div id="withdrawalsSection" class="tab-content">
             <div id="withdrawalsList">
-                <p class="loader">جاري تحميل طلبات السحب...</p>
+                <p class="loader">Loading withdrawal requests...</p>
             </div>
         </div>
     </div>
@@ -226,7 +227,7 @@
         // قائمة معرفات المشرفين المسموح لهم (ضع معرفك هنا)
         const ADMIN_UIDS = ["uJ9gFnxGnVSeyBJSKoyGlkPfJBE2"]; // استبدل بمعرفك
 
-        // التحقق من أن المستخدم هو مشرف
+        // التحقق من أن User هو مشرف
         auth.onAuthStateChanged(user => {
             if (!user) {
                 window.location.href = "login.html";
@@ -234,7 +235,7 @@
             }
             
             if (!ADMIN_UIDS.includes(user.uid)) {
-                document.body.innerHTML = `<p style="color:red; text-align:center; margin-top:50px;">⛔ ليس لديك صلاحية الدخول إلى لوحة المشرف</p>`;
+                document.body.innerHTML = `<p style="color:red; text-align:center; margin-top:50px;">⛔ You do not have access إلى لوحة المشرف</p>`;
                 return;
             }
             
@@ -262,23 +263,23 @@
         // ========== دوال النسخ ==========
         function copyText(text) {
             navigator.clipboard.writeText(text).then(() => {
-                alert('✅ تم النسخ: ' + text);
+                alert('✅ Copied: ' + text);
             }).catch(() => {
-                alert('❌ فشل النسخ');
+                alert('❌ Copy failed');
             });
         }
 
         function copyCard(data, type) {
             let text = '';
             if (type === 'deposit') {
-                text = `مستخدم: ${data.username}\nالمبلغ: ${data.amount} جنيه\nالطريقة: ${data.method}\nالرقم المحول منه: ${data.fromNumber}\nالعملات: ${data.coins} Coins\nالتاريخ: ${data.date}`;
+                text = `مستخدم: ${data.username}\nAmount: ${data.amount} EGP\nMethod: ${data.method}\nSource number: ${data.fromNumber}\nCoins: ${data.coins} Coins\nDate: ${data.date}`;
             } else {
-                text = `مستخدم: ${data.username}\nالمبلغ: ${data.amount} دولار\nالطريقة: ${data.method}\nالعنوان: ${data.address}\nالتاريخ: ${data.date}`;
+                text = `مستخدم: ${data.username}\nAmount: ${data.amount} USD\nMethod: ${data.method}\nAddress: ${data.address}\nDate: ${data.date}`;
             }
             copyText(text);
         }
 
-        // ========== طلبات الإيداع ==========
+        // ========== Deposit Requests ==========
         async function loadDeposits() {
             const listEl = document.getElementById('depositsList');
             try {
@@ -288,44 +289,44 @@
                     .get();
 
                 if (snapshot.empty) {
-                    listEl.innerHTML = '<p style="text-align:center;">✅ لا توجد طلبات إيداع معلقة</p>';
+                    listEl.innerHTML = '<p style="text-align:center;">✅ No pending deposit requests</p>';
                     return;
                 }
 
                 let html = '';
                 snapshot.forEach(doc => {
                     const data = doc.data();
-                    const date = data.createdAt ? new Date(data.createdAt.seconds * 1000).toLocaleString('ar-EG') : 'غير معروف';
+                    const date = data.createdAt ? new Date(data.createdAt.seconds * 1000).toLocaleString('en-US') : 'Unknown';
                     
                     html += `
                         <div class="request-card" id="deposit-${doc.id}">
                             <div class="request-header">
                                 <div class="user-info">
-                                    <span>👤 ${data.username || 'غير معروف'}</span>
+                                    <span>👤 ${data.username || 'Unknown'}</span>
                                     <span class="copy-icon" onclick="copyText('${data.username || ''}')">
-                                        <i class="fas fa-copy"></i> نسخ
+                                        <i class="fas fa-copy"></i> Copy
                                     </span>
                                 </div>
-                                <span class="amount">💰 ${data.amount} جنيه</span>
+                                <span class="amount">💰 ${data.amount} EGP</span>
                             </div>
                             <div class="details">
                                 <div class="detail-item">
                                     <i class="fas fa-mobile-alt" style="color:gold;"></i>
-                                    <span>${data.method || 'غير محدد'}</span>
+                                    <span>${data.method || 'Not specified'}</span>
                                     <span class="copy-icon" onclick="copyText('${data.method || ''}')">
                                         <i class="fas fa-copy"></i>
                                     </span>
                                 </div>
                                 <div class="detail-item">
                                     <i class="fas fa-phone" style="color:gold;"></i>
-                                    <span>${data.fromNumber || 'غير محدد'}</span>
+                                    <span>${data.fromNumber || 'Not specified'}</span>
                                     <span class="copy-icon" onclick="copyText('${data.fromNumber || ''}')">
                                         <i class="fas fa-copy"></i>
                                     </span>
                                 </div>
                                 <div class="detail-item">
                                     <i class="fas fa-coins" style="color:gold;"></i>
-                                    <span>${data.coins ?? data.amount ?? 0} جنيه رصيد</span>
+                                    <span>${data.coins || 0} Coins</span>
                                 </div>
                                 <div class="detail-item">
                                     <i class="fas fa-calendar" style="color:gold;"></i>
@@ -339,13 +340,13 @@
                                     </span>
                                 </div>
                             </div>
-                            <img class="image-preview" src="${data.proofBase64 || ''}" onclick="window.open(this.src)" title="اضغط للتكبير">
+                            <img class="image-preview" src="${data.proofBase64 || ''}" onclick="window.open(this.src)" title="Click to enlarge">
                             <div class="actions">
-                                <button class="approve-btn" onclick="approveDeposit('${doc.id}', '${data.userId}', ${data.amount})">✅ الموافقة</button>
-                                <button class="reject-btn" onclick="rejectDeposit('${doc.id}')">❌ الرفض</button>
+                                <button class="approve-btn" onclick="approveDeposit('${doc.id}', '${data.userId}', ${data.amount})">✅ Approve</button>
+                                <button class="reject-btn" onclick="rejectDeposit('${doc.id}')">❌ Reject</button>
                             </div>
                             <button class="copy-card-btn" onclick="copyCard({username:'${data.username || ''}', amount:${data.amount}, method:'${data.method || ''}', fromNumber:'${data.fromNumber || ''}', coins:${data.coins || 0}, date:'${date}'}, 'deposit')">
-                                <i class="fas fa-copy"></i> نسخ البطاقة بالكامل
+                                <i class="fas fa-copy"></i> Copy البطاقة بالكامل
                             </button>
                         </div>
                     `;
@@ -360,71 +361,70 @@
         }
 
         async function approveDeposit(docId, userId, amount) {
-            if (!confirm('هل أنت متأكد من الموافقة على هذا الإيداع؟')) return;
+            if (!confirm('Are you sure you want to approve this deposit?')) return;
 
             try {
-                const depositRef = db.collection("deposits").doc(docId);
+                // 1. تحديث حالة الإيداع
+                await db.collection("deposits").doc(docId).update({
+                    status: "completed",
+                    approvedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                // 2. تحديث المستخدم (coins + totalDeposits + withdrawTier)
                 const userRef = db.collection("users").doc(userId);
-
                 await db.runTransaction(async (transaction) => {
-                    const depositDoc = await transaction.get(depositRef);
                     const userDoc = await transaction.get(userRef);
-                    if (!depositDoc.exists) throw new Error("طلب الإيداع غير موجود!");
-                    if (!userDoc.exists) throw new Error("المستخدم غير موجود!");
+                    if (!userDoc.exists) throw new Error("User not found!");
 
-                    const deposit = depositDoc.data();
-                    if (deposit.status !== 'pending') throw new Error('تمت معالجة طلب الإيداع بالفعل.');
+                    const userData = userDoc.data();
+                    const currentCoins = Number(userData.coins) || 0;
+                    const currentDeposits = Number(userData.totalDeposits) || 0;
+                    const currentTier = userData.withdrawTier || 'bronze';
 
-                    const depositAmount = Number(deposit.amount);
-                    if (!Number.isFinite(depositAmount) || depositAmount < 50) {
-                        throw new Error('قيمة الإيداع غير صالحة.');
+                    const newCoins = currentCoins + amount;
+                    const newTotalDeposits = currentDeposits + amount;
+
+                    // ترقية تلقائية إلى Silver لو وصل 500 EGP
+                    let newTier = currentTier;
+                    if (currentTier === 'bronze' && newTotalDeposits >= 500) {
+                        newTier = 'silver';
                     }
-                    if (deposit.userId !== userId) throw new Error('بيانات المستخدم غير متطابقة.');
 
-                    const user = userDoc.data();
                     transaction.update(userRef, {
-                        coins: firebase.firestore.FieldValue.increment(depositAmount),
-                        totalDeposits: firebase.firestore.FieldValue.increment(depositAmount),
-                        withdrawTier: (Number(user.totalDeposits || 0) + depositAmount >= 500) ? 'silver' : (user.withdrawTier || 'bronze')
-                    });
-                    transaction.update(depositRef, {
-                        status: 'completed',
-                        approvedAt: firebase.firestore.FieldValue.serverTimestamp()
+                        coins: newCoins,
+                        totalDeposits: newTotalDeposits,
+                        withdrawTier: newTier
                     });
                 });
 
                 document.getElementById(`deposit-${docId}`).style.display = 'none';
-                alert('✅ تمت الموافقة على الإيداع وإضافة الرصيد');
+                alert('✅ Deposit approved and balance added');
+
             } catch (err) {
                 console.error(err);
-                alert('❌ خطأ: ' + err.message);
+                alert('❌ Error: ' + err.message);
             }
         }
 
         async function rejectDeposit(docId) {
-            if (!confirm('هل أنت متأكد من رفض هذا الإيداع؟')) return;
+            if (!confirm('Are you sure you want to reject this deposit?')) return;
 
             try {
-                const depositRef = db.collection("deposits").doc(docId);
-                await db.runTransaction(async (transaction) => {
-                    const depositDoc = await transaction.get(depositRef);
-                    if (!depositDoc.exists) throw new Error('طلب الإيداع غير موجود!');
-                    if (depositDoc.data().status !== 'pending') throw new Error('تمت معالجة طلب الإيداع بالفعل.');
-                    transaction.update(depositRef, {
-                        status: 'rejected',
-                        rejectedAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
+                await db.collection("deposits").doc(docId).update({
+                    status: "rejected",
+                    rejectedAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
 
                 document.getElementById(`deposit-${docId}`).style.display = 'none';
-                alert('❌ تم رفض الإيداع');
+                alert('❌ Deposit rejected');
+
             } catch (err) {
                 console.error(err);
-                alert('❌ خطأ: ' + err.message);
+                alert('❌ Error: ' + err.message);
             }
         }
 
-        // ========== طلبات السحب ==========
+        // ========== Withdrawal Requests ==========
         async function loadWithdrawals() {
             const listEl = document.getElementById('withdrawalsList');
             try {
@@ -434,37 +434,37 @@
                     .get();
 
                 if (snapshot.empty) {
-                    listEl.innerHTML = '<p style="text-align:center;">✅ لا توجد طلبات سحب معلقة</p>';
+                    listEl.innerHTML = '<p style="text-align:center;">✅ No pending withdrawal requests</p>';
                     return;
                 }
 
                 let html = '';
                 snapshot.forEach(doc => {
                     const data = doc.data();
-                    const date = data.createdAt ? new Date(data.createdAt.seconds * 1000).toLocaleString('ar-EG') : 'غير معروف';
+                    const date = data.createdAt ? new Date(data.createdAt.seconds * 1000).toLocaleString('en-US') : 'Unknown';
                     
                     html += `
                         <div class="request-card" id="withdraw-${doc.id}">
                             <div class="request-header">
                                 <div class="user-info">
-                                    <span>👤 ${data.username || 'غير معروف'}</span>
+                                    <span>👤 ${data.username || 'Unknown'}</span>
                                     <span class="copy-icon" onclick="copyText('${data.username || ''}')">
-                                        <i class="fas fa-copy"></i> نسخ
+                                        <i class="fas fa-copy"></i> Copy
                                     </span>
                                 </div>
-                                <span class="amount">💸 ${data.amount} جنيه</span>
+                                <span class="amount">💸 ${data.amount} USD</span>
                             </div>
                             <div class="details">
                                 <div class="detail-item">
                                     <i class="fas fa-mobile-alt" style="color:gold;"></i>
-                                    <span>${data.method || 'غير محدد'}</span>
+                                    <span>${data.method || 'Not specified'}</span>
                                     <span class="copy-icon" onclick="copyText('${data.method || ''}')">
                                         <i class="fas fa-copy"></i>
                                     </span>
                                 </div>
                                 <div class="detail-item" style="grid-column: span 2;">
                                     <i class="fas fa-map-marker-alt" style="color:gold;"></i>
-                                    <span>${data.address || 'غير محدد'}</span>
+                                    <span>${data.address || 'Not specified'}</span>
                                     <span class="copy-icon" onclick="copyText('${data.address || ''}')">
                                         <i class="fas fa-copy"></i>
                                     </span>
@@ -482,11 +482,11 @@
                                 </div>
                             </div>
                             <div class="actions">
-                                <button class="approve-btn" onclick="approveWithdraw('${doc.id}', '${data.userId}', ${data.amount})">✅ الموافقة</button>
-                                <button class="reject-btn" onclick="rejectWithdraw('${doc.id}', '${data.userId}', ${data.amount})">❌ الرفض</button>
+                                <button class="approve-btn" onclick="approveWithdraw('${doc.id}', '${data.userId}', ${data.amount})">✅ Approve</button>
+                                <button class="reject-btn" onclick="rejectWithdraw('${doc.id}', '${data.userId}', ${data.amount})">❌ Reject</button>
                             </div>
                             <button class="copy-card-btn" onclick="copyCard({username:'${data.username || ''}', amount:${data.amount}, method:'${data.method || ''}', address:'${data.address || ''}', date:'${date}'}, 'withdraw')">
-                                <i class="fas fa-copy"></i> نسخ البطاقة بالكامل
+                                <i class="fas fa-copy"></i> Copy البطاقة بالكامل
                             </button>
                         </div>
                     `;
@@ -501,68 +501,45 @@
         }
 
         async function approveWithdraw(docId, userId, amount) {
-            if (!confirm('هل أنت متأكد من الموافقة على هذا السحب؟')) return;
+            if (!confirm('Are you sure you want to approve this withdrawal?')) return;
 
             try {
-                const withdrawalRef = db.collection('withdrawals').doc(docId);
-                await db.runTransaction(async (transaction) => {
-                    const withdrawalDoc = await transaction.get(withdrawalRef);
-                    if (!withdrawalDoc.exists) throw new Error('طلب السحب غير موجود!');
-                    if (withdrawalDoc.data().status !== 'pending') throw new Error('تمت معالجة طلب السحب بالفعل.');
-                    transaction.update(withdrawalRef, {
-                        status: 'completed',
-                        approvedAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
+                await db.collection("withdrawals").doc(docId).update({
+                    status: "completed",
+                    approvedAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
 
                 document.getElementById(`withdraw-${docId}`).style.display = 'none';
-                alert('✅ تمت الموافقة على السحب');
+                alert('✅ Withdrawal approved');
+
             } catch (err) {
                 console.error(err);
-                alert('❌ خطأ: ' + err.message);
+                alert('❌ Error: ' + err.message);
             }
         }
 
         async function rejectWithdraw(docId, userId, amount) {
-            if (!confirm('هل أنت متأكد من رفض هذا السحب؟')) return;
+            if (!confirm('Are you sure you want to reject this withdrawal?')) return;
 
             try {
-                const withdrawalRef = db.collection('withdrawals').doc(docId);
-                const userRef = db.collection('users').doc(userId);
+                await db.collection("withdrawals").doc(docId).update({
+                    status: "rejected",
+                    rejectedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
 
-                await db.runTransaction(async (transaction) => {
-                    const withdrawalDoc = await transaction.get(withdrawalRef);
-                    const userDoc = await transaction.get(userRef);
-                    if (!withdrawalDoc.exists) throw new Error('طلب السحب غير موجود!');
-                    if (!userDoc.exists) throw new Error('المستخدم غير موجود!');
-
-                    const withdrawal = withdrawalDoc.data();
-                    if (withdrawal.status !== 'pending') throw new Error('تمت معالجة طلب السحب بالفعل.');
-                    if (withdrawal.userId !== userId) throw new Error('بيانات المستخدم غير متطابقة.');
-
-                    const withdrawalAmount = Number(withdrawal.amount);
-                    const requiredDeposit = Number(withdrawal.requiredDeposit ?? (withdrawalAmount * 0.10));
-                    if (!Number.isFinite(withdrawalAmount) || withdrawalAmount <= 0) throw new Error('قيمة السحب غير صالحة.');
-                    if (!Number.isFinite(requiredDeposit) || requiredDeposit < 0) throw new Error('قيمة شرط الإيداع غير صالحة.');
-
-                    transaction.update(userRef, {
-                        coins: firebase.firestore.FieldValue.increment(withdrawalAmount),
-                        totalDeposits: firebase.firestore.FieldValue.increment(requiredDeposit)
-                    });
-                    transaction.update(withdrawalRef, {
-                        status: 'rejected',
-                        rejectedAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
+                // إعادة الرصيد
+                await db.collection("users").doc(userId).update({
+                    coins: firebase.firestore.FieldValue.increment(amount)
                 });
 
                 document.getElementById(`withdraw-${docId}`).style.display = 'none';
-                alert('❌ تم رفض السحب وإعادة الرصيد وشرط الإيداع');
+                alert('❌ Withdrawal rejected and balance restored');
+
             } catch (err) {
                 console.error(err);
-                alert('❌ خطأ: ' + err.message);
+                alert('❌ Error: ' + err.message);
             }
         }
     </script>
-    <script src="v10.js" defer></script>
 </body>
 </html>

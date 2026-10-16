@@ -1,39 +1,42 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr" data-ui="v10">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- === تحسينات SEO محسنة === -->
-    <title>PharaCoin - من نحن | عملات رقمية مستوحاة من الحضارة المصرية</title>
-    <meta name="description" content="تعرف على فريق PharaCoin، منصة العملات الرقمية الداخلية التي تقدم تجربة استخدام آمنة وسلسة مستوحاة من الحضارة المصرية القديمة. نظام مكافآت عادل وتحفيزي.">
-    <meta name="keywords" content="PharaCoin, عملات رقمية, من نحن, بلوكشين, تطبيق مصري, مكافآت, برنامج ولاء, عملات داخلية">
+    <title>PharaCoin - About Us | Digital coins inspired by ancient Egyptian civilization</title>
+
+    <meta name="description" content="تعرف على فريق PharaCoin، منصة Coins الرقمية الداخلية التي تقدم تجربة استخدام آمنة وسلسة مستوحاة من الحضارة المصرية القديمة. نظام مكافآت عادل وتحفيزي.">
+
+    <meta name="keywords" content="PharaCoin, عملات رقمية, About Us, بلوكشين, تطبيق مصري, مكافآت, برنامج ولاء, عملات داخلية">
+
     <meta name="author" content="PharaCoin Team">
     <meta name="robots" content="index, follow">
 
-    <!-- === بطاقات المشاركة الاجتماعية (Open Graph / Twitter) === -->
-    <meta property="og:title" content="PharaCoin - من نحن">
+    <!-- === بطاقات المشاركة الاجتماعية === -->
+    <meta property="og:title" content="PharaCoin - About Us">
     <meta property="og:description" content="اكتشف قصة PharaCoin، حيث تلتقي التكنولوجيا الحديثة بعظمة الحضارة المصرية القديمة.">
-    <meta property="og:image" content="https://pharacoin.pages.dev/og-image.jpg"> <!-- استبدل بالرابط الفعلي لصورة الشعار -->
+    <meta property="og:image" content="https://pharacoin.pages.dev/og-image.jpg">
     <meta property="og:url" content="https://pharacoin.pages.dev/about-us.html">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="PharaCoin">
 
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="PharaCoin - من نحن">
+    <meta name="twitter:title" content="PharaCoin - About Us">
     <meta name="twitter:description" content="اكتشف قصة PharaCoin، حيث تلتقي التكنولوجيا الحديثة بعظمة الحضارة المصرية القديمة.">
-    <meta name="twitter:image" content="https://pharacoin.pages.dev/twitter-image.jpg"> <!-- استبدل بالرابط الفعلي لصورة الشعار -->
+    <meta name="twitter:image" content="https://pharacoin.pages.dev/twitter-image.jpg">
     <meta name="twitter:site" content="@PharaCoinApp">
 
-    <!-- === الرابط الأساسي (Canonical) لتجنب المحتوى المكرر === -->
+    <!-- === الرابط الأساسي === -->
     <link rel="canonical" href="https://pharacoin.pages.dev/about-us.html">
 
-    <!-- === البيانات المنظمة (Structured Data) لتحسين ظهور النتائج === -->
+    <!-- === البيانات المنظمة === -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "AboutPage",
-        "name": "من نحن - PharaCoin",
+        "name": "About Us - PharaCoin",
         "description": "تعرف على فريق PharaCoin ومنصتنا للعملات الرقمية الداخلية.",
         "url": "https://pharacoin.pages.dev/about-us.html",
         "mainEntity": {
@@ -48,276 +51,893 @@
     }
     </script>
 
-    <!-- الخطوط والأنماط -->
+    <!-- الخط -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 
     <style>
-        *{margin:0;padding:0;box-sizing:border-box}
+
+        /* =========================
+           RESET
+        ========================= */
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+
+        /* =========================
+           BODY
+        ========================= */
 
         body{
-          font-family:'Cairo',sans-serif;
-          background:#000;
-          color:#fff;
-          max-width:480px;
-          margin:auto;
-          padding-bottom:120px;
-          line-height:1.8;
+            font-family:'Cairo',sans-serif;
+            background:#000;
+            color:#fff;
+
+            max-width:480px;
+            margin:auto;
+
+            /* ⭐ مساحة أمان عشان الـ Navbar الثابت م يغطي على المحتوى */
+            padding-bottom:120px !important;
+
+            line-height:1.8;
+
+            min-height:100vh;
+
+            overflow-x:hidden;
         }
 
-        /* الخلفية */
+
+        /* =========================
+           BACKGROUND
+        ========================= */
+
         .page-bg{
-          position:fixed;
-          inset:0;
-          background:url("Object/qa.jpg") center/cover no-repeat;
-          filter:brightness(0.25) saturate(1.2);
-          z-index:-1;
+            position:fixed !important;
+
+            top:0 !important;
+            left:0 !important;
+
+            width:100vw !important;
+            height:100vh !important;
+
+            background-image:url("Object/qa.jpg") !important;
+
+            background-position:center center !important;
+            background-size:cover !important;
+            background-repeat:no-repeat !important;
+
+            opacity:1 !important;
+
+            filter:none !important;
+
+            z-index:0 !important;
+
+            pointer-events:none !important;
         }
 
-        /* الهيدر */
+
+        /* =========================
+           ⭐ PAGE CONTAINER
+        ========================= */
+
+        .page-container{
+            position:relative;
+
+            z-index:1;
+
+            width:100%;
+
+            max-width:480px;
+
+            min-height:100vh;
+
+            margin:0 auto;
+
+            display:flex;
+
+            flex-direction:column;
+        }
+
+
+        /* =========================
+           HEADER
+        ========================= */
+
         .header{
-          display:flex;
-          justify-content:space-between;
-          align-items:center;
-          padding:14px 16px;
-          background:rgba(0,0,0,0.85);
-          border-bottom:1px solid rgba(255,215,0,0.25);
-          backdrop-filter:blur(10px);
+            display:flex;
+
+            justify-content:space-between;
+            align-items:center;
+
+            padding:14px 16px;
+
+            background:rgba(0,0,0,0.85);
+
+            border-bottom:
+                1px solid rgba(255,215,0,0.25);
+
+            backdrop-filter:blur(10px);
+
+            -webkit-backdrop-filter:blur(10px);
         }
+
+
+        /* LOGO */
+
         .logo{
-          color:gold;
-          font-weight:900;
-          font-size:16px;
-          text-shadow:0 0 8px rgba(255,215,0,0.4);
+            color:gold;
+
+            font-weight:900;
+
+            font-size:16px;
+
+            text-shadow:
+                0 0 8px rgba(255,215,0,0.4);
         }
+
+
+        /* BACK */
+
         .back{
-          color:#00ffcc;
-          cursor:pointer;
-          font-size:13px;
+            color:#00ffcc;
+
+            cursor:pointer;
+
+            font-size:13px;
         }
 
-        /* العنوان الرئيسي */
+
+        /* =========================
+           PAGE TITLE
+        ========================= */
+
         h1.page-main-title{
-          text-align:center;
-          margin:18px 0 12px;
-          color:gold;
-          font-size:18px;
-          font-weight:800;
-          text-shadow:0 0 8px rgba(255,215,0,0.3);
+            text-align:center;
+
+            margin:18px 0 12px;
+
+            color:gold;
+
+            font-size:18px;
+
+            font-weight:800;
+
+            text-shadow:
+                0 0 8px rgba(255,215,0,0.3);
         }
 
-        /* صندوق النص */
+
+        /* =========================
+           CONTENT BOX
+        ========================= */
+
         .box{
-          margin:0 16px;
-          padding:18px;
-          background:rgba(0,0,0,0.65);
-          border-radius:18px;
-          border:1px solid rgba(255,215,0,0.25);
-          box-shadow:0 0 25px rgba(0,0,0,0.6);
+            margin:0 16px;
+
+            padding:18px;
+
+            background:rgba(0,0,0,0.65);
+
+            border-radius:18px;
+
+            border:
+                1px solid rgba(255,215,0,0.25);
+
+            box-shadow:
+                0 0 25px rgba(0,0,0,0.6);
+
+            backdrop-filter:blur(10px);
+
+            -webkit-backdrop-filter:blur(10px);
         }
+
 
         .box p{
-          margin-bottom:14px;
-          font-size:14px;
-          color:#f1f1f1;
+            margin-bottom:14px;
+
+            font-size:14px;
+
+            color:#f1f1f1;
         }
 
-        /* القائمة السفلية */
-        .bottom-nav{
-          position:fixed;
-          bottom:0;left:0;right:0;
-          max-width:480px;
-          margin:auto;
-          background:linear-gradient(180deg, #8b1a1a, #6a0d0d);
-          display:flex;
-          justify-content:space-around;
-          padding:10px 0 18px;
-          border-top: 3px solid #e6b422;
-          box-shadow: 0 -5px 20px rgba(0,0,0,0.8), 0 0 15px #b8860b;
-          z-index:100;
+
+        /* =================================================================
+           ⭐⭐⭐ BOTTOM NAV - التعديلات الاحترافية
+           تثبيت في أسفل الشاشة + النبض الاحترافي
+        ================================================================= */
+
+        #bottom-nav{
+            /* تثبيت في أسفل الشاشة */
+            position:fixed !important;
+
+            bottom:0 !important;
+
+            /* توسيط في نص الشاشة */
+            left:50% !important;
+
+            transform:translateX(-50%) !important;
+
+            /* العرض الكامل */
+            width:100% !important;
+
+            max-width:480px !important;
+
+            margin:0 !important;
+
+            padding:10px 0 18px !important;
+
+            /* منع الشريط من الترتيب العمودي */
+            display:flex !important;
+
+            flex-direction:row !important;
+
+            justify-content:space-around !important;
+
+            align-items:center !important;
+
+            background:linear-gradient(180deg, #8b1a1a, #6a0d0d) !important;
+
+            border-top:3px solid #e6b422 !important;
+
+            border-radius:25px 25px 0 0 !important;
+
+            box-shadow:0 -5px 20px rgba(0,0,0,0.8), 0 0 15px #b8860b !important;
+
+            z-index:99999 !important;
+
+            box-sizing:border-box !important;
         }
 
-        .nav-item{
-          text-align:center;
-          cursor:pointer;
-          display:flex;
-          flex-direction:column;
-          align-items:center;
-          gap:4px;
-          transition:transform 0.2s;
-          width: 70px;
-          position: relative;
-        }
-        .nav-item:active{transform:scale(0.95);}
 
-        .nav-circle{
-          width:55px;
-          height:55px;
-          border-radius:50%;
-          background: #1a0e0e;
-          border: 2px solid #b22222;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          font-size: 30px;
-          color: #b22222;
-          margin: 0 auto 4px;
-          transition: all 0.3s ease;
-          box-shadow: 0 0 10px rgba(180, 40, 40, 0.6);
+        /* =========================
+           NAV ITEM
+        ========================= */
+
+        #bottom-nav .nav-item{
+            display:flex !important;
+
+            flex-direction:column !important;
+
+            align-items:center !important;
+
+            justify-content:center !important;
+
+            width:70px !important;
+
+            text-align:center !important;
+
+            cursor:pointer !important;
+
+            position:relative !important;
+
+            gap:4px !important;
+
+            transition:transform 0.2s !important;
         }
 
-        .nav-item.current-page .nav-circle{
-          color: #FFD700;
-          border-color: #FFD700;
-          box-shadow: 0 0 15px #FFD700;
-          animation: pulse 1.5s infinite;
+
+        #bottom-nav .nav-item:active{
+            transform:scale(0.95) !important;
         }
 
-        @keyframes pulse{
-          0%{box-shadow:0 0 5px #FFD700;}
-          50%{box-shadow:0 0 20px #FFD700;}
-          100%{box-shadow:0 0 5px #FFD700;}
+
+        /* =========================
+           NAV CIRCLE
+        ========================= */
+
+        #bottom-nav .nav-circle{
+            width:55px !important;
+
+            height:55px !important;
+
+            border-radius:50% !important;
+
+            background:#1a0e0e !important;
+
+            border:2px solid #b22222 !important;
+
+            display:flex !important;
+
+            justify-content:center !important;
+
+            align-items:center !important;
+
+            font-size:30px !important;
+
+            color:#b22222 !important;
+
+            margin:0 auto 4px !important;
+
+            transition:all 0.3s ease !important;
+
+            box-shadow:0 0 10px rgba(180,40,40,0.6) !important;
+
+            position:relative !important;
         }
 
-        .nav-label{
-          font-size: 11px;
-          font-weight: 700;
-          color: #ffdb8e;
-          text-shadow: 0 0 5px #b8860b;
-          display: none;
-          height: 16px;
-          margin-top: 2px;
+
+        /* =========================
+           CURRENT PAGE
+        ========================= */
+
+        #bottom-nav .nav-item.current-page .nav-circle{
+            color:#FFD700 !important;
+
+            border-color:#FFD700 !important;
+
+            box-shadow:0 0 6px #FFD700, 0 0 15px rgba(255,215,0,0.5) !important;
         }
 
-        .nav-item.showing .nav-label{
-          display: block;
+
+        /* =========================
+           ⭐ النبض الاحترافي (Radar Pulse)
+        ========================= */
+
+        #bottom-nav .nav-item.current-page .nav-circle::after{
+            content:'' !important;
+
+            position:absolute !important;
+
+            top:-4px !important;
+            left:-4px !important;
+            right:-4px !important;
+            bottom:-4px !important;
+
+            border-radius:50% !important;
+
+            border:2px solid #FFD700 !important;
+
+            animation:pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite !important;
+
+            pointer-events:none !important;
         }
+
+
+        @keyframes pulse-ring{
+            0%{
+                transform:scale(0.9);
+                opacity:0.8;
+            }
+            100%{
+                transform:scale(1.4);
+                opacity:0;
+            }
+        }
+
+
+        /* =========================
+           NAV LABEL
+        ========================= */
+
+        #bottom-nav .nav-label{
+            font-size:11px !important;
+
+            font-weight:700 !important;
+
+            color:#ffdb8e !important;
+
+            text-shadow:0 0 5px #b8860b !important;
+
+            display:none !important;
+
+            height:16px !important;
+
+            margin-top:2px !important;
+        }
+
+
+        #bottom-nav .nav-item.showing .nav-label{
+            display:block !important;
+        }
+
+
+        /* ⭐ إظهار ليبل الصفحة الحالية بشكل دائم */
+        #bottom-nav .nav-item.current-page .nav-label{
+            display:block !important;
+
+            color:#FFD700 !important;
+
+            text-shadow:0 0 10px rgba(255,215,0,0.9) !important;
+        }
+
+
+        /* =========================
+           CONTENT ABOVE BACKGROUND
+        ========================= */
+
+        body > *:not(.page-bg){
+            position:relative;
+
+            z-index:1;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media(max-width:480px){
+
+            body{
+                padding-bottom:120px !important;
+            }
+
+            .box{
+                margin-left:16px;
+                margin-right:16px;
+            }
+        }
+
     </style>
+
+
+    <!-- ملفاتك الأصلية -->
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="v10.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <script src="v10.js" defer></script>
+
 </head>
+
+
 <body>
+
+
+<!-- =========================
+     BACKGROUND
+========================= -->
 
 <div class="page-bg"></div>
 
-<div class="header">
-  <div class="logo">👑 PharaCoin</div>
-  <div class="back" onclick="goBack()">⬅ رجوع</div>
-</div>
 
-<!-- العنوان الرئيسي -->
-<h1 class="page-main-title">من نحن</h1>
+<!-- =========================
+     ⭐ PAGE CONTAINER
+========================= -->
 
-<div class="box">
-  <p>1. PharaCoin هو نظام عملات رقمية داخلية يهدف إلى تقديم تجربة استخدام آمنة وسلسة داخل المنصة.</p>
-  <p>2. نوفر للمستخدمين إمكانية شحن الرصيد واستخدامه في المميزات المختلفة داخل التطبيق.</p>
-  <p>3. تم تصميم المنصة بأسلوب مستوحى من الحضارة المصرية القديمة لإعطاء طابع مميز وفريد.</p>
-  <p>4. نسعى لتقديم نظام مكافآت عادل وتحفيزي لجميع المستخدمين.</p>
-  <p>5. هدفنا هو الجمع بين البساطة، الأمان، والتجربة الممتعة في مكان واحد.</p>
-</div>
+<div class="page-container">
 
-<!-- Bottom Nav بالرموز المصرية مع إضافة aria-labels لتحسين إمكانية الوصول -->
-<div class="bottom-nav">
-  <div class="nav-item current-page" data-url="dashboard.html" data-label="الرئيسية" data-egypt="𓂀" data-alt="🏠" aria-label="الصفحة الرئيسية">
-    <div class="nav-circle">𓂀</div>
-    <div class="nav-label">الرئيسية</div>
-  </div>
-  <div class="nav-item" data-url="museum.html" data-label="المتحف" data-egypt="𓆣" data-alt="🏺" aria-label="صفحة المتحف">
-    <div class="nav-circle">𓆣</div>
-    <div class="nav-label">المتحف</div>
-  </div>
-  <div class="nav-item" data-url="statue-builder.html" data-label="التجميع" data-egypt="𓁹" data-alt="⚒️" aria-label="صفحة تجميع التماثيل">
-    <div class="nav-circle">𓁹</div>
-    <div class="nav-label">التجميع</div>
-  </div>
-  <div class="nav-item" data-url="profile.html" data-label="حسابي" data-egypt="☥" data-alt="👤" aria-label="الصفحة الشخصية">
-    <div class="nav-circle">☥</div>
-    <div class="nav-label">حسابي</div>
-  </div>
-</div>
+
+    <!-- =========================
+         HEADER
+    ========================= -->
+
+    <div class="header">
+
+        <div class="logo">
+            👑 PharaCoin
+        </div>
+
+        <div class="back"
+             onclick="goBack()">
+
+            ⬅ Back
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         PAGE TITLE
+    ========================= -->
+
+    <h1 class="page-main-title">
+        About Us
+    </h1>
+
+
+    <!-- =========================
+         CONTENT
+    ========================= -->
+
+    <div class="box">
+
+        <p>
+            1. PharaCoin is an internal digital coin
+            system designed to provide a safe and
+            smooth experience within the platform.
+        </p>
+
+        <p>
+            2. We allow users to top up their balance
+            and use it across the platform features.
+        </p>
+
+        <p>
+            3. The platform is inspired by ancient
+            Egyptian civilization to create a distinctive
+            experience.
+        </p>
+
+        <p>
+            4. We aim to provide a fair and motivating
+            rewards system for all users.
+        </p>
+
+        <p>
+            5. Our goal is to combine simplicity,
+            security, and an enjoyable experience in
+            one place.
+        </p>
+
+    </div>
+
+
+    <!-- =========================
+         BOTTOM NAV
+         ⭐ تم إضافة id="bottom-nav"
+    ========================= -->
+
+    <div id="bottom-nav" class="bottom-nav">
+
+
+        <!-- HOME (الصفحه الحالية) -->
+        <div
+            class="nav-item current-page"
+            data-url="dashboard.html"
+            data-label="Home"
+            data-egypt="𓂀"
+            data-alt="🏠"
+            aria-label="الصفحة Home">
+
+            <div class="nav-circle">
+                𓂀
+            </div>
+
+            <div class="nav-label">
+                Home
+            </div>
+
+        </div>
+
+
+        <!-- MUSEUM -->
+        <div
+            class="nav-item"
+            data-url="museum.html"
+            data-label="Museum"
+            data-egypt="𓆣"
+            data-alt="🏺"
+            aria-label="صفحة Museum">
+
+            <div class="nav-circle">
+                𓆣
+            </div>
+
+            <div class="nav-label">
+                Museum
+            </div>
+
+        </div>
+
+
+        <!-- COLLECTION -->
+        <div
+            class="nav-item"
+            data-url="statue-builder.html"
+            data-label="Collection"
+            data-egypt="𓁹"
+            data-alt="⚒️"
+            aria-label="صفحة تجميع التماثيل">
+
+            <div class="nav-circle">
+                𓁹
+            </div>
+
+            <div class="nav-label">
+                Collection
+            </div>
+
+        </div>
+
+
+        <!-- PROFILE -->
+        <div
+            class="nav-item"
+            data-url="profile.html"
+            data-label="My Account"
+            data-egypt="☥"
+            data-alt="👤"
+            aria-label="الصفحة الشخصية">
+
+            <div class="nav-circle">
+                ☥
+            </div>
+
+            <div class="nav-label">
+                My Account
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div> <!-- ⭐ إغلاق الـ page-container -->
+
+
+<!-- =========================
+     JAVASCRIPT
+========================= -->
 
 <script>
+
+
+/* =========================
+   BACK BUTTON
+========================= */
+
 function goBack(){
-  if(document.referrer){
-    history.back();
-  }else{
-    location.href='profile.html';
-  }
+
+    if(document.referrer){
+
+        history.back();
+
+    }else{
+
+        location.href='profile.html';
+
+    }
+
 }
 
-// ===== آلية النقر الجديدة للـ Navbar =====
-const AudioCtx = window.AudioContext || window.webkitAudioContext;
-const audioCtx = new AudioCtx();
 
-function playClick() {
-  try {
-    const o = audioCtx.createOscillator();
-    const g = audioCtx.createGain();
-    o.connect(g);
-    g.connect(audioCtx.destination);
-    o.type = 'sine';
-    o.frequency.setValueAtTime(700, audioCtx.currentTime);
-    o.frequency.exponentialRampToValueAtTime(1100, audioCtx.currentTime + 0.08);
-    g.gain.setValueAtTime(0.1, audioCtx.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.12);
-    o.start();
-    o.stop(audioCtx.currentTime + 0.12);
-  } catch (e) {}
+/* =========================
+   AUDIO (Lazy creation)
+========================= */
+
+const AudioCtx =
+    window.AudioContext ||
+    window.webkitAudioContext;
+
+let audioCtx =
+    null;
+
+
+function playClick(){
+
+    try{
+
+        if(!audioCtx){
+
+            audioCtx =
+                new AudioCtx();
+
+        }
+
+
+        const o =
+            audioCtx.createOscillator();
+
+        const g =
+            audioCtx.createGain();
+
+
+        o.connect(g);
+
+        g.connect(
+            audioCtx.destination
+        );
+
+
+        o.type='sine';
+
+
+        o.frequency.setValueAtTime(
+            700,
+            audioCtx.currentTime
+        );
+
+
+        o.frequency.exponentialRampToValueAtTime(
+            1100,
+            audioCtx.currentTime + 0.08
+        );
+
+
+        g.gain.setValueAtTime(
+            0.1,
+            audioCtx.currentTime
+        );
+
+
+        g.gain.exponentialRampToValueAtTime(
+            0.001,
+            audioCtx.currentTime + 0.12
+        );
+
+
+        o.start();
+
+
+        o.stop(
+            audioCtx.currentTime + 0.12
+        );
+
+    }catch(e){}
+
 }
 
-const navItems = document.querySelectorAll('.nav-item');
-let effectShown = new Array(navItems.length).fill(false);
+
+/* =========================
+   NAVIGATION EFFECT
+========================= */
+
+const navItems =
+    document.querySelectorAll(
+        '.nav-item'
+    );
+
+
+let effectShown =
+    new Array(
+        navItems.length
+    ).fill(false);
+
+
 let timerId = null;
+
 let currentItem = null;
 
-function showEffect(item) {
-  if (item.classList.contains('current-page')) return;
-  
-  if (timerId) {
-    clearTimeout(timerId);
-    timerId = null;
-    if (currentItem) {
-      const oldCircle = currentItem.querySelector('.nav-circle');
-      const oldEgypt = currentItem.dataset.egypt;
-      oldCircle.textContent = oldEgypt;
-      currentItem.classList.remove('showing');
+
+/* =========================
+   SHOW EFFECT
+========================= */
+
+function showEffect(item){
+
+    if(
+        item.classList.contains(
+            'current-page'
+        )
+    ){
+        return;
     }
-  }
-  
-  currentItem = item;
-  const circle = item.querySelector('.nav-circle');
-  const altSymbol = item.dataset.alt;
-  circle.textContent = altSymbol;
-  item.classList.add('showing');
-  
-  timerId = setTimeout(() => {
-    const circle = currentItem.querySelector('.nav-circle');
-    const egyptSymbol = currentItem.dataset.egypt;
-    circle.textContent = egyptSymbol;
-    currentItem.classList.remove('showing');
-    
-    timerId = null;
-    currentItem = null;
-  }, 3000);
+
+
+    if(timerId){
+
+        clearTimeout(timerId);
+
+        timerId=null;
+
+
+        if(currentItem){
+
+            const oldCircle =
+                currentItem.querySelector(
+                    '.nav-circle'
+                );
+
+
+            const oldEgypt =
+                currentItem.dataset.egypt;
+
+
+            oldCircle.textContent =
+                oldEgypt;
+
+
+            currentItem.classList.remove(
+                'showing'
+            );
+
+        }
+
+    }
+
+
+    currentItem=item;
+
+
+    const circle =
+        item.querySelector(
+            '.nav-circle'
+        );
+
+
+    const altSymbol =
+        item.dataset.alt;
+
+
+    circle.textContent =
+        altSymbol;
+
+
+    item.classList.add(
+        'showing'
+    );
+
+
+    timerId=setTimeout(()=>{
+
+        if(!currentItem){
+            return;
+        }
+
+        const circle =
+            currentItem.querySelector(
+                '.nav-circle'
+            );
+
+
+        const egyptSymbol =
+            currentItem.dataset.egypt;
+
+
+        circle.textContent =
+            egyptSymbol;
+
+
+        currentItem.classList.remove(
+            'showing'
+        );
+
+
+        timerId=null;
+
+        currentItem=null;
+
+    },3000);
+
 }
 
-navItems.forEach((item, index) => {
-  item.addEventListener('click', function(e) {
-    e.stopPropagation();
-    playClick();
-    
-    if (this.classList.contains('current-page')) return;
-    
-    if (effectShown[index]) {
-      window.location.href = this.dataset.url;
-      return;
+
+/* =========================
+   NAV CLICK
+========================= */
+
+navItems.forEach(
+    (item,index)=>{
+
+        item.addEventListener(
+            'click',
+            function(e){
+
+                e.stopPropagation();
+
+
+                playClick();
+
+
+                if(
+                    this.classList.contains(
+                        'current-page'
+                    )
+                ){
+
+                    return;
+
+                }
+
+
+                if(
+                    effectShown[index]
+                ){
+
+                    window.location.href =
+                        this.dataset.url;
+
+                    return;
+
+                }
+
+
+                showEffect(this);
+
+                effectShown[index]=true;
+
+            }
+        );
+
     }
-    
-    showEffect(this);
-    effectShown[index] = true;
-  });
-});
+);
+
 </script>
 
-    <script src="v10.js" defer></script>
+
 </body>
 </html>
